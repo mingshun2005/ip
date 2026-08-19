@@ -18,6 +18,7 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return "[E]" + super.toString() + " (from: " + time[0].trim() + " to: " + time[1].trim() + ")";
+        return TaskType.EVENT.getTag() + super.toString() + " (from: " + time[0].trim() + " to: "
+                + time[1].trim() + ")";
     }
 }

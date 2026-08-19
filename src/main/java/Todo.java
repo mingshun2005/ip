@@ -2,8 +2,6 @@
  * Represents a task without any date or time attached to it.
  */
 public class Todo extends Task {
-    private String sym = "[T]";
-
     /**
      * Creates a todo task with the given description.
      *
@@ -15,6 +13,6 @@ public class Todo extends Task {
 
     @Override
     public String toString() {
-        return sym + super.toString();
+        return TaskType.TODO.getTag() + super.toString();
     }
 }
