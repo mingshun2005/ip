@@ -18,9 +18,11 @@ public class Duck {
                 + "|____/ \\__,_|\\___|_|\\_\\\n";
         System.out.println(line);
         System.out.println(banner);
-        System.out.println("Hello! I'm Duck.");
+        System.out.println("Hello! I'm Duck. Quack~");
         System.out.println("What can I do for you?");
         System.out.println(line);
+        String[] task = new String[100];
+        int no = -1;
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
@@ -30,9 +32,26 @@ public class Duck {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(line);
                 break;
+            } else if(input.equals("list")){
+
+                int track = no;
+                int id = 1;
+
+                while(track >= 0) {
+                    System.out.println(id + "." + task[id - 1]);
+                    id ++;
+                    track --;
+                }
+                System.out.println(line);
+
+            } else {
+                no++;
+                task[no] = input;
+
+                System.out.println("added: " + input);
+                System.out.println(line);
+
             }
-            System.out.println(input);
-            System.out.println(line);
         }
     }
 }
