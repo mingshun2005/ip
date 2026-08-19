@@ -58,7 +58,16 @@ public class Duck {
 
 
 
-             }else {
+             } else if (input.startsWith("unmark ")) {
+                int rankComplete = Integer.parseInt(input.substring(7));
+                complete[rankComplete - 1] =  false;
+                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println("  " + TF[0] + " " + task[rankComplete - 1]);
+                System.out.println(line);
+
+
+
+            } else {
                 no++;
                 task[no] = input;
                 complete[no]  = false;
