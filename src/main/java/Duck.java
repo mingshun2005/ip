@@ -22,6 +22,8 @@ public class Duck {
         System.out.println("What can I do for you?");
         System.out.println(line);
         String[] task = new String[100];
+        boolean[] complete = new boolean[100];
+        String[] TF = new String[]{"[ ]", "[X]"};
         int no = -1;
 
         Scanner scanner = new Scanner(System.in);
@@ -32,21 +34,34 @@ public class Duck {
                 System.out.println("Bye. Hope to see you again soon!");
                 System.out.println(line);
                 break;
-            } else if(input.equals("list")){
+            } else if (input.equals("list")) {
 
                 int track = no;
                 int id = 1;
 
-                while(track >= 0) {
-                    System.out.println(id + "." + task[id - 1]);
-                    id ++;
-                    track --;
+                System.out.println("Here are the tasks in your list:");
+
+                while (track >= 0) {
+                    int result = complete[id - 1] ? 1 :0 ;
+                    System.out.println(id + "." + TF[result] + " " + task[id - 1]);
+                    id++;
+                    track--;
                 }
                 System.out.println(line);
 
-            } else {
+            } else if (input.startsWith("mark ")) {
+                int rankComplete = Integer.parseInt(input.substring(5));
+                complete[rankComplete - 1] =  true;
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println("  " + TF[1] + " " + task[rankComplete - 1]);
+                System.out.println(line);
+
+
+
+             }else {
                 no++;
                 task[no] = input;
+                complete[no]  = false;
 
                 System.out.println("added: " + input);
                 System.out.println(line);
