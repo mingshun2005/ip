@@ -22,7 +22,7 @@ public class Deadline extends Task {
 
     @Override
     public String toFileString() {
-        return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | " + this.description
-                + " | " + this.by.trim();
+        return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | "
+                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.by.trim());
     }
 }

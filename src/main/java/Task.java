@@ -25,12 +25,31 @@ public abstract class Task {
     }
 
     /**
+     * Returns whether this task has been completed.
+     *
+     * @return true if this task is done
+     */
+    public boolean isDone() {
+        return this.isDone;
+    }
+
+    /**
      * Returns the status value used in the save file.
      *
      * @return "1" if this task is done, or "0" otherwise
      */
     protected String getFileStatus() {
         return this.isDone ? "1" : "0";
+    }
+
+    /**
+     * Escapes characters that have special meaning in the storage format.
+     *
+     * @param field task text to store
+     * @return escaped text that can be parsed without losing characters
+     */
+    protected String escapeFileField(String field) {
+        return field.replace("\\", "\\\\").replace("|", "\\|");
     }
 
     /**

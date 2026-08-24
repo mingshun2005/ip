@@ -18,6 +18,7 @@ public class Todo extends Task {
 
     @Override
     public String toFileString() {
-        return TaskType.TODO.getFileCode() + " | " + this.getFileStatus() + " | " + this.description;
+        return TaskType.TODO.getFileCode() + " | " + this.getFileStatus() + " | "
+                + this.escapeFileField(this.description);
     }
 }

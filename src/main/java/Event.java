@@ -36,7 +36,8 @@ public class Event extends Task {
 
     @Override
     public String toFileString() {
-        return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | " + this.description
-                + " | " + this.time[0].trim() + " | " + this.time[1].trim();
+        return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "
+                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.time[0].trim())
+                + " | " + this.escapeFileField(this.time[1].trim());
     }
 }

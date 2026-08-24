@@ -1,7 +1,9 @@
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,7 +41,7 @@ public class Duck {
 
         Scanner scanner = new Scanner(System.in);
         while (scanner.hasNextLine()) {
-            String input = scanner.nextLine();
+            String input = scanner.nextLine().trim();
             System.out.println(line);
             try {
                 if (input.equals("bye")) {
@@ -51,72 +53,81 @@ public class Duck {
                     for (int i = 0; i < tasks.size(); i++) {
                         System.out.println((i + 1) + "." + tasks.get(i));
                     }
-                } else if (input.startsWith("mark ")) {
-                    int taskNumber = Integer.parseInt(input.substring(5));
+                } else if (input.equals("mark") || input.startsWith("mark ")) {
+                    int taskNumber = parseTaskNumber(input, "mark");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DuckException("That task number does not exist.");
                     }
-                    tasks.get(taskNumber - 1).markAsDone();
-                    saveTasks(tasks);
+                    setTaskDoneAndSave(tasks, taskNumber - 1, true);
                     System.out.println("Nice! I've marked this task as done:");
                     System.out.println("  " + tasks.get(taskNumber - 1));
-                } else if (input.startsWith("unmark ")) {
-                    int taskNumber = Integer.parseInt(input.substring(7));
+                } else if (input.equals("unmark") || input.startsWith("unmark ")) {
+                    int taskNumber = parseTaskNumber(input, "unmark");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DuckException("That task number does not exist.");
                     }
-                    tasks.get(taskNumber - 1).markAsUndone();
-                    saveTasks(tasks);
+                    setTaskDoneAndSave(tasks, taskNumber - 1, false);
                     System.out.println("OK, I've marked this task as not done yet:");
                     System.out.println("  " + tasks.get(taskNumber - 1));
                 } else if (input.equals("todo")) {
                     throw new DuckException("The description of a todo cannot be empty.");
                 } else if (input.startsWith("todo ")) {
-                    String description = input.substring(5);
-                    if (description.trim().isEmpty()) {
+                    String description = input.substring(5).trim();
+                    if (description.isEmpty()) {
                         throw new DuckException("The description of a todo cannot be empty.");
                     }
-                    tasks.add(new Todo(description));
-                    saveTasks(tasks);
+                    addTaskAndSave(tasks, new Todo(description));
                     System.out.println("Got it. I've added this task:");
                     System.out.println(tasks.get(tasks.size() - 1));
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (input.equals("event")) {
                     throw new DuckException("The description of an event cannot be empty.");
                 } else if (input.startsWith("event ")) {
-                    String[] split = input.substring(6).split(" /from ", 2);
-                    if (split.length < 2 || split[0].trim().isEmpty()) {
+                    String eventDetails = input.substring(6).trim();
+                    if (eventDetails.isEmpty() || eventDetails.startsWith("/from ")) {
                         throw new DuckException("The description of an event cannot be empty.");
                     }
-                    if (!split[1].contains(" /to ")) {
+                    String[] descriptionAndTimes = eventDetails.split(" /from ", 2);
+                    if (descriptionAndTimes.length < 2) {
                         throw new DuckException("The event command needs a /from and /to time.");
                     }
-                    tasks.add(new Event(split[0], split[1]));
-                    saveTasks(tasks);
+                    String[] times = descriptionAndTimes[1].split(" /to ", 2);
+                    if (times.length < 2) {
+                        throw new DuckException("The event command needs a /from and /to time.");
+                    }
+                    if (times[0].trim().isEmpty() || times[1].trim().isEmpty()) {
+                        throw new DuckException("The event command needs a non-empty /from and /to time.");
+                    }
+                    Event event = new Event(descriptionAndTimes[0].trim(), times[0].trim(), times[1].trim());
+                    addTaskAndSave(tasks, event);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(tasks.get(tasks.size() - 1));
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (input.equals("deadline")) {
                     throw new DuckException("The description of a deadline cannot be empty.");
                 } else if (input.startsWith("deadline ")) {
-                    String[] split = input.substring(9).split(" /by ", 2);
-                    if (split.length < 2 || split[0].trim().isEmpty()) {
+                    String deadlineDetails = input.substring(9).trim();
+                    if (deadlineDetails.isEmpty() || deadlineDetails.startsWith("/by ")) {
                         throw new DuckException("The description of a deadline cannot be empty.");
                     }
-                    tasks.add(new Deadline(split[0], split[1]));
-                    saveTasks(tasks);
+                    String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
+                    if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
+                        throw new DuckException("The deadline command needs a non-empty /by date or time.");
+                    }
+                    Deadline deadline = new Deadline(descriptionAndDeadline[0].trim(),
+                            descriptionAndDeadline[1].trim());
+                    addTaskAndSave(tasks, deadline);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(tasks.get(tasks.size() - 1));
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
                 } else if (input.equals("delete") || input.equals("delete ")) {
                     throw new DuckException("Please enter task number to delete task!");
                 } else if (input.startsWith("delete ")) {
-                    int taskNumber = Integer.parseInt(input.substring(7));
+                    int taskNumber = parseTaskNumber(input, "delete");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DuckException("That task number does not exist.");
                     }
-                    Task removedTask = tasks.remove(taskNumber - 1);
-                    saveTasks(tasks);
+                    Task removedTask = deleteTaskAndSave(tasks, taskNumber - 1);
                     System.out.println("Noted. I've removed this task:");
                     System.out.println("  " + removedTask);
                     System.out.println("Now you have " + tasks.size() + " tasks in the list.");
@@ -124,8 +135,6 @@ public class Duck {
                 else {
                     throw new DuckException("I'm sorry, but I don't know what that means :-(");
                 }
-            } catch (NumberFormatException e) {
-                System.out.println("OOPS!!! Please enter a valid task number.");
             } catch (DuckException e) {
                 System.out.println("OOPS!!! " + e.getMessage());
             }
@@ -145,11 +154,27 @@ public class Duck {
             taskLines.add(task.toFileString());
         }
 
+        Path temporaryFile = null;
         try {
             Files.createDirectories(DATA_FILE_PATH.getParent());
-            Files.write(DATA_FILE_PATH, taskLines, StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            throw new DuckException("Unable to save tasks to the hard disk.");
+            temporaryFile = Files.createTempFile(DATA_FILE_PATH.getParent(), "duck-", ".tmp");
+            Files.write(temporaryFile, taskLines, StandardCharsets.UTF_8);
+            try {
+                Files.move(temporaryFile, DATA_FILE_PATH, StandardCopyOption.ATOMIC_MOVE,
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (AtomicMoveNotSupportedException e) {
+                Files.move(temporaryFile, DATA_FILE_PATH, StandardCopyOption.REPLACE_EXISTING);
+            }
+        } catch (IOException | SecurityException e) {
+            throw new DuckException("Unable to save tasks to data/duck.txt.");
+        } finally {
+            if (temporaryFile != null) {
+                try {
+                    Files.deleteIfExists(temporaryFile);
+                } catch (IOException | SecurityException ignored) {
+                    // The original save error is more useful than a temporary-file cleanup error.
+                }
+            }
         }
     }
 
@@ -161,17 +186,27 @@ public class Duck {
      */
     private static ArrayList<Task> loadTasks() throws DuckException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
-        if (!Files.exists(DATA_FILE_PATH)) {
+        if (Files.notExists(DATA_FILE_PATH)) {
             return loadedTasks;
         }
 
         try {
-            for (String taskLine : Files.readAllLines(DATA_FILE_PATH, StandardCharsets.UTF_8)) {
-                loadedTasks.add(parseTask(taskLine));
+            ArrayList<String> taskLines = new ArrayList<>(
+                    Files.readAllLines(DATA_FILE_PATH, StandardCharsets.UTF_8));
+            for (int i = 0; i < taskLines.size(); i++) {
+                String taskLine = taskLines.get(i);
+                if (taskLine.isBlank()) {
+                    continue;
+                }
+                try {
+                    loadedTasks.add(parseTask(taskLine));
+                } catch (DuckException e) {
+                    throw new DuckException("Unable to load tasks from line " + (i + 1) + ": " + e.getMessage());
+                }
             }
             return loadedTasks;
-        } catch (IOException e) {
-            throw new DuckException("Unable to load tasks from the hard disk.");
+        } catch (IOException | SecurityException e) {
+            throw new DuckException("Unable to read tasks from data/duck.txt.");
         }
     }
 
@@ -183,24 +218,149 @@ public class Duck {
      * @throws DuckException if the line does not match the expected storage format
      */
     private static Task parseTask(String taskLine) throws DuckException {
-        String[] parts = taskLine.split(" \\| ", -1);
-        Task task;
-
-        if (TaskType.TODO.getFileCode().equals(parts[0]) && parts.length == 3) {
-            task = new Todo(parts[2]);
-        } else if (TaskType.DEADLINE.getFileCode().equals(parts[0]) && parts.length == 4) {
-            task = new Deadline(parts[2], parts[3]);
-        } else if (TaskType.EVENT.getFileCode().equals(parts[0]) && parts.length == 5) {
-            task = new Event(parts[2], parts[3], parts[4]);
-        } else {
-            throw new DuckException("Unable to load tasks from the hard disk.");
+        ArrayList<String> parts = splitFileFields(taskLine);
+        if (parts.size() < 3) {
+            throw new DuckException("the record has too few fields.");
         }
 
-        if ("1".equals(parts[1])) {
+        String taskType = parts.get(0);
+        String status = parts.get(1);
+        if (!"0".equals(status) && !"1".equals(status)) {
+            throw new DuckException("the status must be 0 or 1.");
+        }
+
+        Task task;
+        if (TaskType.TODO.getFileCode().equals(taskType) && parts.size() == 3) {
+            requireNonBlank(parts.get(2), "todo description");
+            task = new Todo(parts.get(2));
+        } else if (TaskType.DEADLINE.getFileCode().equals(taskType) && parts.size() == 4) {
+            requireNonBlank(parts.get(2), "deadline description");
+            requireNonBlank(parts.get(3), "deadline date or time");
+            task = new Deadline(parts.get(2), parts.get(3));
+        } else if (TaskType.EVENT.getFileCode().equals(taskType) && parts.size() == 5) {
+            requireNonBlank(parts.get(2), "event description");
+            requireNonBlank(parts.get(3), "event start time");
+            requireNonBlank(parts.get(4), "event end time");
+            task = new Event(parts.get(2), parts.get(3), parts.get(4));
+        } else if (!TaskType.TODO.getFileCode().equals(taskType)
+                && !TaskType.DEADLINE.getFileCode().equals(taskType)
+                && !TaskType.EVENT.getFileCode().equals(taskType)) {
+            throw new DuckException("the task type is not recognized.");
+        } else {
+            throw new DuckException("the task type has the wrong number of fields.");
+        }
+
+        if ("1".equals(status)) {
             task.markAsDone();
-        } else if (!"0".equals(parts[1])) {
-            throw new DuckException("Unable to load tasks from the hard disk.");
         }
         return task;
+    }
+
+    /**
+     * Splits a stored line while decoding escaped backslashes and pipe characters.
+     *
+     * @param taskLine line to split
+     * @return decoded storage fields
+     */
+    private static ArrayList<String> splitFileFields(String taskLine) {
+        ArrayList<String> fields = new ArrayList<>();
+        StringBuilder currentField = new StringBuilder();
+
+        for (int i = 0; i < taskLine.length(); i++) {
+            char currentCharacter = taskLine.charAt(i);
+            if (currentCharacter == '\\' && i + 1 < taskLine.length()) {
+                char escapedCharacter = taskLine.charAt(i + 1);
+                if (escapedCharacter == '\\' || escapedCharacter == '|') {
+                    currentField.append(escapedCharacter);
+                    i++;
+                    continue;
+                }
+            }
+            if (taskLine.startsWith(" | ", i)) {
+                fields.add(currentField.toString());
+                currentField.setLength(0);
+                i += 2;
+            } else {
+                currentField.append(currentCharacter);
+            }
+        }
+        fields.add(currentField.toString());
+        return fields;
+    }
+
+    /**
+     * Rejects required storage fields that contain no visible text.
+     *
+     * @param value field value
+     * @param fieldName user-facing name of the field
+     * @throws DuckException if the value is blank
+     */
+    private static void requireNonBlank(String value, String fieldName) throws DuckException {
+        if (value.isBlank()) {
+            throw new DuckException("the " + fieldName + " cannot be empty.");
+        }
+    }
+
+    /**
+     * Parses a one-based task number following a command word.
+     *
+     * @param input full command input
+     * @param command command word to remove
+     * @return parsed task number
+     * @throws DuckException if no valid integer is provided
+     */
+    private static int parseTaskNumber(String input, String command) throws DuckException {
+        String taskNumberText = input.substring(command.length()).trim();
+        try {
+            return Integer.parseInt(taskNumberText);
+        } catch (NumberFormatException e) {
+            throw new DuckException("Please enter a valid task number.");
+        }
+    }
+
+    /** Adds a task, saving it immediately and rolling it back if saving fails. */
+    private static void addTaskAndSave(ArrayList<Task> tasks, Task task) throws DuckException {
+        tasks.add(task);
+        try {
+            saveTasks(tasks);
+        } catch (DuckException e) {
+            tasks.remove(tasks.size() - 1);
+            throw e;
+        }
+    }
+
+    /** Removes a task, restoring it if the updated list cannot be saved. */
+    private static Task deleteTaskAndSave(ArrayList<Task> tasks, int taskIndex) throws DuckException {
+        Task removedTask = tasks.remove(taskIndex);
+        try {
+            saveTasks(tasks);
+            return removedTask;
+        } catch (DuckException e) {
+            tasks.add(taskIndex, removedTask);
+            throw e;
+        }
+    }
+
+    /** Changes a task status, restoring the old status if the update cannot be saved. */
+    private static void setTaskDoneAndSave(ArrayList<Task> tasks, int taskIndex, boolean isDone)
+            throws DuckException {
+        Task task = tasks.get(taskIndex);
+        boolean wasDone = task.isDone();
+        if (isDone) {
+            task.markAsDone();
+        } else {
+            task.markAsUndone();
+        }
+
+        try {
+            saveTasks(tasks);
+        } catch (DuckException e) {
+            if (wasDone) {
+                task.markAsDone();
+            } else {
+                task.markAsUndone();
+            }
+            throw e;
+        }
     }
 }
