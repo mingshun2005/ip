@@ -12,6 +12,7 @@ import argparse
 import re
 import subprocess
 import sys
+import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -27,6 +28,8 @@ class TestCase:
     aim: str
     input_text: str
     expected_output: str
+    initial_files: list[tuple[str, str]]
+    expected_files: list[tuple[str, str]]
 
 
 def normalize(text: str) -> str:
@@ -50,6 +53,24 @@ def fenced_block(body: str, heading: str) -> str:
     return match.group(1)
 
 
+def expected_file_blocks(body: str) -> list[tuple[str, str]]:
+    """Return the expected path and content for each file assertion."""
+    pattern = r"^### Expected File\s+(.+?)\s*\n```[^\n]*\n(.*?)\n```"
+    return [
+        (match.group(1).strip(), match.group(2))
+        for match in re.finditer(pattern, body, flags=re.MULTILINE | re.DOTALL)
+    ]
+
+
+def initial_file_blocks(body: str) -> list[tuple[str, str]]:
+    """Return the path and content for each file created before a test."""
+    pattern = r"^### Initial File\s+(.+?)\s*\n```[^\n]*\n(.*?)\n```"
+    return [
+        (match.group(1).strip(), match.group(2))
+        for match in re.finditer(pattern, body, flags=re.MULTILINE | re.DOTALL)
+    ]
+
+
 def parse_test_cases(plan_text: str) -> list[TestCase]:
     pattern = r"^## Test Case\s+\d*:?\s*(.*?)\s*\n(.*?)(?=^## Test Case\s+\d*:|\Z)"
     matches = re.finditer(pattern, plan_text, flags=re.MULTILINE | re.DOTALL)
@@ -66,6 +87,8 @@ def parse_test_cases(plan_text: str) -> list[TestCase]:
                 aim=aim_match.group(1).strip(),
                 input_text=fenced_block(body, "Input"),
                 expected_output=fenced_block(body, "Expected Output"),
+                initial_files=initial_file_blocks(body),
+                expected_files=expected_file_blocks(body),
             )
         )
     if not cases:
@@ -93,6 +116,14 @@ def print_block(title: str, content: str) -> None:
 
 def ensure_final_newline(text: str) -> str:
     return text if text.endswith("\n") else text + "\n"
+
+
+def write_initial_files(session_path: Path, initial_files: list[tuple[str, str]]) -> None:
+    """Create files needed by a test inside its isolated session directory."""
+    for initial_path, initial_content in initial_files:
+        file_path = session_path / initial_path
+        file_path.parent.mkdir(parents=True, exist_ok=True)
+        file_path.write_text(ensure_final_newline(initial_content), encoding="utf-8")
 
 
 def main() -> int:
@@ -134,24 +165,37 @@ def main() -> int:
         print(f"== Test {index}: {test_case.name} ==")
         print(f"Aim: {test_case.aim}")
         session_input = ensure_final_newline(test_case.input_text)
-        result = run_shell(run_command, repo, stdin=session_input)
-        actual_output = result.stdout
+        with tempfile.TemporaryDirectory(prefix="duck-ui-test-") as session_directory:
+            session_path = Path(session_directory)
+            write_initial_files(session_path, test_case.initial_files)
+            result = run_shell(run_command, session_path, stdin=session_input)
+            actual_output = result.stdout
 
-        print_block("Console input:", test_case.input_text)
-        print_block("Console output:", actual_output)
+            print_block("Console input:", test_case.input_text)
+            print_block("Console output:", actual_output)
 
-        expected = normalize(test_case.expected_output)
-        actual = normalize(actual_output)
-        if result.returncode != 0 or actual != expected:
-            print(f"FAIL: {test_case.name}")
-            if result.returncode != 0:
-                print(f"Program exited with status {result.returncode}.")
-                print_block("Program stderr:", result.stderr)
-            print_block("Expected output:", test_case.expected_output)
-            print_block("Actual output:", actual_output)
-            return 1
+            expected = normalize(test_case.expected_output)
+            actual = normalize(actual_output)
+            if result.returncode != 0 or actual != expected:
+                print(f"FAIL: {test_case.name}")
+                if result.returncode != 0:
+                    print(f"Program exited with status {result.returncode}.")
+                    print_block("Program stderr:", result.stderr)
+                print_block("Expected output:", test_case.expected_output)
+                print_block("Actual output:", actual_output)
+                return 1
 
-        print(f"PASS: {test_case.name}")
+            for expected_path, expected_content in test_case.expected_files:
+                file_path = session_path / expected_path
+                actual_content = file_path.read_text(encoding="utf-8") if file_path.exists() else ""
+                print_block(f"File output ({expected_path}):", actual_content)
+                if normalize(actual_content) != normalize(expected_content):
+                    print(f"FAIL: {test_case.name}")
+                    print_block(f"Expected file ({expected_path}):", expected_content)
+                    print_block(f"Actual file ({expected_path}):", actual_content)
+                    return 1
+
+            print(f"PASS: {test_case.name}")
 
     print()
     print(f"All {len(test_cases)} UI test case(s) passed.")

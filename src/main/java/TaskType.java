@@ -25,4 +25,13 @@ public enum TaskType {
     public String getTag() {
         return "[" + this.icon + "]";
     }
+
+    /**
+     * Returns the short code used to identify the task type in the save file.
+     *
+     * @return task type code, such as T
+     */
+    public String getFileCode() {
+        return this.icon;
+    }
 }

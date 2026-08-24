@@ -1,7 +1,7 @@
 /**
  * Represents a task in the chatbot's task list.
  */
-public class Task {
+public abstract class Task {
     protected String description;
     protected boolean isDone;
 
@@ -22,6 +22,34 @@ public class Task {
      */
     public String getStatusIcon() {
         return (isDone ? "X" : " "); // mark done task with X
+    }
+
+    /**
+     * Returns whether this task has been completed.
+     *
+     * @return true if this task is done
+     */
+    public boolean isDone() {
+        return this.isDone;
+    }
+
+    /**
+     * Returns the status value used in the save file.
+     *
+     * @return "1" if this task is done, or "0" otherwise
+     */
+    protected String getFileStatus() {
+        return this.isDone ? "1" : "0";
+    }
+
+    /**
+     * Escapes characters that have special meaning in the storage format.
+     *
+     * @param field task text to store
+     * @return escaped text that can be parsed without losing characters
+     */
+    protected String escapeFileField(String field) {
+        return field.replace("\\", "\\\\").replace("|", "\\|");
     }
 
     /**
@@ -47,4 +75,11 @@ public class Task {
     public String toString() {
         return "[" + this.getStatusIcon() + "] " + this.description;
     }
+
+    /**
+     * Returns this task in the plain-text format used for storage.
+     *
+     * @return save file representation of this task
+     */
+    public abstract String toFileString();
 }

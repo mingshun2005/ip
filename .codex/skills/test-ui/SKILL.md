@@ -15,6 +15,8 @@ Run scripted console sessions for the chatbot and compare actual program output 
    - `Aim:`
    - `### Input` fenced block containing the console commands to send to the program
    - `### Expected Output` fenced block containing the expected program output
+   - Optional `### Initial File path/to/file` fenced blocks for files to create before the test
+   - Optional `### Expected File path/to/file` fenced blocks for files that should be produced
 4. Run:
 
    ```bash
@@ -50,9 +52,19 @@ bye
 ```text
 program output only
 ```
+
+### Initial File data/duck.txt
+```text
+file content before the session
+```
+
+### Expected File data/duck.txt
+```text
+saved file content
+```
 ````
 
-The input block records what the user types. The expected output block records only what the program prints.
+The input block records what the user types. The expected output block records only what the program prints. Each program session runs in an isolated temporary directory so runtime data cannot leak between tests or overwrite the user's files.
 
 ## Runner
 

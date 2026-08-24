@@ -78,6 +78,13 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
+### Expected File data/duck.txt
+```text
+T | 0 | borrow book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
 ## Test Case 3: Exception messages
 Aim: Verify that invalid user commands are handled with DuckException messages instead of crashing.
 
@@ -175,6 +182,12 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
+### Expected File data/duck.txt
+```text
+T | 0 | first
+T | 1 | second
+```
+
 ## Test Case 5: Invalid deadline and event commands do not add tasks
 Aim: Verify that malformed deadline and event commands do not alter the task list before later valid commands.
 
@@ -238,6 +251,12 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
+### Expected File data/duck.txt
+```text
+D | 0 | return book | Sunday
+E | 0 | meeting | Mon 2pm | 4pm
+```
+
 ## Test Case 6: Delete removes the selected task only
 Aim: Verify that delete uses one-based task numbers, invalid deletes do not alter the list, and remaining tasks keep their order.
 
@@ -295,6 +314,300 @@ ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] first
 2.[T][ ] third
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | first
+T | 0 | third
+```
+
+## Test Case 7: Unmark updates the saved status
+Aim: Verify that unmark changes a completed task back to incomplete in the save file.
+
+### Input
+```text
+todo first
+mark 1
+unmark 1
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] first
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this task as done:
+  [T][X] first
+____________________________________________________________
+____________________________________________________________
+OK, I've marked this task as not done yet:
+  [T][ ] first
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | first
+```
+
+## Test Case 8: Load tasks from disk on startup
+Aim: Verify that todo, deadline, and event tasks are loaded with their saved statuses and remain editable.
+
+### Initial File data/duck.txt
+```text
+T | 1 | read book
+D | 0 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
+### Input
+```text
+list
+mark 2
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][X] read book
+2.[D][ ] return book (by: Sunday)
+3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Nice! I've marked this task as done:
+  [D][X] return book (by: Sunday)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 1 | read book
+D | 1 | return book | Sunday
+E | 0 | project meeting | Mon 2pm | 4pm
+```
+
+## Test Case 9: Invalid saved data is rejected atomically
+Aim: Verify that an invalid status reports its line number and prevents a partially loaded task list.
+
+### Initial File data/duck.txt
+```text
+T | 1 | valid before bad line
+D | 2 | invalid status | Sunday
+T | 0 | valid after bad line
+```
+
+### Input
+```text
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+OOPS!!! Unable to load tasks from line 2: the status must be 0 or 1.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 1 | valid before bad line
+D | 2 | invalid status | Sunday
+T | 0 | valid after bad line
+```
+
+## Test Case 10: Special characters and blank lines round-trip safely
+Aim: Verify that blank lines are ignored and escaped pipes and backslashes survive loading and saving.
+
+### Initial File data/duck.txt
+```text
+T | 1 | review A \| B
+
+D | 0 | path C:\\tmp | Friday \| evening
+E | 0 | sync \| plan | Room C:\\1 | Room C:\\2
+```
+
+### Input
+```text
+list
+todo keep A | B \ C
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][X] review A | B
+2.[D][ ] path C:\tmp (by: Friday | evening)
+3.[E][ ] sync | plan (from: Room C:\1 to: Room C:\2)
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] keep A | B \ C
+Now you have 4 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 1 | review A \| B
+D | 0 | path C:\\tmp | Friday \| evening
+E | 0 | sync \| plan | Room C:\\1 | Room C:\\2
+T | 0 | keep A \| B \\ C
+```
+
+## Test Case 11: Failed saves roll back task changes
+Aim: Verify that an unavailable data directory reports an error and does not leave an unsaved task in memory.
+
+### Initial File data
+```text
+not a directory
+```
+
+### Input
+```text
+todo should roll back
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Unable to save tasks to data/duck.txt.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data
+```text
+not a directory
+```
+
+## Test Case 12: Missing deadline and event times are rejected
+Aim: Verify that incomplete deadline and event commands report errors instead of creating invalid tasks or crashing.
+
+### Input
+```text
+deadline return book
+deadline return book /by
+event meeting /from Mon
+event meeting /from  /to 4pm
+event meeting /from Mon /to
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The deadline command needs a non-empty /by date or time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The deadline command needs a non-empty /by date or time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The event command needs a /from and /to time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The event command needs a non-empty /from and /to time.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The event command needs a /from and /to time.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!

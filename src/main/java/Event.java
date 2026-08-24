@@ -16,9 +16,28 @@ public class Event extends Task {
         this.time = time.split("/to ");
     }
 
+    /**
+     * Creates an event task with separate start and end times, as stored in the data file.
+     *
+     * @param des description of the task
+     * @param from start date or time as text
+     * @param to end date or time as text
+     */
+    public Event(String des, String from, String to) {
+        super(des);
+        this.time = new String[] { from, to };
+    }
+
     @Override
     public String toString() {
         return TaskType.EVENT.getTag() + super.toString() + " (from: " + time[0].trim() + " to: "
                 + time[1].trim() + ")";
+    }
+
+    @Override
+    public String toFileString() {
+        return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "
+                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.time[0].trim())
+                + " | " + this.escapeFileField(this.time[1].trim());
     }
 }
