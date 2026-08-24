@@ -19,4 +19,10 @@ public class Deadline extends Task {
     public String toString() {
         return TaskType.DEADLINE.getTag() + super.toString() + " (by: " + by + ")";
     }
+
+    @Override
+    public String toFileString() {
+        return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | " + this.description
+                + " | " + this.by.trim();
+    }
 }

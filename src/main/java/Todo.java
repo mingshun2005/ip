@@ -15,4 +15,9 @@ public class Todo extends Task {
     public String toString() {
         return TaskType.TODO.getTag() + super.toString();
     }
+
+    @Override
+    public String toFileString() {
+        return TaskType.TODO.getFileCode() + " | " + this.getFileStatus() + " | " + this.description;
+    }
 }
