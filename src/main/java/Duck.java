@@ -4,8 +4,12 @@ import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Pattern;
 
 /**
  * A simple chatbot that greets the user and echoes commands until the user exits.
@@ -13,6 +17,22 @@ import java.util.Scanner;
 public class Duck {
     /** Location of the task data file, relative to the project root. */
     private static final Path DATA_FILE_PATH = Path.of("data", "duck.txt");
+
+    /** Exact, ASCII-only shape accepted for deadline dates. */
+    private static final Pattern DEADLINE_DATE_PATTERN =
+            Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
+
+    /** Strict formatter shared by command input and saved deadline data. */
+    private static final DateTimeFormatter DEADLINE_DATE_FORMAT =
+            DateTimeFormatter.ISO_LOCAL_DATE;
+
+    /** Error shown when a command contains an invalid deadline date. */
+    private static final String INVALID_COMMAND_DATE_MESSAGE =
+            "Please enter a valid deadline date in yyyy-MM-dd format.";
+
+    /** Error included in the line-specific message for invalid saved dates. */
+    private static final String INVALID_SAVED_DATE_MESSAGE =
+            "the deadline date must be a valid yyyy-MM-dd date.";
 
     /**
      * Starts the chatbot, then reads and responds to user commands.
@@ -112,10 +132,12 @@ public class Duck {
                     }
                     String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
                     if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
-                        throw new DuckException("The deadline command needs a non-empty /by date or time.");
+                        throw new DuckException("The deadline command needs a non-empty /by date.");
                     }
+                    LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadline[1].trim(),
+                            INVALID_COMMAND_DATE_MESSAGE);
                     Deadline deadline = new Deadline(descriptionAndDeadline[0].trim(),
-                            descriptionAndDeadline[1].trim());
+                            deadlineDate);
                     addTaskAndSave(tasks, deadline);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(tasks.get(tasks.size() - 1));
@@ -235,8 +257,9 @@ public class Duck {
             task = new Todo(parts.get(2));
         } else if (TaskType.DEADLINE.getFileCode().equals(taskType) && parts.size() == 4) {
             requireNonBlank(parts.get(2), "deadline description");
-            requireNonBlank(parts.get(3), "deadline date or time");
-            task = new Deadline(parts.get(2), parts.get(3));
+            requireNonBlank(parts.get(3), "deadline date");
+            task = new Deadline(parts.get(2),
+                    parseDeadlineDate(parts.get(3), INVALID_SAVED_DATE_MESSAGE));
         } else if (TaskType.EVENT.getFileCode().equals(taskType) && parts.size() == 5) {
             requireNonBlank(parts.get(2), "event description");
             requireNonBlank(parts.get(3), "event start time");
@@ -298,6 +321,32 @@ public class Duck {
     private static void requireNonBlank(String value, String fieldName) throws DuckException {
         if (value.isBlank()) {
             throw new DuckException("the " + fieldName + " cannot be empty.");
+        }
+    }
+
+    /**
+     * Parses a canonical deadline date. The shape check rejects abbreviated, signed,
+     * extended, and non-ASCII years before strict calendar validation is attempted.
+     *
+     * @param dateText date in yyyy-MM-dd format
+     * @param errorMessage contextual message to show when parsing fails
+     * @return parsed date
+     * @throws DuckException if the text is not a valid date from year 0001 to 9999
+     */
+    private static LocalDate parseDeadlineDate(String dateText, String errorMessage)
+            throws DuckException {
+        if (!DEADLINE_DATE_PATTERN.matcher(dateText).matches()) {
+            throw new DuckException(errorMessage);
+        }
+
+        try {
+            LocalDate date = LocalDate.parse(dateText, DEADLINE_DATE_FORMAT);
+            if (date.getYear() == 0) {
+                throw new DuckException(errorMessage);
+            }
+            return date;
+        } catch (DateTimeParseException e) {
+            throw new DuckException(errorMessage);
         }
     }
 
