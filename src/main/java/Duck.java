@@ -4,6 +4,8 @@ import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -112,10 +114,11 @@ public class Duck {
                     }
                     String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
                     if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
-                        throw new DuckException("The deadline command needs a non-empty /by date or time.");
+                        throw new DuckException("The deadline command needs a non-empty /by date.");
                     }
+                    LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadline[1].trim());
                     Deadline deadline = new Deadline(descriptionAndDeadline[0].trim(),
-                            descriptionAndDeadline[1].trim());
+                            deadlineDate);
                     addTaskAndSave(tasks, deadline);
                     System.out.println("Got it. I've added this task:");
                     System.out.println(tasks.get(tasks.size() - 1));
@@ -235,8 +238,12 @@ public class Duck {
             task = new Todo(parts.get(2));
         } else if (TaskType.DEADLINE.getFileCode().equals(taskType) && parts.size() == 4) {
             requireNonBlank(parts.get(2), "deadline description");
-            requireNonBlank(parts.get(3), "deadline date or time");
-            task = new Deadline(parts.get(2), parts.get(3));
+            requireNonBlank(parts.get(3), "deadline date");
+            try {
+                task = new Deadline(parts.get(2), LocalDate.parse(parts.get(3)));
+            } catch (DateTimeParseException e) {
+                throw new DuckException("the deadline date must be a valid yyyy-MM-dd date.");
+            }
         } else if (TaskType.EVENT.getFileCode().equals(taskType) && parts.size() == 5) {
             requireNonBlank(parts.get(2), "event description");
             requireNonBlank(parts.get(3), "event start time");
@@ -298,6 +305,21 @@ public class Duck {
     private static void requireNonBlank(String value, String fieldName) throws DuckException {
         if (value.isBlank()) {
             throw new DuckException("the " + fieldName + " cannot be empty.");
+        }
+    }
+
+    /**
+     * Parses the date format accepted by the deadline command.
+     *
+     * @param dateText date in yyyy-MM-dd format
+     * @return parsed date
+     * @throws DuckException if the text is not a valid ISO date
+     */
+    private static LocalDate parseDeadlineDate(String dateText) throws DuckException {
+        try {
+            return LocalDate.parse(dateText);
+        } catch (DateTimeParseException e) {
+            throw new DuckException("Please enter a valid deadline date in yyyy-MM-dd format.");
         }
     }
 

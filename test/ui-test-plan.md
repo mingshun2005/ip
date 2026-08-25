@@ -34,7 +34,7 @@ Aim: Verify that todo, deadline, and event commands add the correct task types a
 ### Input
 ```text
 todo borrow book
-deadline return book /by Sunday
+deadline return book /by 2026-08-30
 event project meeting /from Mon 2pm /to 4pm
 list
 bye
@@ -59,7 +59,7 @@ Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Aug 30 2026)
 Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -70,7 +70,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][ ] borrow book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Aug 30 2026)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -81,7 +81,7 @@ ____________________________________________________________
 ### Expected File data/duck.txt
 ```text
 T | 0 | borrow book
-D | 0 | return book | Sunday
+D | 0 | return book | 2026-08-30
 E | 0 | project meeting | Mon 2pm | 4pm
 ```
 
@@ -194,8 +194,8 @@ Aim: Verify that malformed deadline and event commands do not alter the task lis
 ### Input
 ```text
 deadline
-deadline /by Sunday
-deadline return book /by Sunday
+deadline /by 2026-08-30
+deadline return book /by 2026-08-30
 event
 event /from Mon /to Tue
 event meeting /from Mon 2pm
@@ -224,7 +224,7 @@ OOPS!!! The description of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:
-[D][ ] return book (by: Sunday)
+[D][ ] return book (by: Aug 30 2026)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
@@ -243,7 +243,7 @@ Now you have 2 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] return book (by: Sunday)
+1.[D][ ] return book (by: Aug 30 2026)
 2.[E][ ] meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
@@ -253,7 +253,7 @@ ____________________________________________________________
 
 ### Expected File data/duck.txt
 ```text
-D | 0 | return book | Sunday
+D | 0 | return book | 2026-08-30
 E | 0 | meeting | Mon 2pm | 4pm
 ```
 
@@ -378,7 +378,7 @@ Aim: Verify that todo, deadline, and event tasks are loaded with their saved sta
 ### Initial File data/duck.txt
 ```text
 T | 1 | read book
-D | 0 | return book | Sunday
+D | 0 | return book | 2026-08-30
 E | 0 | project meeting | Mon 2pm | 4pm
 ```
 
@@ -404,12 +404,12 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] read book
-2.[D][ ] return book (by: Sunday)
+2.[D][ ] return book (by: Aug 30 2026)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
 Nice! I've marked this task as done:
-  [D][X] return book (by: Sunday)
+  [D][X] return book (by: Aug 30 2026)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -419,7 +419,7 @@ ____________________________________________________________
 ### Expected File data/duck.txt
 ```text
 T | 1 | read book
-D | 1 | return book | Sunday
+D | 1 | return book | 2026-08-30
 E | 0 | project meeting | Mon 2pm | 4pm
 ```
 
@@ -429,7 +429,7 @@ Aim: Verify that an invalid status reports its line number and prevents a partia
 ### Initial File data/duck.txt
 ```text
 T | 1 | valid before bad line
-D | 2 | invalid status | Sunday
+D | 2 | invalid status | 2026-08-30
 T | 0 | valid after bad line
 ```
 
@@ -464,7 +464,7 @@ ____________________________________________________________
 ### Expected File data/duck.txt
 ```text
 T | 1 | valid before bad line
-D | 2 | invalid status | Sunday
+D | 2 | invalid status | 2026-08-30
 T | 0 | valid after bad line
 ```
 
@@ -475,7 +475,7 @@ Aim: Verify that blank lines are ignored and escaped pipes and backslashes survi
 ```text
 T | 1 | review A \| B
 
-D | 0 | path C:\\tmp | Friday \| evening
+D | 0 | path C:\\tmp \| Friday | 2026-08-28
 E | 0 | sync \| plan | Room C:\\1 | Room C:\\2
 ```
 
@@ -501,7 +501,7 @@ ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your list:
 1.[T][X] review A | B
-2.[D][ ] path C:\tmp (by: Friday | evening)
+2.[D][ ] path C:\tmp | Friday (by: Aug 28 2026)
 3.[E][ ] sync | plan (from: Room C:\1 to: Room C:\2)
 ____________________________________________________________
 ____________________________________________________________
@@ -517,7 +517,7 @@ ____________________________________________________________
 ### Expected File data/duck.txt
 ```text
 T | 1 | review A \| B
-D | 0 | path C:\\tmp | Friday \| evening
+D | 0 | path C:\\tmp \| Friday | 2026-08-28
 E | 0 | sync \| plan | Room C:\\1 | Room C:\\2
 T | 0 | keep A \| B \\ C
 ```
@@ -565,7 +565,7 @@ ____________________________________________________________
 not a directory
 ```
 
-## Test Case 12: Missing deadline and event times are rejected
+## Test Case 12: Missing deadline dates and event times are rejected
 Aim: Verify that incomplete deadline and event commands report errors instead of creating invalid tasks or crashing.
 
 ### Input
@@ -592,10 +592,10 @@ Hello! I'm Duck. Quack~
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The deadline command needs a non-empty /by date or time.
+OOPS!!! The deadline command needs a non-empty /by date.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The deadline command needs a non-empty /by date or time.
+OOPS!!! The deadline command needs a non-empty /by date.
 ____________________________________________________________
 ____________________________________________________________
 OOPS!!! The event command needs a /from and /to time.
@@ -612,4 +612,96 @@ ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
 ____________________________________________________________
+```
+
+## Test Case 13: Deadline dates are parsed and formatted
+Aim: Verify that invalid calendar dates are rejected and valid yyyy-MM-dd dates use a readable display format.
+
+### Input
+```text
+deadline impossible /by 2026-02-30
+deadline wrong format /by 30-08-2026
+deadline submit report /by 2026-10-15
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] submit report (by: Oct 15 2026)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[D][ ] submit report (by: Oct 15 2026)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+D | 0 | submit report | 2026-10-15
+```
+
+## Test Case 14: Invalid saved deadline dates are rejected
+Aim: Verify that an impossible date in the data file reports its line number without loading partial data.
+
+### Initial File data/duck.txt
+```text
+D | 0 | impossible | 2026-02-30
+T | 0 | should not load
+```
+
+### Input
+```text
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+OOPS!!! Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+D | 0 | impossible | 2026-02-30
+T | 0 | should not load
 ```
