@@ -614,13 +614,19 @@ Bye. Hope to see you again soon!
 ____________________________________________________________
 ```
 
-## Test Case 13: Deadline dates are parsed and formatted
-Aim: Verify that invalid calendar dates are rejected and valid yyyy-MM-dd dates use a readable display format.
+## Test Case 13: Deadline dates are strictly parsed and formatted
+Aim: Verify that malformed dates, invalid calendar dates, unsupported times, and year zero are rejected, while valid dates and leap days use a readable display format.
 
 ### Input
 ```text
+deadline non leap day /by 2023-02-29
 deadline impossible /by 2026-02-30
+deadline invalid month /by 2026-13-01
 deadline wrong format /by 30-08-2026
+deadline abbreviated /by 2026-8-3
+deadline with time /by 2026-10-15 1800
+deadline year zero /by 0000-01-01
+deadline leap day /by 2024-02-29
 deadline submit report /by 2026-10-15
 list
 bye
@@ -645,13 +651,34 @@ ____________________________________________________________
 OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
 ____________________________________________________________
 ____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+____________________________________________________________
+____________________________________________________________
 Got it. I've added this task:
-[D][ ] submit report (by: Oct 15 2026)
+[D][ ] leap day (by: Feb 29 2024)
 Now you have 1 tasks in the list.
 ____________________________________________________________
 ____________________________________________________________
+Got it. I've added this task:
+[D][ ] submit report (by: Oct 15 2026)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
 Here are the tasks in your list:
-1.[D][ ] submit report (by: Oct 15 2026)
+1.[D][ ] leap day (by: Feb 29 2024)
+2.[D][ ] submit report (by: Oct 15 2026)
 ____________________________________________________________
 ____________________________________________________________
 Bye. Hope to see you again soon!
@@ -660,6 +687,7 @@ ____________________________________________________________
 
 ### Expected File data/duck.txt
 ```text
+D | 0 | leap day | 2024-02-29
 D | 0 | submit report | 2026-10-15
 ```
 
@@ -703,5 +731,97 @@ ____________________________________________________________
 ### Expected File data/duck.txt
 ```text
 D | 0 | impossible | 2026-02-30
+T | 0 | should not load
+```
+
+## Test Case 15: Deadline year boundaries are preserved
+Aim: Verify that the earliest and latest four-digit years are accepted, displayed with four digits, and saved without information loss.
+
+### Input
+```text
+deadline earliest supported /by 0001-01-01
+deadline latest supported /by 9999-12-31
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] earliest supported (by: Jan 01 0001)
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[D][ ] latest supported (by: Dec 31 9999)
+Now you have 2 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[D][ ] earliest supported (by: Jan 01 0001)
+2.[D][ ] latest supported (by: Dec 31 9999)
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+D | 0 | earliest supported | 0001-01-01
+D | 0 | latest supported | 9999-12-31
+```
+
+## Test Case 16: Noncanonical saved deadline dates are rejected
+Aim: Verify that saved dates must also use exactly yyyy-MM-dd, with line-specific errors and no partial load.
+
+### Initial File data/duck.txt
+```text
+D | 0 | abbreviated | 2026-8-03
+T | 0 | should not load
+```
+
+### Input
+```text
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+OOPS!!! Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+D | 0 | abbreviated | 2026-8-03
 T | 0 | should not load
 ```
