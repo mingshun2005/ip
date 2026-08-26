@@ -47,18 +47,12 @@ public class Duck {
                     setTaskDoneAndSave(tasks, taskNumber - 1, false, storage);
                     ui.showTaskUnmarked(tasks.get(taskNumber - 1));
                 }
-                case TODO -> {
-                    addTaskAndSave(tasks, parser.parseTodo(input), storage);
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                }
-                case EVENT -> {
-                    addTaskAndSave(tasks, parser.parseEvent(input), storage);
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                }
-                case DEADLINE -> {
-                    addTaskAndSave(tasks, parser.parseDeadline(input), storage);
-                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
-                }
+                case TODO -> new AddCommand(parser.parseTodo(input))
+                        .execute(tasks, ui, storage);
+                case EVENT -> new AddCommand(parser.parseEvent(input))
+                        .execute(tasks, ui, storage);
+                case DEADLINE -> new AddCommand(parser.parseDeadline(input))
+                        .execute(tasks, ui, storage);
                 case DELETE -> {
                     int taskNumber = parser.parseTaskNumber(input, commandType);
                     requireExistingTaskNumber(taskNumber, tasks);
@@ -78,18 +72,6 @@ public class Duck {
             throws DuckException {
         if (taskNumber < 1 || taskNumber > tasks.size()) {
             throw new DuckException("That task number does not exist.");
-        }
-    }
-
-    /** Adds a task, saving it immediately and rolling it back if saving fails. */
-    private static void addTaskAndSave(TaskList tasks, Task task, Storage storage)
-            throws DuckException {
-        tasks.add(task);
-        try {
-            storage.save(tasks.asList());
-        } catch (DuckException e) {
-            tasks.delete(tasks.size() - 1);
-            throw e;
         }
     }
 
