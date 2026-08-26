@@ -1,3 +1,11 @@
+package duck;
+
+import duck.command.Command;
+import duck.parser.Parser;
+import duck.storage.Storage;
+import duck.task.TaskList;
+import duck.ui.Ui;
+
 /**
  * Coordinates Duck's user interface, task list, command parser, and storage.
  */

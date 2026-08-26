@@ -1,4 +1,12 @@
+package duck.command;
+
 import java.util.Objects;
+
+import duck.DuckException;
+import duck.storage.Storage;
+import duck.task.Task;
+import duck.task.TaskList;
+import duck.ui.Ui;
 
 /**
  * Adds a parsed task to the task list and persists the updated list.

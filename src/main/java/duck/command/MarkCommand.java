@@ -1,3 +1,8 @@
+package duck.command;
+
+import duck.task.Task;
+import duck.ui.Ui;
+
 /**
  * Marks one task as completed.
  */

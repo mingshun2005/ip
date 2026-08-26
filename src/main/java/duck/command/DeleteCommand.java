@@ -1,3 +1,11 @@
+package duck.command;
+
+import duck.DuckException;
+import duck.storage.Storage;
+import duck.task.Task;
+import duck.task.TaskList;
+import duck.ui.Ui;
+
 /**
  * Deletes one task identified by its one-based task number.
  */
