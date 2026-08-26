@@ -56,10 +56,9 @@ public class Ui {
         System.out.println(SEPARATOR);
     }
 
-    /** Shows the farewell message and its closing divider. */
+    /** Shows the farewell message. The command loop prints the closing divider. */
     public void showGoodbye() {
         System.out.println("Bye. Hope to see you again soon!");
-        System.out.println(SEPARATOR);
     }
 
     /**
