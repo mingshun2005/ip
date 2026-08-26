@@ -1,3 +1,5 @@
+package duck.task;
+
 /**
  * Represents the fixed types of tasks supported by Duck.
  */

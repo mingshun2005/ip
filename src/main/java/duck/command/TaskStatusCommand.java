@@ -1,3 +1,11 @@
+package duck.command;
+
+import duck.DuckException;
+import duck.storage.Storage;
+import duck.task.Task;
+import duck.task.TaskList;
+import duck.ui.Ui;
+
 /**
  * Provides the shared execution flow for commands that change a task's status.
  */

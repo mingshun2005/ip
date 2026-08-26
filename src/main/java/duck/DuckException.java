@@ -1,3 +1,5 @@
+package duck;
+
 /**
  * Represents an error caused by invalid user input in Duck.
  */

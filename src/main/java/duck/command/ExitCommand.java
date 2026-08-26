@@ -1,3 +1,9 @@
+package duck.command;
+
+import duck.storage.Storage;
+import duck.task.TaskList;
+import duck.ui.Ui;
+
 /**
  * Ends the current Duck session after displaying the farewell message.
  */

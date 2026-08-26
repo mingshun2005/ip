@@ -1,5 +1,9 @@
+package duck.ui;
+
 import java.util.List;
 import java.util.Scanner;
+
+import duck.task.Task;
 
 /**
  * Handles all console input and output for the chatbot.

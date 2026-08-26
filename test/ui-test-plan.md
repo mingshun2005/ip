@@ -1,7 +1,7 @@
 # UI Test Plan
 
-Compile command: `javac -d /tmp/duck-ui-test src/main/java/*.java`
-Run command: `java -cp /tmp/duck-ui-test Duck`
+Compile command: `javac -d /tmp/duck-ui-test -sourcepath src/main/java src/main/java/duck/Duck.java`
+Run command: `java -cp /tmp/duck-ui-test duck.Duck`
 
 ## Test Case 1: Exit command
 Aim: Verify that the chatbot greets the user and exits when the user enters `bye`.

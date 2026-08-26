@@ -1,3 +1,5 @@
+package duck.task;
+
 /**
  * Represents a task in the chatbot's task list.
  */

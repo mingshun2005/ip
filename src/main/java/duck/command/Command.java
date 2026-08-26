@@ -1,3 +1,10 @@
+package duck.command;
+
+import duck.DuckException;
+import duck.storage.Storage;
+import duck.task.TaskList;
+import duck.ui.Ui;
+
 /**
  * Represents an executable user command.
  * Concrete commands encapsulate the behavior needed to respond to one command.

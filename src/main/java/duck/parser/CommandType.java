@@ -1,3 +1,5 @@
+package duck.parser;
+
 /**
  * Represents the commands understood by Duck and their command words.
  */

@@ -1,3 +1,5 @@
+package duck.task;
+
 /**
  * Represents a task that starts and ends at specific dates or times.
  */
