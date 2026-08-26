@@ -1,7 +1,6 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 /**
@@ -29,12 +28,13 @@ public class Duck {
         Ui ui = new Ui();
         Storage storage = new Storage("data/duck.txt");
         ui.showWelcome();
-        ArrayList<Task> tasks = new ArrayList<>(100);
+        TaskList tasks;
         try {
-            tasks.addAll(storage.load());
+            tasks = new TaskList(storage.load());
         } catch (DuckException e) {
             ui.showError(e.getMessage());
             ui.showSeparator();
+            tasks = new TaskList();
         }
 
         while (ui.hasNextCommand()) {
@@ -45,7 +45,7 @@ public class Duck {
                     ui.showGoodbye();
                     break;
                 } else if (input.equals("list")) {
-                    ui.showTaskList(tasks);
+                    ui.showTaskList(tasks.asList());
                 } else if (input.equals("mark") || input.startsWith("mark ")) {
                     int taskNumber = parseTaskNumber(input, "mark");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
@@ -171,23 +171,23 @@ public class Duck {
     }
 
     /** Adds a task, saving it immediately and rolling it back if saving fails. */
-    private static void addTaskAndSave(ArrayList<Task> tasks, Task task, Storage storage)
+    private static void addTaskAndSave(TaskList tasks, Task task, Storage storage)
             throws DuckException {
         tasks.add(task);
         try {
-            storage.save(tasks);
+            storage.save(tasks.asList());
         } catch (DuckException e) {
-            tasks.remove(tasks.size() - 1);
+            tasks.delete(tasks.size() - 1);
             throw e;
         }
     }
 
     /** Removes a task, restoring it if the updated list cannot be saved. */
-    private static Task deleteTaskAndSave(ArrayList<Task> tasks, int taskIndex, Storage storage)
+    private static Task deleteTaskAndSave(TaskList tasks, int taskIndex, Storage storage)
             throws DuckException {
-        Task removedTask = tasks.remove(taskIndex);
+        Task removedTask = tasks.delete(taskIndex);
         try {
-            storage.save(tasks);
+            storage.save(tasks.asList());
             return removedTask;
         } catch (DuckException e) {
             tasks.add(taskIndex, removedTask);
@@ -196,23 +196,23 @@ public class Duck {
     }
 
     /** Changes a task status, restoring the old status if the update cannot be saved. */
-    private static void setTaskDoneAndSave(ArrayList<Task> tasks, int taskIndex, boolean isDone,
+    private static void setTaskDoneAndSave(TaskList tasks, int taskIndex, boolean isDone,
             Storage storage) throws DuckException {
         Task task = tasks.get(taskIndex);
         boolean wasDone = task.isDone();
         if (isDone) {
-            task.markAsDone();
+            tasks.markAsDone(taskIndex);
         } else {
-            task.markAsUndone();
+            tasks.markAsUndone(taskIndex);
         }
 
         try {
-            storage.save(tasks);
+            storage.save(tasks.asList());
         } catch (DuckException e) {
             if (wasDone) {
-                task.markAsDone();
+                tasks.markAsDone(taskIndex);
             } else {
-                task.markAsUndone();
+                tasks.markAsUndone(taskIndex);
             }
             throw e;
         }

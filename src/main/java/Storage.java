@@ -91,7 +91,7 @@ public class Storage {
      * @return tasks reconstructed from the data file
      * @throws DuckException if the data file cannot be read or contains an invalid task
      */
-    public ArrayList<Task> load() throws DuckException {
+    public List<Task> load() throws DuckException {
         ArrayList<Task> loadedTasks = new ArrayList<>();
         try {
             if (Files.notExists(this.dataFilePath)) {
