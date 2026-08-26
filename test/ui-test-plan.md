@@ -825,3 +825,60 @@ ____________________________________________________________
 D | 0 | abbreviated | 2026-8-03
 T | 0 | should not load
 ```
+
+## Test Case 17: Command words require valid boundaries
+Aim: Verify that commands without arguments reject trailing text and longer words are not mistaken for known command prefixes.
+
+### Input
+```text
+bye later
+list now
+todoish task
+marking 1
+todo valid
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________________
+____________________________________________________________
+Got it. I've added this task:
+[T][ ] valid
+Now you have 1 tasks in the list.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your list:
+1.[T][ ] valid
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | valid
+```

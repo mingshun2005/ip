@@ -1,0 +1,10 @@
+/**
+ * Displays every task in the current task list.
+ */
+public class ListCommand extends Command {
+    /** Shows an immutable snapshot of the current tasks. */
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) {
+        ui.showTaskList(tasks.asList());
+    }
+}
