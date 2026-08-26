@@ -53,12 +53,8 @@ public class Duck {
                         .execute(tasks, ui, storage);
                 case DEADLINE -> new AddCommand(parser.parseDeadline(input))
                         .execute(tasks, ui, storage);
-                case DELETE -> {
-                    int taskNumber = parser.parseTaskNumber(input, commandType);
-                    requireExistingTaskNumber(taskNumber, tasks);
-                    Task removedTask = deleteTaskAndSave(tasks, taskNumber - 1, storage);
-                    ui.showTaskDeleted(removedTask, tasks.size());
-                }
+                case DELETE -> new DeleteCommand(parser.parseTaskNumber(input, commandType))
+                        .execute(tasks, ui, storage);
                 }
             } catch (DuckException e) {
                 ui.showError(e.getMessage());
@@ -72,19 +68,6 @@ public class Duck {
             throws DuckException {
         if (taskNumber < 1 || taskNumber > tasks.size()) {
             throw new DuckException("That task number does not exist.");
-        }
-    }
-
-    /** Removes a task, restoring it if the updated list cannot be saved. */
-    private static Task deleteTaskAndSave(TaskList tasks, int taskIndex, Storage storage)
-            throws DuckException {
-        Task removedTask = tasks.delete(taskIndex);
-        try {
-            storage.save(tasks.asList());
-            return removedTask;
-        } catch (DuckException e) {
-            tasks.add(taskIndex, removedTask);
-            throw e;
         }
     }
 
