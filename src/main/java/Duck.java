@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 /**
@@ -40,55 +39,39 @@ public class Duck {
      * @param args command line arguments, currently unused
      */
     public static void main(String[] args) {
-        String line = "____________________________________________________________";
-        String banner = " ____             _    \n"
-                + "|  _ \\ _   _  ___| | __\n"
-                + "| | | | | | |/ __| |/ /\n"
-                + "| |_| | |_| | (__|   < \n"
-                + "|____/ \\__,_|\\___|_|\\_\\\n";
-        System.out.println(line);
-        System.out.println(banner);
-        System.out.println("Hello! I'm Duck. Quack~");
-        System.out.println("What can I do for you?");
-        System.out.println(line);
+        Ui ui = new Ui();
+        ui.showWelcome();
         ArrayList<Task> tasks = new ArrayList<>(100);
         try {
             tasks.addAll(loadTasks());
         } catch (DuckException e) {
-            System.out.println("OOPS!!! " + e.getMessage());
-            System.out.println(line);
+            ui.showError(e.getMessage());
+            ui.showSeparator();
         }
 
-        Scanner scanner = new Scanner(System.in);
-        while (scanner.hasNextLine()) {
-            String input = scanner.nextLine().trim();
-            System.out.println(line);
+        while (ui.hasNextCommand()) {
+            String input = ui.readCommand();
+            ui.showSeparator();
             try {
                 if (input.equals("bye")) {
-                    System.out.println("Bye. Hope to see you again soon!");
-                    System.out.println(line);
+                    ui.showGoodbye();
                     break;
                 } else if (input.equals("list")) {
-                    System.out.println("Here are the tasks in your list:");
-                    for (int i = 0; i < tasks.size(); i++) {
-                        System.out.println((i + 1) + "." + tasks.get(i));
-                    }
+                    ui.showTaskList(tasks);
                 } else if (input.equals("mark") || input.startsWith("mark ")) {
                     int taskNumber = parseTaskNumber(input, "mark");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DuckException("That task number does not exist.");
                     }
                     setTaskDoneAndSave(tasks, taskNumber - 1, true);
-                    System.out.println("Nice! I've marked this task as done:");
-                    System.out.println("  " + tasks.get(taskNumber - 1));
+                    ui.showTaskMarked(tasks.get(taskNumber - 1));
                 } else if (input.equals("unmark") || input.startsWith("unmark ")) {
                     int taskNumber = parseTaskNumber(input, "unmark");
                     if (taskNumber < 1 || taskNumber > tasks.size()) {
                         throw new DuckException("That task number does not exist.");
                     }
                     setTaskDoneAndSave(tasks, taskNumber - 1, false);
-                    System.out.println("OK, I've marked this task as not done yet:");
-                    System.out.println("  " + tasks.get(taskNumber - 1));
+                    ui.showTaskUnmarked(tasks.get(taskNumber - 1));
                 } else if (input.equals("todo")) {
                     throw new DuckException("The description of a todo cannot be empty.");
                 } else if (input.startsWith("todo ")) {
@@ -97,9 +80,7 @@ public class Duck {
                         throw new DuckException("The description of a todo cannot be empty.");
                     }
                     addTaskAndSave(tasks, new Todo(description));
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(tasks.get(tasks.size() - 1));
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                 } else if (input.equals("event")) {
                     throw new DuckException("The description of an event cannot be empty.");
                 } else if (input.startsWith("event ")) {
@@ -120,9 +101,7 @@ public class Duck {
                     }
                     Event event = new Event(descriptionAndTimes[0].trim(), times[0].trim(), times[1].trim());
                     addTaskAndSave(tasks, event);
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(tasks.get(tasks.size() - 1));
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                 } else if (input.equals("deadline")) {
                     throw new DuckException("The description of a deadline cannot be empty.");
                 } else if (input.startsWith("deadline ")) {
@@ -139,9 +118,7 @@ public class Duck {
                     Deadline deadline = new Deadline(descriptionAndDeadline[0].trim(),
                             deadlineDate);
                     addTaskAndSave(tasks, deadline);
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println(tasks.get(tasks.size() - 1));
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskAdded(tasks.get(tasks.size() - 1), tasks.size());
                 } else if (input.equals("delete") || input.equals("delete ")) {
                     throw new DuckException("Please enter task number to delete task!");
                 } else if (input.startsWith("delete ")) {
@@ -150,17 +127,15 @@ public class Duck {
                         throw new DuckException("That task number does not exist.");
                     }
                     Task removedTask = deleteTaskAndSave(tasks, taskNumber - 1);
-                    System.out.println("Noted. I've removed this task:");
-                    System.out.println("  " + removedTask);
-                    System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+                    ui.showTaskDeleted(removedTask, tasks.size());
                 }
                 else {
                     throw new DuckException("I'm sorry, but I don't know what that means :-(");
                 }
             } catch (DuckException e) {
-                System.out.println("OOPS!!! " + e.getMessage());
+                ui.showError(e.getMessage());
             }
-            System.out.println(line);
+            ui.showSeparator();
         }
     }
 
