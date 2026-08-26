@@ -1,0 +1,249 @@
+package duck.task;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+/**
+ * Tests the public operations provided by {@link TaskList}.
+ */
+public class TaskListTest {
+
+    @Test
+    public void constructor_noArguments_createsEmptyTaskList() {
+        TaskList tasks = new TaskList();
+
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    public void constructor_initialTasks_preservesTaskOrder() {
+        Task firstTask = new Todo("first");
+        Task secondTask = new Todo("second");
+
+        TaskList tasks = new TaskList(List.of(firstTask, secondTask));
+
+        assertEquals(2, tasks.size());
+        assertSame(firstTask, tasks.get(0));
+        assertSame(secondTask, tasks.get(1));
+    }
+
+    @Test
+    public void constructor_sourceListChanged_taskListRemainsUnchanged() {
+        Task firstTask = new Todo("first");
+        ArrayList<Task> source = new ArrayList<>(List.of(firstTask));
+        TaskList tasks = new TaskList(source);
+
+        source.add(new Todo("second"));
+
+        assertEquals(1, tasks.size());
+        assertSame(firstTask, tasks.get(0));
+    }
+
+    @Test
+    public void constructor_nullList_throwsNullPointerException() {
+        assertThrows(NullPointerException.class, () -> new TaskList(null));
+    }
+
+    @Test
+    public void size_tasksAddedAndDeleted_returnsCurrentSize() {
+        TaskList tasks = new TaskList();
+
+        tasks.add(new Todo("first"));
+        tasks.add(new Todo("second"));
+        assertEquals(2, tasks.size());
+
+        tasks.delete(0);
+        assertEquals(1, tasks.size());
+    }
+
+    @Test
+    public void get_validIndexes_returnsSelectedTasks() {
+        Task firstTask = new Todo("first");
+        Task secondTask = new Todo("second");
+        TaskList tasks = new TaskList(List.of(firstTask, secondTask));
+
+        assertSame(firstTask, tasks.get(0));
+        assertSame(secondTask, tasks.get(1));
+    }
+
+    @Test
+    public void get_invalidIndexes_throwsIndexOutOfBoundsException() {
+        TaskList tasks = new TaskList(List.of(new Todo("only task")));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.get(1));
+    }
+
+    @Test
+    public void add_task_appendsTask() {
+        Task firstTask = new Todo("first");
+        Task secondTask = new Todo("second");
+        TaskList tasks = new TaskList(List.of(firstTask));
+
+        tasks.add(secondTask);
+
+        assertEquals(2, tasks.size());
+        assertSame(firstTask, tasks.get(0));
+        assertSame(secondTask, tasks.get(1));
+    }
+
+    @Test
+    public void add_nullTask_throwsNullPointerException() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(NullPointerException.class, () -> tasks.add(null));
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    public void addAtIndex_validIndexes_insertsAtRequestedPositions() {
+        Task middleTask = new Todo("middle");
+        TaskList tasks = new TaskList(List.of(middleTask));
+        Task firstTask = new Todo("first");
+        Task lastTask = new Todo("last");
+
+        tasks.add(0, firstTask);
+        tasks.add(tasks.size(), lastTask);
+
+        assertEquals(List.of(firstTask, middleTask, lastTask), tasks.asList());
+    }
+
+    @Test
+    public void addAtIndex_invalidIndexes_throwsIndexOutOfBoundsException() {
+        Task originalTask = new Todo("original");
+        TaskList tasks = new TaskList(List.of(originalTask));
+
+        assertThrows(IndexOutOfBoundsException.class,
+                () -> tasks.add(-1, new Todo("negative index")));
+        assertThrows(IndexOutOfBoundsException.class,
+                () -> tasks.add(2, new Todo("past the end")));
+        assertEquals(List.of(originalTask), tasks.asList());
+    }
+
+    @Test
+    public void addAtIndex_nullTask_throwsNullPointerException() {
+        Task originalTask = new Todo("original");
+        TaskList tasks = new TaskList(List.of(originalTask));
+
+        assertThrows(NullPointerException.class, () -> tasks.add(0, null));
+        assertEquals(List.of(originalTask), tasks.asList());
+    }
+
+    @Test
+    public void delete_validIndexes_returnsDeletedTasksAndPreservesOrder() {
+        Task firstTask = new Todo("first");
+        Task secondTask = new Todo("second");
+        Task thirdTask = new Todo("third");
+        TaskList tasks = new TaskList(List.of(firstTask, secondTask, thirdTask));
+
+        assertSame(secondTask, tasks.delete(1));
+        assertEquals(List.of(firstTask, thirdTask), tasks.asList());
+        assertSame(firstTask, tasks.delete(0));
+        assertSame(thirdTask, tasks.delete(0));
+        assertEquals(0, tasks.size());
+    }
+
+    @Test
+    public void delete_invalidIndexes_throwsIndexOutOfBoundsException() {
+        Task originalTask = new Todo("original");
+        TaskList tasks = new TaskList(List.of(originalTask));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.delete(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.delete(1));
+        assertEquals(List.of(originalTask), tasks.asList());
+    }
+
+    @Test
+    public void markAsDone_validIndex_marksTaskAsDone() {
+        Task task = new Todo("task");
+        TaskList tasks = new TaskList(List.of(task));
+
+        tasks.markAsDone(0);
+        tasks.markAsDone(0);
+
+        assertTrue(task.isDone());
+    }
+
+    @Test
+    public void markAsDone_invalidIndexes_throwsIndexOutOfBoundsException() {
+        Task task = new Todo("task");
+        TaskList tasks = new TaskList(List.of(task));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.markAsDone(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.markAsDone(1));
+        assertFalse(task.isDone());
+    }
+
+    @Test
+    public void markAsUndone_validIndex_marksTaskAsUndone() {
+        Task task = new Todo("task");
+        task.markAsDone();
+        TaskList tasks = new TaskList(List.of(task));
+
+        tasks.markAsUndone(0);
+        tasks.markAsUndone(0);
+
+        assertFalse(task.isDone());
+    }
+
+    @Test
+    public void markAsUndone_invalidIndexes_throwsIndexOutOfBoundsException() {
+        Task task = new Todo("task");
+        task.markAsDone();
+        TaskList tasks = new TaskList(List.of(task));
+
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.markAsUndone(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.markAsUndone(1));
+        assertTrue(task.isDone());
+    }
+
+    @Test
+    public void asList_emptyTaskList_returnsEmptyList() {
+        TaskList tasks = new TaskList();
+
+        assertEquals(List.of(), tasks.asList());
+    }
+
+    @Test
+    public void asList_taskListWithTasks_preservesTaskOrder() {
+        Task firstTask = new Todo("first");
+        Task secondTask = new Todo("second");
+        TaskList tasks = new TaskList(List.of(firstTask, secondTask));
+
+        List<Task> snapshot = tasks.asList();
+
+        assertEquals(2, snapshot.size());
+        assertSame(firstTask, snapshot.get(0));
+        assertSame(secondTask, snapshot.get(1));
+    }
+
+    @Test
+    public void asList_attemptToModifyReturnedList_throwsException() {
+        TaskList tasks = new TaskList(List.of(new Todo("original")));
+        List<Task> snapshot = tasks.asList();
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> snapshot.add(new Todo("new task")));
+    }
+
+    @Test
+    public void asList_taskAddedAfterSnapshot_snapshotRemainsUnchanged() {
+        Task firstTask = new Todo("first");
+        TaskList tasks = new TaskList(List.of(firstTask));
+        List<Task> snapshot = tasks.asList();
+
+        tasks.add(new Todo("second"));
+
+        assertEquals(1, snapshot.size());
+        assertSame(firstTask, snapshot.get(0));
+        assertEquals(2, tasks.size());
+    }
+}
