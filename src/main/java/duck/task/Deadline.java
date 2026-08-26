@@ -34,12 +34,22 @@ public class Deadline extends Task {
         }
     }
 
+    /**
+     * Returns this deadline with its date in the user-visible display format.
+     *
+     * @return formatted deadline with its type, status, description, and date
+     */
     @Override
     public String toString() {
         return TaskType.DEADLINE.getTag() + super.toString() + " (by: "
                 + this.by.format(DISPLAY_DATE_FORMAT) + ")";
     }
 
+    /**
+     * Returns this deadline with an escaped description and canonical ISO date.
+     *
+     * @return storage record containing the type, status, description, and date
+     */
     @Override
     public String toFileString() {
         return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | "

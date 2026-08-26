@@ -30,12 +30,22 @@ public class Event extends Task {
         this.time = new String[] { from, to };
     }
 
+    /**
+     * Returns this event with its start and end times in the user-visible format.
+     *
+     * @return formatted event with its type, status, description, and time range
+     */
     @Override
     public String toString() {
         return TaskType.EVENT.getTag() + super.toString() + " (from: " + time[0].trim() + " to: "
                 + time[1].trim() + ")";
     }
 
+    /**
+     * Returns this event with its description and time fields escaped for storage.
+     *
+     * @return storage record containing the type, status, description, and time range
+     */
     @Override
     public String toFileString() {
         return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "

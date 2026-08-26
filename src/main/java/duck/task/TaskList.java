@@ -47,7 +47,11 @@ public class TaskList {
         return this.tasks.get(index);
     }
 
-    /** Adds a task to the end of the list. */
+    /**
+     * Adds a task to the end of the list.
+     *
+     * @param task task to add
+     */
     public void add(Task task) {
         this.tasks.add(Objects.requireNonNull(task, "Task cannot be null."));
     }

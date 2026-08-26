@@ -35,6 +35,12 @@ public class Parser {
             "Please enter a valid deadline date in yyyy-MM-dd format.";
 
     /**
+     * Creates a command parser.
+     */
+    public Parser() {
+    }
+
+    /**
      * Parses user input into the concrete command that should handle it.
      *
      * @param input normalized user input

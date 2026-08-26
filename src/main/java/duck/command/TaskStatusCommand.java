@@ -58,6 +58,11 @@ public abstract class TaskStatusCommand extends Command {
         }
     }
 
-    /** Displays the confirmation specific to the concrete status command. */
+    /**
+     * Displays the confirmation specific to the concrete status command.
+     *
+     * @param ui user interface used to display the confirmation
+     * @param task task whose status changed
+     */
     protected abstract void showConfirmation(Ui ui, Task task);
 }

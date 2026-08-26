@@ -4,7 +4,10 @@ package duck.task;
  * Represents a task in the chatbot's task list.
  */
 public abstract class Task {
+    /** Description shown to the user and stored on disk. */
     protected String description;
+
+    /** Whether the task has been completed. */
     protected boolean isDone;
 
     /**

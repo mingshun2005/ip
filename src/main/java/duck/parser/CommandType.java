@@ -4,13 +4,28 @@ package duck.parser;
  * Represents the commands understood by Duck and their command words.
  */
 public enum CommandType {
+    /** Command that exits Duck. */
     BYE("bye", false),
+
+    /** Command that displays the current task list. */
     LIST("list", false),
+
+    /** Command that marks a task as done. */
     MARK("mark", true),
+
+    /** Command that marks a task as not done. */
     UNMARK("unmark", true),
+
+    /** Command that creates a todo. */
     TODO("todo", true),
+
+    /** Command that creates an event. */
     EVENT("event", true),
+
+    /** Command that creates a deadline. */
     DEADLINE("deadline", true),
+
+    /** Command that deletes a task. */
     DELETE("delete", true);
 
     /** Word that identifies this command. */
