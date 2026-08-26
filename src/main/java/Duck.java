@@ -25,28 +25,10 @@ public class Duck {
             String input = ui.readCommand();
             ui.showSeparator();
             try {
-                CommandType commandType = parser.parseCommand(input);
-                switch (commandType) {
-                case BYE -> {
-                    Command command = new ExitCommand();
-                    command.execute(tasks, ui, storage);
-                    if (command.isExit()) {
-                        return;
-                    }
-                }
-                case LIST -> new ListCommand().execute(tasks, ui, storage);
-                case MARK -> new MarkCommand(parser.parseTaskNumber(input, commandType))
-                        .execute(tasks, ui, storage);
-                case UNMARK -> new UnmarkCommand(parser.parseTaskNumber(input, commandType))
-                        .execute(tasks, ui, storage);
-                case TODO -> new AddCommand(parser.parseTodo(input))
-                        .execute(tasks, ui, storage);
-                case EVENT -> new AddCommand(parser.parseEvent(input))
-                        .execute(tasks, ui, storage);
-                case DEADLINE -> new AddCommand(parser.parseDeadline(input))
-                        .execute(tasks, ui, storage);
-                case DELETE -> new DeleteCommand(parser.parseTaskNumber(input, commandType))
-                        .execute(tasks, ui, storage);
+                Command command = parser.parse(input);
+                command.execute(tasks, ui, storage);
+                if (command.isExit()) {
+                    return;
                 }
             } catch (DuckException e) {
                 ui.showError(e.getMessage());

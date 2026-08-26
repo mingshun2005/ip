@@ -20,13 +20,34 @@ public class Parser {
             "Please enter a valid deadline date in yyyy-MM-dd format.";
 
     /**
+     * Parses user input into the concrete command that should handle it.
+     *
+     * @param input normalized user input
+     * @return executable command containing its parsed arguments
+     * @throws DuckException if the command or any of its arguments is invalid
+     */
+    public Command parse(String input) throws DuckException {
+        CommandType commandType = parseCommand(input);
+        return switch (commandType) {
+        case BYE -> new ExitCommand();
+        case LIST -> new ListCommand();
+        case MARK -> new MarkCommand(parseTaskNumber(input, commandType));
+        case UNMARK -> new UnmarkCommand(parseTaskNumber(input, commandType));
+        case TODO -> new AddCommand(parseTodo(input));
+        case EVENT -> new AddCommand(parseEvent(input));
+        case DEADLINE -> new AddCommand(parseDeadline(input));
+        case DELETE -> new DeleteCommand(parseTaskNumber(input, commandType));
+        };
+    }
+
+    /**
      * Identifies the command represented by the input.
      *
      * @param input normalized user input
      * @return recognized command type
      * @throws DuckException if the command word is not recognized
      */
-    public CommandType parseCommand(String input) throws DuckException {
+    private CommandType parseCommand(String input) throws DuckException {
         for (CommandType commandType : CommandType.values()) {
             String commandWord = commandType.getCommandWord();
             if (input.equals(commandWord)
@@ -45,7 +66,7 @@ public class Parser {
      * @return parsed task number
      * @throws DuckException if the task number is missing or not an integer
      */
-    public int parseTaskNumber(String input, CommandType commandType) throws DuckException {
+    private int parseTaskNumber(String input, CommandType commandType) throws DuckException {
         String taskNumberText = extractArguments(input, commandType);
         if (commandType == CommandType.DELETE && taskNumberText.isEmpty()) {
             throw new DuckException("Please enter task number to delete task!");
@@ -64,7 +85,7 @@ public class Parser {
      * @return parsed todo task
      * @throws DuckException if the description is empty
      */
-    public Task parseTodo(String input) throws DuckException {
+    private Task parseTodo(String input) throws DuckException {
         String description = extractArguments(input, CommandType.TODO);
         if (description.isEmpty()) {
             throw new DuckException("The description of a todo cannot be empty.");
@@ -79,7 +100,7 @@ public class Parser {
      * @return parsed event task
      * @throws DuckException if its description or time fields are invalid
      */
-    public Task parseEvent(String input) throws DuckException {
+    private Task parseEvent(String input) throws DuckException {
         String eventDetails = extractArguments(input, CommandType.EVENT);
         if (eventDetails.isEmpty() || eventDetails.startsWith("/from ")) {
             throw new DuckException("The description of an event cannot be empty.");
@@ -106,7 +127,7 @@ public class Parser {
      * @return parsed deadline task
      * @throws DuckException if its description or date is invalid
      */
-    public Task parseDeadline(String input) throws DuckException {
+    private Task parseDeadline(String input) throws DuckException {
         String deadlineDetails = extractArguments(input, CommandType.DEADLINE);
         if (deadlineDetails.isEmpty() || deadlineDetails.startsWith("/by ")) {
             throw new DuckException("The description of a deadline cannot be empty.");
