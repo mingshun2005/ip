@@ -34,7 +34,7 @@ public class Duck {
                         return;
                     }
                 }
-                case LIST -> ui.showTaskList(tasks.asList());
+                case LIST -> new ListCommand().execute(tasks, ui, storage);
                 case MARK -> {
                     int taskNumber = parser.parseTaskNumber(input, commandType);
                     requireExistingTaskNumber(taskNumber, tasks);
