@@ -28,8 +28,11 @@ public class Duck {
                 CommandType commandType = parser.parseCommand(input);
                 switch (commandType) {
                 case BYE -> {
-                    ui.showGoodbye();
-                    return;
+                    Command command = new ExitCommand();
+                    command.execute(tasks, ui, storage);
+                    if (command.isExit()) {
+                        return;
+                    }
                 }
                 case LIST -> ui.showTaskList(tasks.asList());
                 case MARK -> {
