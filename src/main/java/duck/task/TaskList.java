@@ -21,7 +21,7 @@ public class TaskList {
      * Creates a task list containing the supplied tasks in the same order.
      * A defensive copy prevents callers from changing the collection directly.
      *
-     * @param tasks initial tasks
+     * @param tasks Initial tasks.
      */
     public TaskList(List<Task> tasks) {
         this.tasks = new ArrayList<>(Objects.requireNonNull(tasks,
@@ -40,7 +40,7 @@ public class TaskList {
     /**
      * Returns the task at a zero-based index.
      *
-     * @param index zero-based task index
+     * @param index Zero-based task index.
      * @return task at the index
      */
     public Task get(int index) {
@@ -59,8 +59,8 @@ public class TaskList {
     /**
      * Restores a task at a specific position, preserving the original order.
      *
-     * @param index zero-based insertion index
-     * @param task task to restore
+     * @param index Zero-based insertion index.
+     * @param task Task to restore.
      */
     public void add(int index, Task task) {
         this.tasks.add(index, Objects.requireNonNull(task, "Task cannot be null."));
@@ -69,7 +69,7 @@ public class TaskList {
     /**
      * Deletes and returns the task at a zero-based index.
      *
-     * @param index zero-based task index
+     * @param index Zero-based task index.
      * @return deleted task
      */
     public Task delete(int index) {
@@ -79,7 +79,7 @@ public class TaskList {
     /**
      * Marks the task at a zero-based index as done.
      *
-     * @param index zero-based task index
+     * @param index Zero-based task index.
      */
     public void markAsDone(int index) {
         this.tasks.get(index).markAsDone();
@@ -88,7 +88,7 @@ public class TaskList {
     /**
      * Marks the task at a zero-based index as not done.
      *
-     * @param index zero-based task index
+     * @param index Zero-based task index.
      */
     public void markAsUndone(int index) {
         this.tasks.get(index).markAsUndone();

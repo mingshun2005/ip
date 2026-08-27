@@ -13,7 +13,7 @@ public abstract class Task {
     /**
      * Creates a task with the given description.
      *
-     * @param description description of the task
+     * @param description Description of the task.
      */
     public Task(String description) {
         this.description = description;
@@ -26,7 +26,7 @@ public abstract class Task {
      * @return "X" if this task is done, or a space otherwise
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return this.isDone ? "X" : " ";
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class Task {
     /**
      * Escapes characters that have special meaning in the storage format.
      *
-     * @param field task text to store
+     * @param field Task text to store.
      * @return escaped text that can be parsed without losing characters
      */
     protected String escapeFileField(String field) {

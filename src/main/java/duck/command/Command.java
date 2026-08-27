@@ -19,9 +19,9 @@ public abstract class Command {
     /**
      * Executes this command using the application's collaborators.
      *
-     * @param tasks task list to query or update
-     * @param ui user interface used to display responses
-     * @param storage persistent task storage
+     * @param tasks Task list to query or update.
+     * @param ui User interface used to display responses.
+     * @param storage Persistent task storage.
      * @throws DuckException if the command cannot be completed
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException;

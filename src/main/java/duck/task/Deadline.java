@@ -23,11 +23,11 @@ public class Deadline extends Task {
     /**
      * Creates a deadline task with the given description and deadline.
      *
-     * @param des description of the task
-     * @param by deadline date
+     * @param description Description of the task.
+     * @param by Deadline date.
      */
-    public Deadline(String des, LocalDate by) {
-        super(des);
+    public Deadline(String description, LocalDate by) {
+        super(description);
         this.by = Objects.requireNonNull(by, "Deadline date cannot be null.");
         if (by.getYear() < 1 || by.getYear() > 9999) {
             throw new IllegalArgumentException("Deadline year must be between 1 and 9999.");

@@ -28,6 +28,12 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Java coding standard
+
+For every Java code creation, edit, review, or refactor, read and follow the project skill at `.codex/skills/seedu-java-coding-standard/SKILL.md`. Its SE-EDU intermediate Java coding-standard rules are mandatory for production and test code in this repository.
+
+After changing Java code, run the skill's mechanical style checker and perform the manual review described in the skill before running the Gradle test suite.
+
 ## Testing
 
 Maintain JUnit tests for approximately the top 50% highest-value methods in the codebase. Prioritize methods that contain complex logic, implement core application behavior, or protect critical operations such as parsing, persistence, and state changes.
@@ -35,6 +41,10 @@ Maintain JUnit tests for approximately the top 50% highest-value methods in the 
 After every code change, review and update the relevant JUnit tests so the test suite continues to meet this 50% coverage target. Run the tests through Gradle to verify that they pass.
 
 ## Git
+
+Before proposing, reviewing, or creating any commit, read and follow the project skill at `.codex/skills/seedu-git-standard/SKILL.md`. Its SE-EDU Git conventions are mandatory for all future commit messages and branch names in this repository.
+
+For every authorized commit, inspect the staged changes, validate the complete message with the skill's checker, and verify the resulting commit and working-tree status afterward.
 
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.

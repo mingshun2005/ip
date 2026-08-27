@@ -18,7 +18,7 @@ public enum TaskType {
     /**
      * Creates a task type with the given display icon.
      *
-     * @param icon short icon used when displaying the task type
+     * @param icon Short icon used when displaying the task type.
      */
     TaskType(String icon) {
         this.icon = icon;

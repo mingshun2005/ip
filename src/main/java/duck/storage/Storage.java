@@ -46,7 +46,7 @@ public class Storage {
     /**
      * Creates storage backed by the given file.
      *
-     * @param filePath path to the task data file
+     * @param filePath Path to the task data file.
      */
     public Storage(String filePath) {
         this.filePathText = Objects.requireNonNull(filePath, "Storage file path cannot be null.");
@@ -57,7 +57,7 @@ public class Storage {
      * Writes the current task list to disk, replacing the previous contents atomically
      * where the file system supports it.
      *
-     * @param tasks tasks to save
+     * @param tasks Tasks to save.
      * @throws DuckException if the task list cannot be saved
      */
     public void save(List<Task> tasks) throws DuckException {
@@ -129,7 +129,7 @@ public class Storage {
     /**
      * Reconstructs one task from its plain-text storage representation.
      *
-     * @param taskLine one line from the data file
+     * @param taskLine One line from the data file.
      * @return reconstructed task
      * @throws DuckException if the line does not match the expected storage format
      */
@@ -175,7 +175,7 @@ public class Storage {
     /**
      * Splits a stored line while decoding escaped backslashes and pipe characters.
      *
-     * @param taskLine line to split
+     * @param taskLine Line to split.
      * @return decoded storage fields
      */
     private ArrayList<String> splitFileFields(String taskLine) {
@@ -207,8 +207,8 @@ public class Storage {
     /**
      * Rejects required storage fields that contain no visible text.
      *
-     * @param value field value
-     * @param fieldName user-facing name of the field
+     * @param value Field value.
+     * @param fieldName User-facing name of the field.
      * @throws DuckException if the value is blank
      */
     private void requireNonBlank(String value, String fieldName) throws DuckException {
@@ -220,7 +220,7 @@ public class Storage {
     /**
      * Parses a canonical deadline date from a saved record.
      *
-     * @param dateText date in yyyy-MM-dd format
+     * @param dateText Date in yyyy-MM-dd format.
      * @return parsed date
      * @throws DuckException if the text is not a valid date from year 0001 to 9999
      */

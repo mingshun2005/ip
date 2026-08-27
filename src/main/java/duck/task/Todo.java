@@ -7,10 +7,10 @@ public class Todo extends Task {
     /**
      * Creates a todo task with the given description.
      *
-     * @param des description of the task
+     * @param description Description of the task.
      */
-    public Todo(String des) {
-        super(des);
+    public Todo(String description) {
+        super(description);
     }
 
     /**

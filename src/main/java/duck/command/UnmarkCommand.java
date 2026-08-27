@@ -10,7 +10,7 @@ public class UnmarkCommand extends TaskStatusCommand {
     /**
      * Creates a command that marks the selected task as undone.
      *
-     * @param taskNumber one-based task number
+     * @param taskNumber One-based task number.
      */
     public UnmarkCommand(int taskNumber) {
         super(taskNumber, false);

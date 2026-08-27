@@ -4,30 +4,30 @@ package duck.task;
  * Represents a task that starts and ends at specific dates or times.
  */
 public class Event extends Task {
-
-    private String[] time;
+    /** Start and end times of this event. */
+    private final String[] times;
 
     /**
      * Creates an event task with the given description and time range.
      *
-     * @param des description of the task
-     * @param time time range in the format start /to end
+     * @param description Description of the task.
+     * @param timeRange Time range in the format start /to end.
      */
-    public Event(String des, String time) {
-        super(des);
-        this.time = time.split("/to ");
+    public Event(String description, String timeRange) {
+        super(description);
+        this.times = timeRange.split("/to ");
     }
 
     /**
      * Creates an event task with separate start and end times, as stored in the data file.
      *
-     * @param des description of the task
-     * @param from start date or time as text
-     * @param to end date or time as text
+     * @param description Description of the task.
+     * @param from Start date or time as text.
+     * @param to End date or time as text.
      */
-    public Event(String des, String from, String to) {
-        super(des);
-        this.time = new String[] { from, to };
+    public Event(String description, String from, String to) {
+        super(description);
+        this.times = new String[] { from, to };
     }
 
     /**
@@ -37,8 +37,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return TaskType.EVENT.getTag() + super.toString() + " (from: " + time[0].trim() + " to: "
-                + time[1].trim() + ")";
+        return TaskType.EVENT.getTag() + super.toString() + " (from: " + this.times[0].trim() + " to: "
+                + this.times[1].trim() + ")";
     }
 
     /**
@@ -49,7 +49,7 @@ public class Event extends Task {
     @Override
     public String toFileString() {
         return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "
-                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.time[0].trim())
-                + " | " + this.escapeFileField(this.time[1].trim());
+                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.times[0].trim())
+                + " | " + this.escapeFileField(this.times[1].trim());
     }
 }
