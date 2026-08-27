@@ -882,3 +882,67 @@ ____________________________________________________________
 ```text
 T | 0 | valid
 ```
+
+## Test Case 18: Find tasks by description keyword
+Aim: Verify that find returns matching tasks in order, ignores case, handles no matches, and rejects invalid syntax.
+
+### Initial File data/duck.txt
+```text
+T | 0 | Read BOOK
+D | 0 | return book | 2026-08-30
+E | 0 | project meeting | Mon 2pm | 4pm
+T | 0 | submit assignment
+```
+
+### Input
+```text
+find book
+find PROJECT
+find missing
+find
+finder book
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Hello! I'm Duck. Quack~
+What can I do for you?
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[T][ ] Read BOOK
+2.[D][ ] return book (by: Aug 30 2026)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Here are the matching tasks in your list:
+____________________________________________________________
+____________________________________________________________
+OOPS!!! The keyword for a find command cannot be empty.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! I'm sorry, but I don't know what that means :-(
+____________________________________________________________
+____________________________________________________________
+Bye. Hope to see you again soon!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | Read BOOK
+D | 0 | return book | 2026-08-30
+E | 0 | project meeting | Mon 2pm | 4pm
+T | 0 | submit assignment
+```

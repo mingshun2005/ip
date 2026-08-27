@@ -206,6 +206,53 @@ public class TaskListTest {
     }
 
     @Test
+    public void find_matchingKeyword_returnsMatchesInOriginalOrderIgnoringCase() {
+        Task firstMatch = new Todo("Read BOOK");
+        Task nonMatch = new Todo("submit assignment");
+        Task secondMatch = new Todo("return book to library");
+        TaskList tasks = new TaskList(List.of(firstMatch, nonMatch, secondMatch));
+
+        List<Task> matches = tasks.find("book");
+
+        assertEquals(List.of(firstMatch, secondMatch), matches);
+    }
+
+    @Test
+    public void find_partialAndMultiwordKeywords_returnsMatchingTasks() {
+        Task partialMatch = new Todo("read textbook");
+        Task phraseMatch = new Todo("attend project meeting");
+        TaskList tasks = new TaskList(List.of(partialMatch, phraseMatch));
+
+        assertEquals(List.of(partialMatch), tasks.find("text"));
+        assertEquals(List.of(phraseMatch), tasks.find("project meeting"));
+    }
+
+    @Test
+    public void find_noMatchingKeyword_returnsEmptyList() {
+        TaskList tasks = new TaskList(List.of(new Todo("read book")));
+
+        assertEquals(List.of(), tasks.find("assignment"));
+    }
+
+    @Test
+    public void find_invalidKeyword_throwsRelevantException() {
+        TaskList tasks = new TaskList(List.of(new Todo("read book")));
+
+        assertThrows(NullPointerException.class, () -> tasks.find(null));
+        assertThrows(IllegalArgumentException.class, () -> tasks.find(""));
+        assertThrows(IllegalArgumentException.class, () -> tasks.find("   "));
+    }
+
+    @Test
+    public void find_attemptToModifyMatches_throwsException() {
+        TaskList tasks = new TaskList(List.of(new Todo("read book")));
+        List<Task> matches = tasks.find("book");
+
+        assertThrows(UnsupportedOperationException.class,
+                () -> matches.add(new Todo("another book")));
+    }
+
+    @Test
     public void asList_emptyTaskList_returnsEmptyList() {
         TaskList tasks = new TaskList();
 

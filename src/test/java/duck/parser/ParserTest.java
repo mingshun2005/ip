@@ -10,6 +10,7 @@ import duck.DuckException;
 import duck.command.AddCommand;
 import duck.command.DeleteCommand;
 import duck.command.ExitCommand;
+import duck.command.FindCommand;
 import duck.command.ListCommand;
 import duck.command.MarkCommand;
 import duck.command.UnmarkCommand;
@@ -43,6 +44,17 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_findWithKeyword_returnsFindCommand() throws DuckException {
+        assertInstanceOf(FindCommand.class, this.parser.parse("find book"));
+        assertInstanceOf(FindCommand.class, this.parser.parse("find project meeting"));
+    }
+
+    @Test
+    public void parse_findWithoutKeyword_throwsDescriptionError() {
+        assertParseError("find", "The keyword for a find command cannot be empty.");
+    }
+
+    @Test
     public void parse_unknownCommandsAndPrefixCollisions_throwsUnknownCommandError() {
         String expectedMessage = "I'm sorry, but I don't know what that means :-(";
 
@@ -50,6 +62,7 @@ public class ParserTest {
         assertParseError("unknown", expectedMessage);
         assertParseError("todoish read book", expectedMessage);
         assertParseError("marking 1", expectedMessage);
+        assertParseError("finder book", expectedMessage);
         assertParseError("bye later", expectedMessage);
         assertParseError("list now", expectedMessage);
     }

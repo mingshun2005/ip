@@ -10,6 +10,7 @@ import duck.command.AddCommand;
 import duck.command.Command;
 import duck.command.DeleteCommand;
 import duck.command.ExitCommand;
+import duck.command.FindCommand;
 import duck.command.ListCommand;
 import duck.command.MarkCommand;
 import duck.command.UnmarkCommand;
@@ -52,6 +53,7 @@ public class Parser {
         return switch (commandType) {
             case BYE -> new ExitCommand();
             case LIST -> new ListCommand();
+            case FIND -> new FindCommand(parseFindKeyword(input));
             case MARK -> new MarkCommand(parseTaskNumber(input, commandType));
             case UNMARK -> new UnmarkCommand(parseTaskNumber(input, commandType));
             case TODO -> new AddCommand(parseTodo(input));
@@ -59,6 +61,21 @@ public class Parser {
             case DEADLINE -> new AddCommand(parseDeadline(input));
             case DELETE -> new DeleteCommand(parseTaskNumber(input, commandType));
         };
+    }
+
+    /**
+     * Extracts and validates the keyword from a find command.
+     *
+     * @param input Full find command.
+     * @return Non-blank keyword to search for.
+     * @throws DuckException If the keyword is empty.
+     */
+    private String parseFindKeyword(String input) throws DuckException {
+        String keyword = extractArguments(input, CommandType.FIND);
+        if (keyword.isEmpty()) {
+            throw new DuckException("The keyword for a find command cannot be empty.");
+        }
+        return keyword;
     }
 
     /**

@@ -10,7 +10,10 @@ public enum CommandType {
     /** Command that displays the current task list. */
     LIST("list", false),
 
-    /** Command that marks a task as done. */
+    /** Command that find task containing keyword. */
+    FIND("find", true),
+
+    /** Command that mark a task as done */
     MARK("mark", true),
 
     /** Command that marks a task as not done. */

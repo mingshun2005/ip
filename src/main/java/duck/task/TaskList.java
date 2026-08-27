@@ -95,6 +95,27 @@ public class TaskList {
     }
 
     /**
+     * Finds tasks whose descriptions contain the keyword, ignoring case.
+     *
+     * @param keyword Non-blank keyword to find.
+     * @return Matching tasks in their original order.
+     */
+    public List<Task> find(String keyword) {
+        Objects.requireNonNull(keyword, "Find keyword cannot be null.");
+        if (keyword.isBlank()) {
+            throw new IllegalArgumentException("Find keyword cannot be blank.");
+        }
+
+        ArrayList<Task> matchingTasks = new ArrayList<>();
+        for (Task task : this.tasks) {
+            if (task.hasKeyword(keyword)) {
+                matchingTasks.add(task);
+            }
+        }
+        return List.copyOf(matchingTasks);
+    }
+
+    /**
      * Returns an immutable snapshot for display or persistence.
      *
      * @return tasks in their current order
