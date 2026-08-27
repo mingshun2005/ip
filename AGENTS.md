@@ -42,6 +42,10 @@ After every code change, review and update the relevant JUnit tests so the test 
 
 ## Git
 
+Before proposing, reviewing, or creating any commit, read and follow the project skill at `.codex/skills/seedu-git-standard/SKILL.md`. Its SE-EDU Git conventions are mandatory for all future commit messages and branch names in this repository.
+
+For every authorized commit, inspect the staged changes, validate the complete message with the skill's checker, and verify the resulting commit and working-tree status afterward.
+
 Use lightweight tags unless the user requests an annotated tag.
 When proposing or creating a commit message, include enough detail to explain the rationale for the change.
 Do not commit or push unless explicitly asked.
