@@ -30,7 +30,7 @@ public class Duck {
      * An invalid or unreadable file produces an empty task list while retaining an
      * error message for the user.
      *
-     * @param filePath path to the task data file
+     * @param filePath Path to the task data file.
      */
     public Duck(String filePath) {
         this.ui = new Ui();
@@ -78,7 +78,7 @@ public class Duck {
     /**
      * Starts Duck using the default task data file.
      *
-     * @param args command line arguments, currently unused
+     * @param args Command line arguments, currently unused.
      */
     public static void main(String[] args) {
         new Duck("data/duck.txt").run();

@@ -22,8 +22,8 @@ public enum CommandType {
     /**
      * Creates a command type with its input syntax.
      *
-     * @param commandWord word that identifies the command
-     * @param acceptsArguments whether the command accepts trailing arguments
+     * @param commandWord Word that identifies the command.
+     * @param acceptsArguments Whether the command accepts trailing arguments.
      */
     CommandType(String commandWord, boolean acceptsArguments) {
         this.commandWord = commandWord;

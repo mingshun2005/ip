@@ -37,28 +37,28 @@ public class Parser {
     /**
      * Parses user input into the concrete command that should handle it.
      *
-     * @param input normalized user input
+     * @param input Normalized user input.
      * @return executable command containing its parsed arguments
      * @throws DuckException if the command or any of its arguments is invalid
      */
     public Command parse(String input) throws DuckException {
         CommandType commandType = parseCommand(input);
         return switch (commandType) {
-        case BYE -> new ExitCommand();
-        case LIST -> new ListCommand();
-        case MARK -> new MarkCommand(parseTaskNumber(input, commandType));
-        case UNMARK -> new UnmarkCommand(parseTaskNumber(input, commandType));
-        case TODO -> new AddCommand(parseTodo(input));
-        case EVENT -> new AddCommand(parseEvent(input));
-        case DEADLINE -> new AddCommand(parseDeadline(input));
-        case DELETE -> new DeleteCommand(parseTaskNumber(input, commandType));
+            case BYE -> new ExitCommand();
+            case LIST -> new ListCommand();
+            case MARK -> new MarkCommand(parseTaskNumber(input, commandType));
+            case UNMARK -> new UnmarkCommand(parseTaskNumber(input, commandType));
+            case TODO -> new AddCommand(parseTodo(input));
+            case EVENT -> new AddCommand(parseEvent(input));
+            case DEADLINE -> new AddCommand(parseDeadline(input));
+            case DELETE -> new DeleteCommand(parseTaskNumber(input, commandType));
         };
     }
 
     /**
      * Identifies the command represented by the input.
      *
-     * @param input normalized user input
+     * @param input Normalized user input.
      * @return recognized command type
      * @throws DuckException if the command word is not recognized
      */
@@ -76,8 +76,8 @@ public class Parser {
     /**
      * Parses a one-based task number following a mark, unmark, or delete command.
      *
-     * @param input full command input
-     * @param commandType recognized command type
+     * @param input Full command input.
+     * @param commandType Recognized command type.
      * @return parsed task number
      * @throws DuckException if the task number is missing or not an integer
      */
@@ -96,7 +96,7 @@ public class Parser {
     /**
      * Parses a todo command into a task.
      *
-     * @param input full todo command
+     * @param input Full todo command.
      * @return parsed todo task
      * @throws DuckException if the description is empty
      */
@@ -111,7 +111,7 @@ public class Parser {
     /**
      * Parses an event command into a task.
      *
-     * @param input full event command
+     * @param input Full event command.
      * @return parsed event task
      * @throws DuckException if its description or time fields are invalid
      */
@@ -138,7 +138,7 @@ public class Parser {
     /**
      * Parses a deadline command into a task.
      *
-     * @param input full deadline command
+     * @param input Full deadline command.
      * @return parsed deadline task
      * @throws DuckException if its description or date is invalid
      */
@@ -165,7 +165,7 @@ public class Parser {
      * Parses a canonical deadline date. The shape check rejects abbreviated, signed,
      * extended, and non-ASCII years before strict calendar validation is attempted.
      *
-     * @param dateText date in yyyy-MM-dd format
+     * @param dateText Date in yyyy-MM-dd format.
      * @return parsed date
      * @throws DuckException if the text is not a valid date from year 0001 to 9999
      */

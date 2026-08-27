@@ -19,8 +19,8 @@ public abstract class TaskStatusCommand extends Command {
     /**
      * Creates a command that applies the requested status to one task.
      *
-     * @param taskNumber one-based task number
-     * @param shouldMarkAsDone true to mark the task done, or false to mark it undone
+     * @param taskNumber One-based task number.
+     * @param shouldMarkAsDone True to mark the task done, or false to mark it undone.
      */
     protected TaskStatusCommand(int taskNumber, boolean shouldMarkAsDone) {
         this.taskNumber = taskNumber;

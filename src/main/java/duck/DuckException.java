@@ -10,7 +10,7 @@ public class DuckException extends Exception {
     /**
      * Creates a Duck-specific exception with the given error message.
      *
-     * @param message explanation of the error
+     * @param message Explanation of the error.
      */
     public DuckException(String message) {
         super(message);

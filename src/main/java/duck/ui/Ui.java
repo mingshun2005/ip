@@ -68,7 +68,7 @@ public class Ui {
     /**
      * Shows all tasks with one-based list numbers.
      *
-     * @param tasks tasks to display
+     * @param tasks Tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
         System.out.println("Here are the tasks in your list:");

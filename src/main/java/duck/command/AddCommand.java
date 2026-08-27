@@ -18,7 +18,7 @@ public class AddCommand extends Command {
     /**
      * Creates a command that adds the supplied task.
      *
-     * @param task parsed task to add
+     * @param task Parsed task to add.
      */
     public AddCommand(Task task) {
         this.task = Objects.requireNonNull(task, "Task to add cannot be null.");

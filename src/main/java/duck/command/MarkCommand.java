@@ -10,7 +10,7 @@ public class MarkCommand extends TaskStatusCommand {
     /**
      * Creates a command that marks the selected task as done.
      *
-     * @param taskNumber one-based task number
+     * @param taskNumber One-based task number.
      */
     public MarkCommand(int taskNumber) {
         super(taskNumber, true);
