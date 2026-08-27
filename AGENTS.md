@@ -28,6 +28,12 @@ Unless the user says otherwise, assume that you are assisting a student working 
 
 Ensure that Java 25 is used when running the application or build tasks. On macOS, use `sdk use java 25.0.3.fx-zulu` to switch to Java 25 if needed.
 
+## Java coding standard
+
+For every Java code creation, edit, review, or refactor, read and follow the project skill at `.codex/skills/seedu-java-coding-standard/SKILL.md`. Its SE-EDU intermediate Java coding-standard rules are mandatory for production and test code in this repository.
+
+After changing Java code, run the skill's mechanical style checker and perform the manual review described in the skill before running the Gradle test suite.
+
 ## Testing
 
 Maintain JUnit tests for approximately the top 50% highest-value methods in the codebase. Prioritize methods that contain complex logic, implement core application behavior, or protect critical operations such as parsing, persistence, and state changes.
