@@ -6,6 +6,7 @@ package duck.parser;
 public enum CommandType {
     BYE("bye", false),
     LIST("list", false),
+    FIND("find", true),
     MARK("mark", true),
     UNMARK("unmark", true),
     TODO("todo", true),

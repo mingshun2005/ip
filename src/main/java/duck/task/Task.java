@@ -1,5 +1,8 @@
 package duck.task;
 
+import java.util.Locale;
+import java.util.Objects;
+
 /**
  * Represents a task in the chatbot's task list.
  */
@@ -33,6 +36,21 @@ public abstract class Task {
      */
     public boolean isDone() {
         return this.isDone;
+    }
+
+    /**
+     * Returns whether this task's description contains a keyword, ignoring case.
+     *
+     * @param keyword Non-blank keyword to find.
+     * @return True if the description contains the keyword.
+     */
+    public boolean hasKeyword(String keyword) {
+        Objects.requireNonNull(keyword, "Find keyword cannot be null.");
+        if (keyword.isBlank()) {
+            throw new IllegalArgumentException("Find keyword cannot be blank.");
+        }
+        return this.description.toLowerCase(Locale.ROOT)
+                .contains(keyword.toLowerCase(Locale.ROOT));
     }
 
     /**
