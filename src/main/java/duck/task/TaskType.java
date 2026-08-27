@@ -4,8 +4,13 @@ package duck.task;
  * Represents the fixed types of tasks supported by Duck.
  */
 public enum TaskType {
+    /** Task without an associated date or time. */
     TODO("T"),
+
+    /** Task that must be completed by a date. */
     DEADLINE("D"),
+
+    /** Task that occurs over a time range. */
     EVENT("E");
 
     private final String icon;

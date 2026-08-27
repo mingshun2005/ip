@@ -8,6 +8,12 @@ import duck.ui.Ui;
  * Ends the current Duck session after displaying the farewell message.
  */
 public class ExitCommand extends Command {
+    /**
+     * Creates an exit command.
+     */
+    public ExitCommand() {
+    }
+
     /** Displays Duck's farewell response. */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {

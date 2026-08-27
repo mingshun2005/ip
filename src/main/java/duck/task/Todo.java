@@ -13,11 +13,21 @@ public class Todo extends Task {
         super(des);
     }
 
+    /**
+     * Returns this todo in the user-visible task format.
+     *
+     * @return formatted todo with its type and completion status
+     */
     @Override
     public String toString() {
         return TaskType.TODO.getTag() + super.toString();
     }
 
+    /**
+     * Returns this todo in the escaped format used by task storage.
+     *
+     * @return storage record containing the type, status, and description
+     */
     @Override
     public String toFileString() {
         return TaskType.TODO.getFileCode() + " | " + this.getFileStatus() + " | "

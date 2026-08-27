@@ -11,6 +11,12 @@ import duck.ui.Ui;
  */
 public abstract class Command {
     /**
+     * Creates a command.
+     */
+    public Command() {
+    }
+
+    /**
      * Executes this command using the application's collaborators.
      *
      * @param tasks task list to query or update
