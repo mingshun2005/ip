@@ -1,0 +1,25 @@
+.dialog-box {
+    -fx-padding: 5 8;
+    -fx-spacing: 8;
+}
+
+.message-bubble {
+    -fx-font-size: 13px;
+    -fx-padding: 10 14;
+}
+
+.duck-bubble {
+    -fx-background-color: #e3f2fd;
+    -fx-background-radius: 12 12 12 3;
+    -fx-text-fill: #202124;
+}
+
+.user-bubble {
+    -fx-background-color: #287bde;
+    -fx-background-radius: 12 12 3 12;
+    -fx-text-fill: #ffffff;
+}
+
+.avatar {
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 6, 0.25, 1, 2);
+}
