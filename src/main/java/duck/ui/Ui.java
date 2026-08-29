@@ -1,6 +1,9 @@
 package duck.ui;
 
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 import duck.task.Task;
@@ -20,21 +23,47 @@ public class Ui {
             + "| |_| | |_| | (__|   < \n"
             + "|____/ \\__,_|\\___|_|\\_\\\n";
 
+    /** Greeting shared by the console and graphical interfaces. */
+    private static final String GREETING = "Hello! I'm Duck. Quack~\n"
+            + "What can I do for you?";
+
     /** Reads commands from the console. */
     private final Scanner scanner;
 
+    /** Destination for chatbot output. */
+    private final PrintStream output;
+
     /** Creates a UI connected to the standard input stream. */
     public Ui() {
-        this.scanner = new Scanner(System.in);
+        this(System.in, System.out);
+    }
+
+    /**
+     * Creates a UI using the supplied input and output streams.
+     *
+     * @param input Source of user commands.
+     * @param output Destination for chatbot messages.
+     */
+    public Ui(InputStream input, PrintStream output) {
+        this.scanner = new Scanner(Objects.requireNonNull(input));
+        this.output = Objects.requireNonNull(output);
     }
 
     /** Shows the startup logo and greeting. */
     public void showWelcome() {
-        System.out.println(SEPARATOR);
-        System.out.println(BANNER);
-        System.out.println("Hello! I'm Duck. Quack~");
-        System.out.println("What can I do for you?");
-        System.out.println(SEPARATOR);
+        this.output.println(SEPARATOR);
+        this.output.println(BANNER);
+        this.output.println(GREETING);
+        this.output.println(SEPARATOR);
+    }
+
+    /**
+     * Returns the greeting used at the start of a Duck session.
+     *
+     * @return Duck's greeting without console decoration
+     */
+    public static String getGreeting() {
+        return GREETING;
     }
 
     /**
@@ -57,12 +86,12 @@ public class Ui {
 
     /** Shows the divider between chatbot responses. */
     public void showSeparator() {
-        System.out.println(SEPARATOR);
+        this.output.println(SEPARATOR);
     }
 
     /** Shows the farewell message. The command loop prints the closing divider. */
     public void showGoodbye() {
-        System.out.println("Bye. Hope to see you again soon!");
+        this.output.println("Bye. Hope to see you again soon!");
     }
 
     /**
@@ -71,20 +100,20 @@ public class Ui {
      * @param tasks Tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
-        System.out.println("Here are the tasks in your list:");
+        this.output.println("Here are the tasks in your list:");
         showNumberedTasks(tasks);
     }
 
     /** Shows tasks whose descriptions match a find keyword. */
     public void showMatchingTasks(List<Task> tasks) {
-        System.out.println("Here are the matching tasks in your list:");
+        this.output.println("Here are the matching tasks in your list:");
         showNumberedTasks(tasks);
     }
 
     /** Shows tasks with one-based numbers relative to the supplied list. */
     private void showNumberedTasks(List<Task> tasks) {
         for (int i = 0; i < tasks.size(); i++) {
-            System.out.println((i + 1) + "." + tasks.get(i));
+            this.output.println((i + 1) + "." + tasks.get(i));
         }
     }
 
@@ -94,8 +123,8 @@ public class Ui {
      * @param task task that was marked
      */
     public void showTaskMarked(Task task) {
-        System.out.println("Nice! I've marked this task as done:");
-        System.out.println("  " + task);
+        this.output.println("Nice! I've marked this task as done:");
+        this.output.println("  " + task);
     }
 
     /**
@@ -104,8 +133,8 @@ public class Ui {
      * @param task task that was unmarked
      */
     public void showTaskUnmarked(Task task) {
-        System.out.println("OK, I've marked this task as not done yet:");
-        System.out.println("  " + task);
+        this.output.println("OK, I've marked this task as not done yet:");
+        this.output.println("  " + task);
     }
 
     /**
@@ -115,9 +144,9 @@ public class Ui {
      * @param taskCount number of tasks after the addition
      */
     public void showTaskAdded(Task task, int taskCount) {
-        System.out.println("Got it. I've added this task:");
-        System.out.println(task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        this.output.println("Got it. I've added this task:");
+        this.output.println(task);
+        this.output.println("Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -127,9 +156,9 @@ public class Ui {
      * @param taskCount number of tasks after the deletion
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        System.out.println("Noted. I've removed this task:");
-        System.out.println("  " + task);
-        System.out.println("Now you have " + taskCount + " tasks in the list.");
+        this.output.println("Noted. I've removed this task:");
+        this.output.println("  " + task);
+        this.output.println("Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -138,6 +167,6 @@ public class Ui {
      * @param message user-facing explanation of the error
      */
     public void showError(String message) {
-        System.out.println("OOPS!!! " + message);
+        this.output.println("OOPS!!! " + message);
     }
 }
