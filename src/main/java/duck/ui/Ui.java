@@ -51,10 +51,7 @@ public class Ui {
 
     /** Shows the startup logo and greeting. */
     public void showWelcome() {
-        this.output.println(SEPARATOR);
-        this.output.println(BANNER);
-        this.output.println(GREETING);
-        this.output.println(SEPARATOR);
+        showLines(SEPARATOR, BANNER, GREETING, SEPARATOR);
     }
 
     /**
@@ -123,8 +120,9 @@ public class Ui {
      * @param task task that was marked
      */
     public void showTaskMarked(Task task) {
-        this.output.println("Nice! I've marked this task as done:");
-        this.output.println("  " + task);
+        showLines(
+                "Nice! I've marked this task as done:",
+                "  " + task);
     }
 
     /**
@@ -133,8 +131,9 @@ public class Ui {
      * @param task task that was unmarked
      */
     public void showTaskUnmarked(Task task) {
-        this.output.println("OK, I've marked this task as not done yet:");
-        this.output.println("  " + task);
+        showLines(
+                "OK, I've marked this task as not done yet:",
+                "  " + task);
     }
 
     /**
@@ -144,9 +143,10 @@ public class Ui {
      * @param taskCount number of tasks after the addition
      */
     public void showTaskAdded(Task task, int taskCount) {
-        this.output.println("Got it. I've added this task:");
-        this.output.println(task);
-        this.output.println("Now you have " + taskCount + " tasks in the list.");
+        showLines(
+                "Got it. I've added this task:",
+                String.valueOf(task),
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -156,9 +156,10 @@ public class Ui {
      * @param taskCount number of tasks after the deletion
      */
     public void showTaskDeleted(Task task, int taskCount) {
-        this.output.println("Noted. I've removed this task:");
-        this.output.println("  " + task);
-        this.output.println("Now you have " + taskCount + " tasks in the list.");
+        showLines(
+                "Noted. I've removed this task:",
+                "  " + task,
+                "Now you have " + taskCount + " tasks in the list.");
     }
 
     /**
@@ -168,5 +169,16 @@ public class Ui {
      */
     public void showError(String message) {
         this.output.println("OOPS!!! " + message);
+    }
+
+    /**
+     * Shows each supplied line in order.
+     *
+     * @param lines Lines to show.
+     */
+    private void showLines(String... lines) {
+        for (String line : lines) {
+            this.output.println(line);
+        }
     }
 }
