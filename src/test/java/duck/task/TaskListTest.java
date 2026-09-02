@@ -121,10 +121,8 @@ public class TaskListTest {
         Task originalTask = new Todo("original");
         TaskList tasks = new TaskList(List.of(originalTask));
 
-        assertThrows(IndexOutOfBoundsException.class,
-                () -> tasks.add(-1, new Todo("negative index")));
-        assertThrows(IndexOutOfBoundsException.class,
-                () -> tasks.add(2, new Todo("past the end")));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.add(-1, new Todo("negative index")));
+        assertThrows(IndexOutOfBoundsException.class, () -> tasks.add(2, new Todo("past the end")));
         assertEquals(List.of(originalTask), tasks.asList());
     }
 
@@ -248,8 +246,7 @@ public class TaskListTest {
         TaskList tasks = new TaskList(List.of(new Todo("read book")));
         List<Task> matches = tasks.find("book");
 
-        assertThrows(UnsupportedOperationException.class,
-                () -> matches.add(new Todo("another book")));
+        assertThrows(UnsupportedOperationException.class, () -> matches.add(new Todo("another book")));
     }
 
     @Test
@@ -277,8 +274,7 @@ public class TaskListTest {
         TaskList tasks = new TaskList(List.of(new Todo("original")));
         List<Task> snapshot = tasks.asList();
 
-        assertThrows(UnsupportedOperationException.class,
-                () -> snapshot.add(new Todo("new task")));
+        assertThrows(UnsupportedOperationException.class, () -> snapshot.add(new Todo("new task")));
     }
 
     @Test

@@ -129,8 +129,7 @@ public class ParserTest {
 
     /** Verifies that parsing fails with the exact user-facing error message. */
     private void assertParseError(String input, String expectedMessage) {
-        DuckException exception = assertThrows(DuckException.class,
-                () -> this.parser.parse(input));
+        DuckException exception = assertThrows(DuckException.class, () -> this.parser.parse(input));
         assertEquals(expectedMessage, exception.getMessage());
     }
 }

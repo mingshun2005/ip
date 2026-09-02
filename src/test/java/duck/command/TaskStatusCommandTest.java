@@ -65,10 +65,10 @@ public class TaskStatusCommandTest {
         TaskList tasks = new TaskList(List.of(incompleteTask, completedTask));
         Storage storage = new Storage(this.temporaryDirectory.resolve("duck.txt").toString());
 
-        DuckException markException = assertThrows(DuckException.class,
-                () -> new MarkCommand(0).execute(tasks, new Ui(), storage));
-        DuckException unmarkException = assertThrows(DuckException.class,
-                () -> new UnmarkCommand(3).execute(tasks, new Ui(), storage));
+        DuckException markException = assertThrows(DuckException.class, () ->
+                new MarkCommand(0).execute(tasks, new Ui(), storage));
+        DuckException unmarkException = assertThrows(DuckException.class, () ->
+                new UnmarkCommand(3).execute(tasks, new Ui(), storage));
 
         assertEquals("That task number does not exist.", markException.getMessage());
         assertEquals("That task number does not exist.", unmarkException.getMessage());
@@ -81,8 +81,8 @@ public class TaskStatusCommandTest {
         Task task = new Todo("task");
         TaskList tasks = new TaskList(List.of(task));
 
-        DuckException exception = assertThrows(DuckException.class,
-                () -> new MarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
+        DuckException exception = assertThrows(DuckException.class, () ->
+                new MarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
         assertFalse(task.isDone());
@@ -94,8 +94,8 @@ public class TaskStatusCommandTest {
         task.markAsDone();
         TaskList tasks = new TaskList(List.of(task));
 
-        DuckException exception = assertThrows(DuckException.class,
-                () -> new UnmarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
+        DuckException exception = assertThrows(DuckException.class, () ->
+                new UnmarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
         assertTrue(task.isDone());

@@ -50,10 +50,10 @@ public class DeleteCommandTest {
         TaskList tasks = new TaskList(List.of(originalTask));
         Storage storage = new Storage(this.temporaryDirectory.resolve("duck.txt").toString());
 
-        DuckException zeroException = assertThrows(DuckException.class,
-                () -> new DeleteCommand(0).execute(tasks, new Ui(), storage));
-        DuckException pastEndException = assertThrows(DuckException.class,
-                () -> new DeleteCommand(2).execute(tasks, new Ui(), storage));
+        DuckException zeroException = assertThrows(DuckException.class, () ->
+                new DeleteCommand(0).execute(tasks, new Ui(), storage));
+        DuckException pastEndException = assertThrows(DuckException.class, () ->
+                new DeleteCommand(2).execute(tasks, new Ui(), storage));
 
         assertEquals("That task number does not exist.", zeroException.getMessage());
         assertEquals("That task number does not exist.", pastEndException.getMessage());
@@ -68,8 +68,8 @@ public class DeleteCommandTest {
         Task thirdTask = new Todo("third");
         TaskList tasks = new TaskList(List.of(firstTask, secondTask, thirdTask));
 
-        DuckException exception = assertThrows(DuckException.class,
-                () -> new DeleteCommand(2).execute(tasks, new Ui(), new FailingStorage()));
+        DuckException exception = assertThrows(DuckException.class, () ->
+                new DeleteCommand(2).execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
         assertEquals(3, tasks.size());

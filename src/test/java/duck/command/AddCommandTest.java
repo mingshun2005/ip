@@ -54,8 +54,8 @@ public class AddCommandTest {
         TaskList tasks = new TaskList(List.of(existingTask));
         AddCommand command = new AddCommand(new Todo("unsaved"));
 
-        DuckException exception = assertThrows(DuckException.class,
-                () -> command.execute(tasks, new Ui(), new FailingStorage()));
+        DuckException exception = assertThrows(DuckException.class, () ->
+                command.execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
         assertEquals(List.of(existingTask), tasks.asList());
