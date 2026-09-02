@@ -134,8 +134,8 @@ public class StorageTest {
         Path dataFile = parentFile.resolve("duck.txt");
         Storage storage = new Storage(dataFile.toString());
 
-        DuckException exception = assertThrows(DuckException.class,
-                () -> storage.save(List.of(new Todo("task"))));
+        DuckException exception = assertThrows(DuckException.class, () ->
+                storage.save(List.of(new Todo("task"))));
 
         assertEquals("Unable to save tasks to " + dataFile + ".", exception.getMessage());
     }
