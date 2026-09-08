@@ -169,6 +169,9 @@ public class Storage {
         if ("1".equals(status)) {
             task.markAsDone();
         }
+        assert task.isDone() == "1".equals(status)
+                : "Loaded task status must match its saved status.";
+
         return task;
     }
 
