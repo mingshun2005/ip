@@ -11,19 +11,6 @@ public class Event extends Task {
     private final String endTime;
 
     /**
-     * Creates an event task with the given description and time range.
-     *
-     * @param description Description of the task.
-     * @param timeRange Time range in the format start /to end.
-     */
-    public Event(String description, String timeRange) {
-        super(description);
-        String[] parsedTimes = timeRange.split("/to ");
-        this.startTime = parsedTimes[0];
-        this.endTime = parsedTimes[1];
-    }
-
-    /**
      * Creates an event task with separate start and end times, as stored in the data file.
      *
      * @param description Description of the task.
