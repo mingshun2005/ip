@@ -52,10 +52,9 @@ public class Storage {
      * @throws DuckException if the task list cannot be saved
      */
     public void save(List<Task> tasks) throws DuckException {
-        ArrayList<String> taskLines = new ArrayList<>();
-        for (Task task : tasks) {
-            taskLines.add(task.toFileString());
-        }
+        List<String> taskLines = tasks.stream()
+                .map(Task::toFileString)
+                .toList();
 
         Path temporaryFile = null;
         try {
