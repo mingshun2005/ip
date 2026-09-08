@@ -615,7 +615,7 @@ ____________________________________________________________
 ```
 
 ## Test Case 13: Deadline dates are strictly parsed and formatted
-Aim: Verify that malformed dates, invalid calendar dates, unsupported times, and year zero are rejected, while valid dates and leap days use a readable display format.
+Aim: Verify that malformed dates, invalid calendar dates, unsupported weekday forms, times, and year zero are rejected, while valid ISO dates use a readable display format.
 
 ### Input
 ```text
@@ -626,6 +626,9 @@ deadline wrong format /by 30-08-2026
 deadline abbreviated /by 2026-8-3
 deadline with time /by 2026-10-15 1800
 deadline year zero /by 0000-01-01
+deadline full weekday /by Monday
+deadline informal weekday /by Tues
+deadline relative phrase /by next Mon
 deadline leap day /by 2024-02-29
 deadline submit report /by 2026-10-15
 list
@@ -645,25 +648,34 @@ Hello! I'm Duck. Quack~
 What can I do for you?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format.
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+____________________________________________________________
+____________________________________________________________
+OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this task:

@@ -40,6 +40,10 @@ public class ParserTest {
         assertInstanceOf(AddCommand.class,
                 this.parser.parse("deadline return book /by 2026-08-30"));
         assertInstanceOf(AddCommand.class,
+                this.parser.parse("deadline submit report /by Mon"));
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("deadline buy groceries /by fRi"));
+        assertInstanceOf(AddCommand.class,
                 this.parser.parse("event meeting /from Monday 2pm /to 4pm"));
     }
 
@@ -94,13 +98,17 @@ public class ParserTest {
 
     @Test
     public void parse_invalidDeadlineDates_throwsDateFormatError() {
-        String expectedMessage = "Please enter a valid deadline date in yyyy-MM-dd format.";
+        String expectedMessage = "Please enter a valid deadline date in yyyy-MM-dd format or as "
+                + "Mon, Tue, Wed, Thu, Fri, Sat, or Sun.";
 
         assertParseError("deadline wrong format /by 30-08-2026", expectedMessage);
         assertParseError("deadline impossible /by 2026-02-30", expectedMessage);
         assertParseError("deadline abbreviated /by 2026-8-3", expectedMessage);
         assertParseError("deadline year zero /by 0000-01-01", expectedMessage);
         assertParseError("deadline unsupported time /by 2026-08-30 1800", expectedMessage);
+        assertParseError("deadline full weekday /by Monday", expectedMessage);
+        assertParseError("deadline informal weekday /by Tues", expectedMessage);
+        assertParseError("deadline relative phrase /by next Mon", expectedMessage);
     }
 
     @Test
