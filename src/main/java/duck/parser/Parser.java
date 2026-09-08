@@ -1,9 +1,7 @@
 package duck.parser;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Pattern;
 
 import duck.DuckException;
 import duck.command.AddCommand;
@@ -15,6 +13,7 @@ import duck.command.ListCommand;
 import duck.command.MarkCommand;
 import duck.command.UnmarkCommand;
 import duck.task.Deadline;
+import duck.task.DeadlineDateParser;
 import duck.task.Event;
 import duck.task.Task;
 import duck.task.Todo;
@@ -23,14 +22,6 @@ import duck.task.Todo;
  * Recognizes user commands and converts their arguments into domain values.
  */
 public class Parser {
-    /** Exact, ASCII-only shape accepted for deadline dates. */
-    private static final Pattern DEADLINE_DATE_PATTERN =
-            Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
-
-    /** Strict formatter used for deadline command input. */
-    private static final DateTimeFormatter DEADLINE_DATE_FORMAT =
-            DateTimeFormatter.ISO_LOCAL_DATE;
-
     /** Error shown when a command contains an invalid deadline date. */
     private static final String INVALID_COMMAND_DATE_MESSAGE =
             "Please enter a valid deadline date in yyyy-MM-dd format.";
@@ -189,25 +180,10 @@ public class Parser {
         return input.substring(commandWord.length()).trim();
     }
 
-    /**
-     * Parses a canonical deadline date. The shape check rejects abbreviated, signed,
-     * extended, and non-ASCII years before strict calendar validation is attempted.
-     *
-     * @param dateText Date in yyyy-MM-dd format.
-     * @return parsed date
-     * @throws DuckException if the text is not a valid date from year 0001 to 9999
-     */
+    /** Parses a deadline date, translating validation failures into a command error. */
     private LocalDate parseDeadlineDate(String dateText) throws DuckException {
-        if (!DEADLINE_DATE_PATTERN.matcher(dateText).matches()) {
-            throw new DuckException(INVALID_COMMAND_DATE_MESSAGE);
-        }
-
         try {
-            LocalDate date = LocalDate.parse(dateText, DEADLINE_DATE_FORMAT);
-            if (date.getYear() == 0) {
-                throw new DuckException(INVALID_COMMAND_DATE_MESSAGE);
-            }
-            return date;
+            return DeadlineDateParser.parse(dateText);
         } catch (DateTimeParseException e) {
             throw new DuckException(INVALID_COMMAND_DATE_MESSAGE);
         }
