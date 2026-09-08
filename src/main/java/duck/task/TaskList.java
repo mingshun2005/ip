@@ -106,13 +106,9 @@ public class TaskList {
             throw new IllegalArgumentException("Find keyword cannot be blank.");
         }
 
-        ArrayList<Task> matchingTasks = new ArrayList<>();
-        for (Task task : this.tasks) {
-            if (task.hasKeyword(keyword)) {
-                matchingTasks.add(task);
-            }
-        }
-        return List.copyOf(matchingTasks);
+        return this.tasks.stream()
+                .filter(task -> task.hasKeyword(keyword))
+                .toList();
     }
 
     /**

@@ -10,7 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.jupiter.api.Test;
@@ -142,11 +141,9 @@ public class StorageTest {
 
     /** Converts tasks to their stable persisted representations for comparison. */
     private List<String> toFileStrings(List<Task> tasks) {
-        ArrayList<String> fileStrings = new ArrayList<>();
-        for (Task task : tasks) {
-            fileStrings.add(task.toFileString());
-        }
-        return fileStrings;
+        return tasks.stream()
+                .map(Task::toFileString)
+                .toList();
     }
 
     /** Writes one malformed record and verifies the line-specific loading error. */
