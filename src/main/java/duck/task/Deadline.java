@@ -18,7 +18,7 @@ public class Deadline extends Task {
             DateTimeFormatter.ISO_LOCAL_DATE;
 
     /** Date by which this task must be completed. */
-    private final LocalDate by;
+    private final LocalDate deadlineDate;
 
     /**
      * Creates a deadline task with the given description and deadline.
@@ -28,8 +28,8 @@ public class Deadline extends Task {
      */
     public Deadline(String description, LocalDate by) {
         super(description);
-        this.by = Objects.requireNonNull(by, "Deadline date cannot be null.");
-        if (by.getYear() < 1 || by.getYear() > 9999) {
+        this.deadlineDate = Objects.requireNonNull(by, "Deadline date cannot be null.");
+        if (this.deadlineDate.getYear() < 1 || this.deadlineDate.getYear() > 9999) {
             throw new IllegalArgumentException("Deadline year must be between 1 and 9999.");
         }
     }
@@ -42,7 +42,7 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return TaskType.DEADLINE.getTag() + super.toString() + " (by: "
-                + this.by.format(DISPLAY_DATE_FORMAT) + ")";
+                + this.deadlineDate.format(DISPLAY_DATE_FORMAT) + ")";
     }
 
     /**
@@ -54,6 +54,6 @@ public class Deadline extends Task {
     public String toFileString() {
         return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | "
                 + this.escapeFileField(this.description) + " | "
-                + this.by.format(STORAGE_DATE_FORMAT);
+                + this.deadlineDate.format(STORAGE_DATE_FORMAT);
     }
 }
