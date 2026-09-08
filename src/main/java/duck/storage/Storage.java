@@ -134,39 +134,75 @@ public class Storage {
      * @throws DuckException if the line does not match the expected storage format
      */
     private Task parseTask(String taskLine) throws DuckException {
-        ArrayList<String> parts = splitFileFields(taskLine);
-        if (parts.size() < 3) {
+        List<String> fields = splitFileFields(taskLine);
+        if (fields.size() < 3) {
             throw new DuckException("the record has too few fields.");
         }
 
-        String taskType = parts.get(0);
-        String status = parts.get(1);
-        if (!"0".equals(status) && !"1".equals(status)) {
+        String savedStatus = fields.get(1);
+        validateSavedStatus(savedStatus);
+
+        Task task = createTask(fields);
+        applySavedStatus(task, savedStatus);
+        return task;
+    }
+
+    /** Validates the completion-status field shared by every saved task. */
+    private void validateSavedStatus(String savedStatus) throws DuckException {
+        if (!"0".equals(savedStatus) && !"1".equals(savedStatus)) {
             throw new DuckException("the status must be 0 or 1.");
         }
+    }
 
-        Task task;
-        if (TaskType.TODO.getFileCode().equals(taskType) && parts.size() == 3) {
-            requireNonBlank(parts.get(2), "todo description");
-            task = new Todo(parts.get(2));
-        } else if (TaskType.DEADLINE.getFileCode().equals(taskType) && parts.size() == 4) {
-            requireNonBlank(parts.get(2), "deadline description");
-            requireNonBlank(parts.get(3), "deadline date");
-            task = new Deadline(parts.get(2), parseDeadlineDate(parts.get(3)));
-        } else if (TaskType.EVENT.getFileCode().equals(taskType) && parts.size() == 5) {
-            requireNonBlank(parts.get(2), "event description");
-            requireNonBlank(parts.get(3), "event start time");
-            requireNonBlank(parts.get(4), "event end time");
-            task = new Event(parts.get(2), parts.get(3), parts.get(4));
-        } else if (!TaskType.TODO.getFileCode().equals(taskType)
-                && !TaskType.DEADLINE.getFileCode().equals(taskType)
-                && !TaskType.EVENT.getFileCode().equals(taskType)) {
-            throw new DuckException("the task type is not recognized.");
-        } else {
+    /** Creates the concrete task represented by the saved task-type code. */
+    private Task createTask(List<String> fields) throws DuckException {
+        String taskTypeCode = fields.get(0);
+        if (TaskType.TODO.getFileCode().equals(taskTypeCode)) {
+            return createTodoTask(fields);
+        }
+        if (TaskType.DEADLINE.getFileCode().equals(taskTypeCode)) {
+            return createDeadlineTask(fields);
+        }
+        if (TaskType.EVENT.getFileCode().equals(taskTypeCode)) {
+            return createEventTask(fields);
+        }
+        throw new DuckException("the task type is not recognized.");
+    }
+
+    /** Creates a todo from a saved record after validating its type-specific fields. */
+    private Task createTodoTask(List<String> fields) throws DuckException {
+        requireExactFieldCount(fields, 3);
+        requireNonBlank(fields.get(2), "todo description");
+        return new Todo(fields.get(2));
+    }
+
+    /** Creates a deadline from a saved record after validating its type-specific fields. */
+    private Task createDeadlineTask(List<String> fields) throws DuckException {
+        requireExactFieldCount(fields, 4);
+        requireNonBlank(fields.get(2), "deadline description");
+        requireNonBlank(fields.get(3), "deadline date");
+        return new Deadline(fields.get(2), parseDeadlineDate(fields.get(3)));
+    }
+
+    /** Creates an event from a saved record after validating its type-specific fields. */
+    private Task createEventTask(List<String> fields) throws DuckException {
+        requireExactFieldCount(fields, 5);
+        requireNonBlank(fields.get(2), "event description");
+        requireNonBlank(fields.get(3), "event start time");
+        requireNonBlank(fields.get(4), "event end time");
+        return new Event(fields.get(2), fields.get(3), fields.get(4));
+    }
+
+    /** Validates that a saved task type has exactly its required number of fields. */
+    private void requireExactFieldCount(List<String> fields, int expectedCount) throws DuckException {
+        if (fields.size() != expectedCount) {
             throw new DuckException("the task type has the wrong number of fields.");
         }
+    }
 
-        if ("1".equals(status)) {
+    /** Applies a saved completion status to a reconstructed task. */
+    private void applySavedStatus(Task task, String savedStatus) {
+        if ("1".equals(savedStatus)) {
             task.markAsDone();
         }
         assert task.isDone() == "1".equals(status)
