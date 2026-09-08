@@ -40,6 +40,9 @@ public abstract class TaskStatusCommand extends Command {
         Task task = tasks.get(taskIndex);
         boolean wasDone = task.isDone();
         setTaskStatus(tasks, taskIndex, this.shouldMarkAsDone);
+        assert task.isDone() == this.shouldMarkAsDone
+                : "Task status was not updated correctly.";
+
         try {
             storage.save(tasks.asList());
         } catch (DuckException e) {

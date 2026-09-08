@@ -29,7 +29,12 @@ public class AddCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException {
+        int originalTaskCount = tasks.size();
         tasks.add(this.task);
+        assert tasks.size() == originalTaskCount + 1
+                && tasks.get(originalTaskCount) == this.task
+                : "Added task must be appended to the task list.";
+
         try {
             storage.save(tasks.asList());
         } catch (DuckException e) {

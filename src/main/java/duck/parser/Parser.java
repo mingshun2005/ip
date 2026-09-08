@@ -148,6 +148,7 @@ public class Parser {
         if (descriptionAndTimes.length < 2) {
             throw new DuckException("The event command needs a /from and /to time.");
         }
+
         String[] times = descriptionAndTimes[1].split(" /to ", 2);
         if (times.length < 2) {
             throw new DuckException("The event command needs a /from and /to time.");
@@ -181,7 +182,11 @@ public class Parser {
 
     /** Returns the normalized text following a command word. */
     private String extractArguments(String input, CommandType commandType) {
-        return input.substring(commandType.getCommandWord().length()).trim();
+        String commandWord = commandType.getCommandWord();
+        assert input.equals(commandWord) || input.startsWith(commandWord + " ")
+                : "Input must begin with the expected command word.";
+
+        return input.substring(commandWord.length()).trim();
     }
 
     /**
