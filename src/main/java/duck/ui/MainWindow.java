@@ -17,8 +17,8 @@ import javafx.util.Duration;
  * Controls Duck's main chat window defined in {@code MainWindow.fxml}.
  */
 public class MainWindow {
-    /** Delay between showing the farewell response and closing the window. */
-    private static final Duration EXIT_DELAY = Duration.seconds(3);
+    /** Delay between showing the farewell response and closing the window, in seconds. */
+    private static final int EXIT_DELAY_SECONDS = 3;
 
     /** Avatar displayed beside Duck's responses. */
     private final Image duckImage = loadImage("/images/DonaldDuck.png");
@@ -65,7 +65,7 @@ public class MainWindow {
 
     /**
      * Displays the submitted command and Duck's response, then clears the input field.
-     * A valid bye command disables further input and closes the window after three seconds.
+     * A valid bye command disables further input and closes the window after a short delay.
      */
     @FXML
     private void handleUserInput() {
@@ -85,15 +85,16 @@ public class MainWindow {
         }
     }
 
-    /** Disables input, announces the delay, and closes the stage after three seconds. */
+    /** Disables input, announces the configured delay, and closes the stage afterward. */
     private void scheduleExit() {
         this.userInput.setDisable(true);
         this.sendButton.setDisable(true);
         this.dialogContainer.getChildren().add(
                 DialogBox.getDuckDialog(
-                        "The window will close in 3 seconds.", this.duckImage));
+                        "The window will close in " + EXIT_DELAY_SECONDS + " seconds.",
+                        this.duckImage));
 
-        PauseTransition exitDelay = new PauseTransition(EXIT_DELAY);
+        PauseTransition exitDelay = new PauseTransition(Duration.seconds(EXIT_DELAY_SECONDS));
         exitDelay.setOnFinished(event -> getStage().close());
         exitDelay.play();
     }

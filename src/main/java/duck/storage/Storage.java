@@ -7,15 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 import duck.DuckException;
 import duck.task.Deadline;
+import duck.task.DeadlineDateParser;
 import duck.task.Event;
 import duck.task.Task;
 import duck.task.TaskType;
@@ -25,14 +24,6 @@ import duck.task.Todo;
  * Loads tasks from and saves tasks to a plain-text data file.
  */
 public class Storage {
-    /** Exact, ASCII-only date shape required in saved deadline records. */
-    private static final Pattern DEADLINE_DATE_PATTERN =
-            Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2}");
-
-    /** Strict formatter used to decode saved deadline dates. */
-    private static final DateTimeFormatter DEADLINE_DATE_FORMAT =
-            DateTimeFormatter.ISO_LOCAL_DATE;
-
     /** Error included in the line-specific message for invalid saved dates. */
     private static final String INVALID_SAVED_DATE_MESSAGE =
             "the deadline date must be a valid yyyy-MM-dd date.";
@@ -256,24 +247,10 @@ public class Storage {
         }
     }
 
-    /**
-     * Parses a canonical deadline date from a saved record.
-     *
-     * @param dateText Date in yyyy-MM-dd format.
-     * @return parsed date
-     * @throws DuckException if the text is not a valid date from year 0001 to 9999
-     */
+    /** Parses a deadline date, translating validation failures into a storage error. */
     private LocalDate parseDeadlineDate(String dateText) throws DuckException {
-        if (!DEADLINE_DATE_PATTERN.matcher(dateText).matches()) {
-            throw new DuckException(INVALID_SAVED_DATE_MESSAGE);
-        }
-
         try {
-            LocalDate date = LocalDate.parse(dateText, DEADLINE_DATE_FORMAT);
-            if (date.getYear() == 0) {
-                throw new DuckException(INVALID_SAVED_DATE_MESSAGE);
-            }
-            return date;
+            return DeadlineDateParser.parse(dateText);
         } catch (DateTimeParseException e) {
             throw new DuckException(INVALID_SAVED_DATE_MESSAGE);
         }
