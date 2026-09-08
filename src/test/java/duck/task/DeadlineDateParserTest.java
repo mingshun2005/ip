@@ -22,11 +22,8 @@ public class DeadlineDateParserTest {
 
     @Test
     public void parse_invalidDates_throwsDateTimeParseException() {
-        assertThrows(DateTimeParseException.class,
-                () -> DeadlineDateParser.parse("2026-02-30"));
-        assertThrows(DateTimeParseException.class,
-                () -> DeadlineDateParser.parse("2026-8-3"));
-        assertThrows(DateTimeParseException.class,
-                () -> DeadlineDateParser.parse("0000-01-01"));
+        assertThrows(DateTimeParseException.class, () -> DeadlineDateParser.parse("2026-02-30"));
+        assertThrows(DateTimeParseException.class, () -> DeadlineDateParser.parse("2026-8-3"));
+        assertThrows(DateTimeParseException.class, () -> DeadlineDateParser.parse("0000-01-01"));
     }
 }
