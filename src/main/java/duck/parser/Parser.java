@@ -24,7 +24,8 @@ import duck.task.Todo;
 public class Parser {
     /** Error shown when a command contains an invalid deadline date. */
     private static final String INVALID_COMMAND_DATE_MESSAGE =
-            "Please enter a valid deadline date in yyyy-MM-dd format.";
+            "Please enter a valid deadline date in yyyy-MM-dd format or as "
+                    + "Mon, Tue, Wed, Thu, Fri, Sat, or Sun.";
 
     /**
      * Creates a command parser.
@@ -183,7 +184,7 @@ public class Parser {
     /** Parses a deadline date, translating validation failures into a command error. */
     private LocalDate parseDeadlineDate(String dateText) throws DuckException {
         try {
-            return DeadlineDateParser.parse(dateText);
+            return DeadlineDateParser.parseCommandDate(dateText, LocalDate.now());
         } catch (DateTimeParseException e) {
             throw new DuckException(INVALID_COMMAND_DATE_MESSAGE);
         }
