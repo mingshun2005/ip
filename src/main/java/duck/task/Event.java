@@ -4,8 +4,11 @@ package duck.task;
  * Represents a task that starts and ends at specific dates or times.
  */
 public class Event extends Task {
-    /** Start and end times of this event. */
-    private final String[] times;
+    /** Start date or time of this event. */
+    private final String startTime;
+
+    /** End date or time of this event. */
+    private final String endTime;
 
     /**
      * Creates an event task with the given description and time range.
@@ -15,7 +18,9 @@ public class Event extends Task {
      */
     public Event(String description, String timeRange) {
         super(description);
-        this.times = timeRange.split("/to ");
+        String[] parsedTimes = timeRange.split("/to ");
+        this.startTime = parsedTimes[0];
+        this.endTime = parsedTimes[1];
     }
 
     /**
@@ -27,7 +32,8 @@ public class Event extends Task {
      */
     public Event(String description, String from, String to) {
         super(description);
-        this.times = new String[] { from, to };
+        this.startTime = from;
+        this.endTime = to;
     }
 
     /**
@@ -37,8 +43,8 @@ public class Event extends Task {
      */
     @Override
     public String toString() {
-        return TaskType.EVENT.getTag() + super.toString() + " (from: " + this.times[0].trim() + " to: "
-                + this.times[1].trim() + ")";
+        return TaskType.EVENT.getTag() + super.toString() + " (from: " + this.startTime.trim()
+                + " to: " + this.endTime.trim() + ")";
     }
 
     /**
@@ -49,7 +55,8 @@ public class Event extends Task {
     @Override
     public String toFileString() {
         return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "
-                + this.escapeFileField(this.description) + " | " + this.escapeFileField(this.times[0].trim())
-                + " | " + this.escapeFileField(this.times[1].trim());
+                + this.escapeFileField(this.description) + " | "
+                + this.escapeFileField(this.startTime.trim()) + " | "
+                + this.escapeFileField(this.endTime.trim());
     }
 }
