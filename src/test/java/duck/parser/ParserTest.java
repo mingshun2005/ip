@@ -20,6 +20,15 @@ import duck.command.UnmarkCommand;
  * Tests command recognition and argument validation performed by {@link Parser}.
  */
 public class ParserTest {
+    private static final String TASK_NUMBER_ERROR =
+            "Please enter a valid task number. Use list to check the available task numbers.";
+
+    private static final String TODO_DESCRIPTION_ERROR =
+            "The description of a todo cannot be empty. Try: todo read a book.";
+
+    private static final String DEADLINE_COMMAND_EXAMPLE =
+            " Try: deadline submit report /by 2026-10-15.";
+
     private final Parser parser = new Parser();
 
     @Test
@@ -76,27 +85,30 @@ public class ParserTest {
 
     @Test
     public void parse_missingOrInvalidTaskNumbers_throwsTaskNumberError() {
-        assertParseError("mark", "Please enter a valid task number.");
-        assertParseError("unmark abc", "Please enter a valid task number.");
-        assertParseError("delete", "Please enter task number to delete task!");
-        assertParseError("delete 1 2", "Please enter a valid task number.");
-        assertParseError("delete 2147483648", "Please enter a valid task number.");
+        assertParseError("mark", TASK_NUMBER_ERROR);
+        assertParseError("unmark abc", TASK_NUMBER_ERROR);
+        assertParseError("delete", TASK_NUMBER_ERROR);
+        assertParseError("delete 1 2", TASK_NUMBER_ERROR);
+        assertParseError("delete 2147483648", TASK_NUMBER_ERROR);
     }
 
     @Test
     public void parse_emptyTodoDescription_throwsDescriptionError() {
-        assertParseError("todo", "The description of a todo cannot be empty.");
+        assertParseError("todo", TODO_DESCRIPTION_ERROR);
     }
 
     @Test
     public void parse_invalidDeadlineSyntax_throwsRelevantError() {
-        assertParseError("deadline", "The description of a deadline cannot be empty.");
+        String descriptionError = "The description of a deadline cannot be empty."
+                + DEADLINE_COMMAND_EXAMPLE;
+        String dateError = "The deadline command needs a non-empty /by date."
+                + DEADLINE_COMMAND_EXAMPLE;
+
+        assertParseError("deadline", descriptionError);
         assertParseError("deadline /by 2026-08-30",
-                "The description of a deadline cannot be empty.");
-        assertParseError("deadline return book",
-                "The deadline command needs a non-empty /by date.");
-        assertParseError("deadline return book /by",
-                "The deadline command needs a non-empty /by date.");
+                descriptionError);
+        assertParseError("deadline return book", dateError);
+        assertParseError("deadline return book /by", dateError);
     }
 
     @Test

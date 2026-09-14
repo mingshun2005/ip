@@ -28,6 +28,17 @@ public class Parser {
             "Please enter a valid deadline date in yyyy-MM-dd format or as "
                     + "Mon, Tue, Wed, Thu, Fri, Sat, or Sun.";
 
+    /** Example that demonstrates the required todo command syntax. */
+    private static final String TODO_COMMAND_EXAMPLE = " Try: todo read a book.";
+
+    /** Example that demonstrates the required deadline command syntax. */
+    private static final String DEADLINE_COMMAND_EXAMPLE =
+            " Try: deadline submit report /by 2026-10-15.";
+
+    /** Recovery guidance for commands that require a task number. */
+    private static final String TASK_NUMBER_GUIDANCE =
+            " Use list to check the available task numbers.";
+
     /**
      * Creates a command parser.
      */
@@ -101,13 +112,11 @@ public class Parser {
      */
     private int parseTaskNumber(String input, CommandType commandType) throws DuckException {
         String taskNumberText = extractArguments(input, commandType);
-        if (commandType == CommandType.DELETE && taskNumberText.isEmpty()) {
-            throw new DuckException("Please enter task number to delete task!");
-        }
         try {
             return Integer.parseInt(taskNumberText);
         } catch (NumberFormatException e) {
-            throw new DuckException("Please enter a valid task number.");
+            throw new DuckException("Please enter a valid task number."
+                    + TASK_NUMBER_GUIDANCE);
         }
     }
 
@@ -121,7 +130,8 @@ public class Parser {
     private Task parseTodo(String input) throws DuckException {
         String description = extractArguments(input, CommandType.TODO);
         if (description.isEmpty()) {
-            throw new DuckException("The description of a todo cannot be empty.");
+            throw new DuckException("The description of a todo cannot be empty."
+                    + TODO_COMMAND_EXAMPLE);
         }
         return new Todo(description);
     }
@@ -164,12 +174,14 @@ public class Parser {
     private Task parseDeadline(String input) throws DuckException {
         String deadlineDetails = extractArguments(input, CommandType.DEADLINE);
         if (deadlineDetails.isEmpty() || deadlineDetails.startsWith("/by ")) {
-            throw new DuckException("The description of a deadline cannot be empty.");
+            throw new DuckException("The description of a deadline cannot be empty."
+                    + DEADLINE_COMMAND_EXAMPLE);
         }
 
         String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
         if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
-            throw new DuckException("The deadline command needs a non-empty /by date.");
+            throw new DuckException("The deadline command needs a non-empty /by date."
+                    + DEADLINE_COMMAND_EXAMPLE);
         }
         LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadline[1].trim());
         return new Deadline(descriptionAndDeadline[0].trim(), deadlineDate);

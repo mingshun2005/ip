@@ -108,7 +108,7 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
 Quack? I didn't understand that command. Try help to see what I can do.
@@ -153,10 +153,10 @@ ____________________________________________________________
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Got it—this task is now under my wing:
@@ -164,10 +164,10 @@ ____________________________________________________________
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? That task number does not exist.
+Quack? That task number does not exist. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
-Quack? Please enter a valid task number.
+Quack? Please enter a valid task number. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Nicely done! I've marked this task as complete:
@@ -221,10 +221,10 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Got it—this task is now under my wing:
@@ -309,10 +309,10 @@ ____________________________________________________________
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? That task number does not exist.
+Quack? That task number does not exist. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
-Quack? Please enter a valid task number.
+Quack? Please enter a valid task number. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your pond:
@@ -600,10 +600,10 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
 Quack? The event command needs a /from and /to time.

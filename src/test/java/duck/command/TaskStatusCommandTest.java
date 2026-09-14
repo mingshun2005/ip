@@ -70,8 +70,10 @@ public class TaskStatusCommandTest {
         DuckException unmarkException = assertThrows(DuckException.class, () ->
                 new UnmarkCommand(3).execute(tasks, new Ui(), storage));
 
-        assertEquals("That task number does not exist.", markException.getMessage());
-        assertEquals("That task number does not exist.", unmarkException.getMessage());
+        String expectedMessage = "That task number does not exist. "
+                + "Use list to check the available task numbers.";
+        assertEquals(expectedMessage, markException.getMessage());
+        assertEquals(expectedMessage, unmarkException.getMessage());
         assertFalse(incompleteTask.isDone());
         assertTrue(completedTask.isDone());
     }
