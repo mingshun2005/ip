@@ -20,8 +20,8 @@ public class MainWindow {
     /** Delay between showing the farewell response and closing the window, in seconds. */
     private static final int EXIT_DELAY_SECONDS = 3;
 
-    /** Avatar displayed beside Duck's responses. */
-    private final Image duckImage = loadImage("/images/DonaldDuck.png");
+    /** Original Duck mascot displayed beside chatbot responses. */
+    private final Image duckImage = loadImage("/images/DuckMascot.png");
 
     /** Avatar displayed beside the user's commands. */
     private final Image userImage = loadImage("/images/User.png");

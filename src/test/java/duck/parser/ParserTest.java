@@ -11,6 +11,7 @@ import duck.command.AddCommand;
 import duck.command.DeleteCommand;
 import duck.command.ExitCommand;
 import duck.command.FindCommand;
+import duck.command.HelpCommand;
 import duck.command.ListCommand;
 import duck.command.MarkCommand;
 import duck.command.UnmarkCommand;
@@ -25,6 +26,7 @@ public class ParserTest {
     public void parse_commandsWithoutArguments_returnsMatchingCommandTypes() throws DuckException {
         assertInstanceOf(ExitCommand.class, this.parser.parse("bye"));
         assertInstanceOf(ListCommand.class, this.parser.parse("list"));
+        assertInstanceOf(HelpCommand.class, this.parser.parse("help"));
     }
 
     @Test
@@ -60,7 +62,8 @@ public class ParserTest {
 
     @Test
     public void parse_unknownCommandsAndPrefixCollisions_throwsUnknownCommandError() {
-        String expectedMessage = "I'm sorry, but I don't know what that means :-(";
+        String expectedMessage =
+                "I didn't understand that command. Try help to see what I can do.";
 
         assertParseError("", expectedMessage);
         assertParseError("unknown", expectedMessage);

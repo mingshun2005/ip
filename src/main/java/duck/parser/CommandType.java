@@ -10,6 +10,9 @@ public enum CommandType {
     /** Command that displays the current task list. */
     LIST("list", false),
 
+    /** Command that displays guidance for every supported command. */
+    HELP("help", false),
+
     /** Command that finds tasks containing a keyword. */
     FIND("find", true),
 

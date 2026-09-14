@@ -15,11 +15,14 @@
 .duck-bubble {
     -fx-background-color: #e7ebf0;
     -fx-background-radius: 12 12 12 3;
+    -fx-border-color: transparent transparent transparent app-warm-accent;
+    -fx-border-radius: 12 12 12 3;
+    -fx-border-width: 0 0 0 2;
     -fx-text-fill: #202124;
 }
 
 .duck-speaker {
-    -fx-text-fill: #667085;
+    -fx-text-fill: #8a5a00;
 }
 
 .error-bubble {

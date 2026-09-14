@@ -24,8 +24,20 @@ public class Ui {
             + "|____/ \\__,_|\\___|_|\\_\\\n";
 
     /** Greeting shared by the console and graphical interfaces. */
-    private static final String GREETING = "Hello! I'm Duck. Quack~\n"
-            + "What can I do for you?";
+    private static final String GREETING = "Quack! I'm Duck.\n"
+            + "What shall we get done today?";
+
+    /** Command summary shown when the user asks Duck for help. */
+    private static final String COMMAND_GUIDE = "Here are the commands I can help with:\n"
+            + "  todo DESCRIPTION\n"
+            + "  deadline DESCRIPTION /by DATE\n"
+            + "  event DESCRIPTION /from START /to END\n"
+            + "  list\n"
+            + "  find KEYWORD\n"
+            + "  mark NUMBER\n"
+            + "  unmark NUMBER\n"
+            + "  delete NUMBER\n"
+            + "  bye";
 
     /** Reads commands from the console. */
     private final Scanner scanner;
@@ -88,7 +100,12 @@ public class Ui {
 
     /** Shows the farewell message. The command loop prints the closing divider. */
     public void showGoodbye() {
-        this.output.println("Bye. Hope to see you again soon!");
+        this.output.println("Goodbye! Keep your ducks in a row!");
+    }
+
+    /** Shows the commands that Duck understands. */
+    public void showHelp() {
+        this.output.println(COMMAND_GUIDE);
     }
 
     /**
@@ -97,13 +114,21 @@ public class Ui {
      * @param tasks Tasks to display.
      */
     public void showTaskList(List<Task> tasks) {
-        this.output.println("Here are the tasks in your list:");
+        if (tasks.isEmpty()) {
+            this.output.println("The pond is clear—there are no tasks yet.");
+            return;
+        }
+        this.output.println("Here are the tasks in your pond:");
         showNumberedTasks(tasks);
     }
 
     /** Shows tasks whose descriptions match a find keyword. */
     public void showMatchingTasks(List<Task> tasks) {
-        this.output.println("Here are the matching tasks in your list:");
+        if (tasks.isEmpty()) {
+            this.output.println("No matching tasks surfaced in the pond.");
+            return;
+        }
+        this.output.println("Here are the matching tasks in your pond:");
         showNumberedTasks(tasks);
     }
 
@@ -121,7 +146,7 @@ public class Ui {
      */
     public void showTaskMarked(Task task) {
         showLines(
-                "Nice! I've marked this task as done:",
+                "✓ Nicely done! I've marked this task as complete:",
                 "  " + task);
     }
 
@@ -132,7 +157,7 @@ public class Ui {
      */
     public void showTaskUnmarked(Task task) {
         showLines(
-                "OK, I've marked this task as not done yet:",
+                "✓ No problem—this task is active again:",
                 "  " + task);
     }
 
@@ -144,9 +169,9 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int taskCount) {
         showLines(
-                "Got it. I've added this task:",
+                "✓ Got it—this task is now under my wing:",
                 String.valueOf(task),
-                "Now you have " + taskCount + " tasks in the list.");
+                getTaskCountMessage(taskCount));
     }
 
     /**
@@ -157,9 +182,9 @@ public class Ui {
      */
     public void showTaskDeleted(Task task, int taskCount) {
         showLines(
-                "Noted. I've removed this task:",
+                "✓ Removed! That task has left the pond:",
                 "  " + task,
-                "Now you have " + taskCount + " tasks in the list.");
+                getTaskCountMessage(taskCount));
     }
 
     /**
@@ -168,7 +193,13 @@ public class Ui {
      * @param message user-facing explanation of the error
      */
     public void showError(String message) {
-        this.output.println("OOPS!!! " + message);
+        this.output.println("Quack? " + message);
+    }
+
+    /** Returns a grammatically correct summary of the number of saved tasks. */
+    private String getTaskCountMessage(int taskCount) {
+        String taskNoun = taskCount == 1 ? "task" : "tasks";
+        return "You now have " + taskCount + " " + taskNoun + " in your pond.";
     }
 
     /**
