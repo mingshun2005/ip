@@ -23,6 +23,19 @@
     -fx-text-fill: #667085;
 }
 
+.error-bubble {
+    -fx-background-color: #fff1f0;
+    -fx-background-radius: 12 12 12 3;
+    -fx-border-color: #d92d20;
+    -fx-border-radius: 12 12 12 3;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a271a;
+}
+
+.error-speaker {
+    -fx-text-fill: #b42318;
+}
+
 .user-bubble {
     -fx-background-color: #287bde;
     -fx-background-radius: 12 12 3 12;

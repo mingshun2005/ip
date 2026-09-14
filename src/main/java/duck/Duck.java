@@ -34,6 +34,9 @@ public class Duck {
     /** Whether the latest graphical-interface command requested that Duck exit. */
     private boolean isExitRequested;
 
+    /** Whether the latest graphical-interface command produced an error response. */
+    private boolean isLastResponseError;
+
     /**
      * Creates a chatbot backed by the given task file and loads its initial tasks.
      * An invalid or unreadable file produces an empty task list while retaining an
@@ -57,6 +60,7 @@ public class Duck {
         this.tasks = loadedTasks;
         this.loadingErrorMessage = loadErrorMessage;
         this.isExitRequested = false;
+        this.isLastResponseError = false;
     }
 
     /**
@@ -106,6 +110,7 @@ public class Duck {
     public String getResponse(String input) {
         Objects.requireNonNull(input, "User input cannot be null.");
         this.isExitRequested = false;
+        this.isLastResponseError = false;
 
         ByteArrayOutputStream responseBuffer = new ByteArrayOutputStream();
         try (PrintStream responseOutput = new PrintStream(
@@ -116,6 +121,7 @@ public class Duck {
                 command.execute(this.tasks, responseUi, this.storage);
                 this.isExitRequested = command.isExit();
             } catch (DuckException e) {
+                this.isLastResponseError = true;
                 responseUi.showError(e.getMessage());
             }
         }
@@ -129,6 +135,15 @@ public class Duck {
      */
     public boolean isExitRequested() {
         return this.isExitRequested;
+    }
+
+    /**
+     * Returns whether the latest graphical-interface command produced an error.
+     *
+     * @return true when the latest command could not be completed
+     */
+    public boolean isLastResponseError() {
+        return this.isLastResponseError;
     }
 
     /**

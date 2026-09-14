@@ -85,4 +85,23 @@ public class DialogBox extends HBox {
         dialogBox.getChildren().setAll(dialogBox.displayPicture, dialogBox.messageContainer);
         return dialogBox;
     }
+
+    /**
+     * Creates a left-aligned dialog box that draws attention to an error response.
+     *
+     * @param message Error response to display.
+     * @param image Duck avatar to display.
+     * @return left-aligned error dialog box
+     */
+    public static DialogBox getErrorDialog(String message, Image image) {
+        DialogBox dialogBox = new DialogBox(message, image);
+        dialogBox.setAlignment(Pos.TOP_LEFT);
+        dialogBox.messageContainer.setAlignment(Pos.TOP_LEFT);
+        dialogBox.speaker.setText("⚠ ERROR");
+        dialogBox.getStyleClass().add("error-dialog");
+        dialogBox.speaker.getStyleClass().add("error-speaker");
+        dialogBox.text.getStyleClass().add("error-bubble");
+        dialogBox.getChildren().setAll(dialogBox.displayPicture, dialogBox.messageContainer);
+        return dialogBox;
+    }
 }

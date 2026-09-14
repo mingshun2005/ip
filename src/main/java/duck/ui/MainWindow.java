@@ -76,8 +76,10 @@ public class MainWindow {
             this.dialogContainer.getChildren().add(
                     DialogBox.getUserDialog(userText, this.userImage));
         }
-        this.dialogContainer.getChildren().add(
-                DialogBox.getDuckDialog(duckText, this.duckImage));
+        DialogBox responseDialog = this.duck.isLastResponseError()
+                ? DialogBox.getErrorDialog(duckText, this.duckImage)
+                : DialogBox.getDuckDialog(duckText, this.duckImage);
+        this.dialogContainer.getChildren().add(responseDialog);
         this.userInput.clear();
 
         if (this.duck.isExitRequested()) {
