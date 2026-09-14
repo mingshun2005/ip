@@ -9,6 +9,7 @@ import duck.command.Command;
 import duck.command.DeleteCommand;
 import duck.command.ExitCommand;
 import duck.command.FindCommand;
+import duck.command.HelpCommand;
 import duck.command.ListCommand;
 import duck.command.MarkCommand;
 import duck.command.UnmarkCommand;
@@ -45,6 +46,7 @@ public class Parser {
         return switch (commandType) {
             case BYE -> new ExitCommand();
             case LIST -> new ListCommand();
+            case HELP -> new HelpCommand();
             case FIND -> new FindCommand(parseFindKeyword(input));
             case MARK -> new MarkCommand(parseTaskNumber(input, commandType));
             case UNMARK -> new UnmarkCommand(parseTaskNumber(input, commandType));
@@ -85,7 +87,8 @@ public class Parser {
                 return commandType;
             }
         }
-        throw new DuckException("I'm sorry, but I don't know what that means :-(");
+        throw new DuckException(
+                "I didn't understand that command. Try help to see what I can do.");
     }
 
     /**

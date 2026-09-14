@@ -18,7 +18,7 @@ import duck.ui.Ui;
 public class Duck {
     /** Short command examples displayed in the graphical welcome message. */
     private static final String GUI_COMMAND_EXAMPLES =
-            "Try: todo read a book, list, or find book.";
+            "Try: todo read a book, list, or find book. Type help for every command.";
 
     /** User interface used for console input and output. */
     private final Ui ui;
@@ -104,7 +104,7 @@ public class Duck {
         if (this.loadingErrorMessage == null) {
             return graphicalGreeting;
         }
-        return graphicalGreeting + "\nOOPS!!! " + this.loadingErrorMessage;
+        return graphicalGreeting + "\nQuack? " + this.loadingErrorMessage;
     }
 
     /**

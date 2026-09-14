@@ -20,11 +20,11 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -49,32 +49,32 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] borrow book
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] return book (by: Aug 30 2026)
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
-Now you have 3 tasks in the list.
+You now have 3 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][ ] borrow book
 2.[D][ ] return book (by: Aug 30 2026)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -104,17 +104,17 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -143,42 +143,42 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] first
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] second
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! That task number does not exist.
+Quack? That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid task number.
+Quack? Please enter a valid task number.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Nicely done! I've marked this task as complete:
   [T][X] second
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][ ] first
 2.[T][X] second
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -213,41 +213,41 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] return book (by: Aug 30 2026)
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of an event cannot be empty.
+Quack? The description of an event cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The description of an event cannot be empty.
+Quack? The description of an event cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The event command needs a /from and /to time.
+Quack? The event command needs a /from and /to time.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [E][ ] meeting (from: Mon 2pm to: 4pm)
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[D][ ] return book (by: Aug 30 2026)
 2.[E][ ] meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -281,42 +281,42 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] first
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] second
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] third
-Now you have 3 tasks in the list.
+You now have 3 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Noted. I've removed this task:
+Removed! That task has left the pond:
   [T][ ] second
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! That task number does not exist.
+Quack? That task number does not exist.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid task number.
+Quack? Please enter a valid task number.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][ ] first
 2.[T][ ] third
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -346,24 +346,24 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] first
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Nicely done! I've marked this task as complete:
   [T][X] first
 ____________________________________________________________
 ____________________________________________________________
-OK, I've marked this task as not done yet:
+No problem—this task is active again:
   [T][ ] first
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -398,21 +398,21 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][X] read book
 2.[D][ ] return book (by: Aug 30 2026)
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
-Nice! I've marked this task as done:
+Nicely done! I've marked this task as complete:
   [D][X] return book (by: Aug 30 2026)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -448,16 +448,16 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
-OOPS!!! Unable to load tasks from line 2: the status must be 0 or 1.
-____________________________________________________________
-____________________________________________________________
-Here are the tasks in your list:
+Quack? Unable to load tasks from line 2: the status must be 0 or 1.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+The pond is clear—there are no tasks yet.
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -495,22 +495,22 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][X] review A | B
 2.[D][ ] path C:\tmp | Friday (by: Aug 28 2026)
 3.[E][ ] sync | plan (from: Room C:\1 to: Room C:\2)
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] keep A | B \ C
-Now you have 4 tasks in the list.
+You now have 4 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -546,17 +546,17 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Unable to save tasks to data/duck.txt.
+Quack? Unable to save tasks to data/duck.txt.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+The pond is clear—there are no tasks yet.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -588,29 +588,29 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The event command needs a /from and /to time.
+Quack? The event command needs a /from and /to time.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The event command needs a non-empty /from and /to time.
+Quack? The event command needs a non-empty /from and /to time.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The event command needs a /from and /to time.
+Quack? The event command needs a /from and /to time.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+The pond is clear—there are no tasks yet.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -644,56 +644,56 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
+Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] leap day (by: Feb 29 2024)
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] submit report (by: Oct 15 2026)
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[D][ ] leap day (by: Feb 29 2024)
 2.[D][ ] submit report (by: Oct 15 2026)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -727,16 +727,16 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
-OOPS!!! Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
-____________________________________________________________
-____________________________________________________________
-Here are the tasks in your list:
+Quack? Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+The pond is clear—there are no tasks yet.
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -766,26 +766,26 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] earliest supported (by: Jan 01 0001)
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [D][ ] latest supported (by: Dec 31 9999)
-Now you have 2 tasks in the list.
+You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[D][ ] earliest supported (by: Jan 01 0001)
 2.[D][ ] latest supported (by: Dec 31 9999)
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -819,16 +819,16 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
-OOPS!!! Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
-____________________________________________________________
-____________________________________________________________
-Here are the tasks in your list:
+Quack? Unable to load tasks from line 1: the deadline date must be a valid yyyy-MM-dd date.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+The pond is clear—there are no tasks yet.
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -861,32 +861,32 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-Got it. I've added this task:
+Got it—this task is now under my wing:
 [T][ ] valid
-Now you have 1 tasks in the list.
+You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Here are the tasks in your list:
+Here are the tasks in your pond:
 1.[T][ ] valid
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -925,29 +925,29 @@ ____________________________________________________________
 | |_| | |_| | (__|   <
 |____/ \__,_|\___|_|\_\
 
-Hello! I'm Duck. Quack~
-What can I do for you?
+Quack! I'm Duck.
+What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Here are the matching tasks in your pond:
 1.[T][ ] Read BOOK
 2.[D][ ] return book (by: Aug 30 2026)
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+Here are the matching tasks in your pond:
 1.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
-Here are the matching tasks in your list:
+No matching tasks surfaced in the pond.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! The keyword for a find command cannot be empty.
+Quack? The keyword for a find command cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-OOPS!!! I'm sorry, but I don't know what that means :-(
+Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-Bye. Hope to see you again soon!
+Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
 
@@ -957,4 +957,42 @@ T | 0 | Read BOOK
 D | 0 | return book | 2026-08-30
 E | 0 | project meeting | Mon 2pm | 4pm
 T | 0 | submit assignment
+```
+
+## Test Case 19: Help lists every supported command
+Aim: Verify that help displays complete command guidance and does not alter saved tasks.
+
+### Input
+```text
+help
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Quack! I'm Duck.
+What shall we get done today?
+____________________________________________________________
+____________________________________________________________
+Here are the commands I can help with:
+  todo DESCRIPTION
+  deadline DESCRIPTION /by DATE
+  event DESCRIPTION /from START /to END
+  list
+  find KEYWORD
+  mark NUMBER
+  unmark NUMBER
+  delete NUMBER
+  bye
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
+____________________________________________________________
 ```

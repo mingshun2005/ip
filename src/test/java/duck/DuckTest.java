@@ -20,8 +20,9 @@ public class DuckTest {
     public void getWelcomeMessage_missingDataFile_returnsExistingGreeting() {
         Duck duck = createDuck();
 
-        assertEquals("Hello! I'm Duck. Quack~ What can I do for you? "
-                + "Try: todo read a book, list, or find book.",
+        assertEquals("Quack! I'm Duck. What shall we get done today? "
+                + "Try: todo read a book, list, or find book. "
+                + "Type help for every command.",
                 duck.getWelcomeMessage());
     }
 
@@ -33,11 +34,11 @@ public class DuckTest {
         boolean isAddResponseError = duck.isLastResponseError();
         String listResponse = duck.getResponse("list");
 
-        assertEquals("Got it. I've added this task:\n"
+        assertEquals("Got it—this task is now under my wing:\n"
                 + "[T][ ] read book\n"
-                + "Now you have 1 tasks in the list.", addResponse);
+                + "You now have 1 task in your pond.", addResponse);
         assertFalse(isAddResponseError);
-        assertEquals("Here are the tasks in your list:\n"
+        assertEquals("Here are the tasks in your pond:\n"
                 + "1.[T][ ] read book", listResponse);
         assertFalse(duck.isLastResponseError());
     }
@@ -45,7 +46,8 @@ public class DuckTest {
     @Test
     public void getResponse_unknownOrEmptyCommand_returnsUserFacingError() {
         Duck duck = createDuck();
-        String expectedMessage = "OOPS!!! I'm sorry, but I don't know what that means :-(";
+        String expectedMessage =
+                "Quack? I didn't understand that command. Try help to see what I can do.";
 
         assertEquals(expectedMessage, duck.getResponse("unknown"));
         assertTrue(duck.isLastResponseError());
@@ -69,8 +71,25 @@ public class DuckTest {
     public void getResponse_bye_returnsFarewellAndRequestsExit() {
         Duck duck = createDuck();
 
-        assertEquals("Bye. Hope to see you again soon!", duck.getResponse("bye"));
+        assertEquals("Goodbye! Keep your ducks in a row!", duck.getResponse("bye"));
         assertTrue(duck.isExitRequested());
+    }
+
+    @Test
+    public void getResponse_help_returnsCommandGuide() {
+        Duck duck = createDuck();
+
+        assertEquals("Here are the commands I can help with:\n"
+                + "  todo DESCRIPTION\n"
+                + "  deadline DESCRIPTION /by DATE\n"
+                + "  event DESCRIPTION /from START /to END\n"
+                + "  list\n"
+                + "  find KEYWORD\n"
+                + "  mark NUMBER\n"
+                + "  unmark NUMBER\n"
+                + "  delete NUMBER\n"
+                + "  bye", duck.getResponse("help"));
+        assertFalse(duck.isLastResponseError());
     }
 
     /** Creates a Duck using a fresh task file for each test. */
