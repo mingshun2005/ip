@@ -73,6 +73,38 @@ jacocoTestReport {
     }
 }
 
+def manuallyTestedClasses = [
+        'duck/Launcher.class',
+        'duck/Main.class',
+        'duck/ui/DialogBox*.class',
+        'duck/ui/MainWindow*.class'
+]
+
+jacocoTestCoverageVerification {
+    dependsOn test
+
+    classDirectories.setFrom(sourceSets.main.output.asFileTree.matching {
+        exclude manuallyTestedClasses
+    })
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
+
 application {
     mainClass = 'duck.Launcher'
 }

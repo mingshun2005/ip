@@ -34,3 +34,13 @@ Run the automated tests with Java 25:
 
 The test task also generates a JaCoCo coverage report. Open
 `build/reports/jacoco/test/html/index.html` to inspect line and branch coverage.
+
+Run all project checks, including the coverage requirements, with:
+
+```shell
+./gradlew check
+```
+
+Automatically testable classes must maintain at least 90% line coverage and
+80% branch coverage. JavaFX window and launcher classes are excluded from this
+gate because they are covered by manual GUI testing.
