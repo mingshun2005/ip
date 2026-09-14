@@ -10,14 +10,23 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
 /**
  * Displays one wrapped message and an optional avatar aligned according to its speaker.
  */
 public class DialogBox extends HBox {
+    /** Label identifying the speaker for this message. */
+    @FXML
+    private Label speaker;
+
     /** Text shown in this dialog box. */
     @FXML
     private Label text;
+
+    /** Vertical container holding the speaker label and message bubble. */
+    @FXML
+    private VBox messageContainer;
 
     /** Avatar shown beside the message. */
     @FXML
@@ -50,7 +59,10 @@ public class DialogBox extends HBox {
     public static DialogBox getUserDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.setAlignment(Pos.TOP_RIGHT);
+        dialogBox.messageContainer.setAlignment(Pos.TOP_RIGHT);
+        dialogBox.speaker.setText("YOU");
         dialogBox.getStyleClass().add("user-dialog");
+        dialogBox.speaker.getStyleClass().add("user-speaker");
         dialogBox.text.getStyleClass().add("user-bubble");
         return dialogBox;
     }
@@ -65,9 +77,12 @@ public class DialogBox extends HBox {
     public static DialogBox getDuckDialog(String message, Image image) {
         DialogBox dialogBox = new DialogBox(message, image);
         dialogBox.setAlignment(Pos.TOP_LEFT);
+        dialogBox.messageContainer.setAlignment(Pos.TOP_LEFT);
+        dialogBox.speaker.setText("DUCK");
         dialogBox.getStyleClass().add("duck-dialog");
+        dialogBox.speaker.getStyleClass().add("duck-speaker");
         dialogBox.text.getStyleClass().add("duck-bubble");
-        dialogBox.getChildren().setAll(dialogBox.displayPicture, dialogBox.text);
+        dialogBox.getChildren().setAll(dialogBox.displayPicture, dialogBox.messageContainer);
         return dialogBox;
     }
 }
