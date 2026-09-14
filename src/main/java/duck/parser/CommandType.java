@@ -38,17 +38,17 @@ public enum CommandType {
     private final String commandWord;
 
     /** Whether text may follow the command word. */
-    private final boolean acceptsArguments;
+    private final boolean canAcceptArguments;
 
     /**
      * Creates a command type with its input syntax.
      *
      * @param commandWord Word that identifies the command.
-     * @param acceptsArguments Whether the command accepts trailing arguments.
+     * @param canAcceptArguments Whether the command accepts trailing arguments.
      */
-    CommandType(String commandWord, boolean acceptsArguments) {
+    CommandType(String commandWord, boolean canAcceptArguments) {
         this.commandWord = commandWord;
-        this.acceptsArguments = acceptsArguments;
+        this.canAcceptArguments = canAcceptArguments;
     }
 
     /**
@@ -65,7 +65,7 @@ public enum CommandType {
      *
      * @return true when the command accepts arguments
      */
-    public boolean acceptsArguments() {
-        return this.acceptsArguments;
+    public boolean canAcceptArguments() {
+        return this.canAcceptArguments;
     }
 }

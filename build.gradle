@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'checkstyle'
+    id 'jacoco'
     id 'application'
     id 'com.gradleup.shadow' version '9.5.1'
 }
@@ -16,6 +17,10 @@ repositories {
 
 checkstyle {
     toolVersion = '11.0.0'
+}
+
+jacoco {
+    toolVersion = '0.8.15'
 }
 
 dependencies {
@@ -45,6 +50,8 @@ dependencies {
 test {
     useJUnitPlatform()
 
+    finalizedBy jacocoTestReport
+
     testLogging {
         events 'passed', 'skipped', 'failed'
 
@@ -55,6 +62,48 @@ test {
         showStandardStreams = false
     }
 }
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        html.required = true
+        xml.required = true
+        csv.required = false
+    }
+}
+
+def manuallyTestedClasses = [
+        'duck/Launcher.class',
+        'duck/Main.class',
+        'duck/ui/DialogBox*.class',
+        'duck/ui/MainWindow*.class'
+]
+
+jacocoTestCoverageVerification {
+    dependsOn test
+
+    classDirectories.setFrom(sourceSets.main.output.asFileTree.matching {
+        exclude manuallyTestedClasses
+    })
+
+    violationRules {
+        rule {
+            limit {
+                counter = 'LINE'
+                value = 'COVEREDRATIO'
+                minimum = 0.90
+            }
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.80
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification
 
 application {
     mainClass = 'duck.Launcher'

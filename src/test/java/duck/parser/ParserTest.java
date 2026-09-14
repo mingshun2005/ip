@@ -169,6 +169,20 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_structuredEventBoundaryTimes_returnsAddCommands() throws DuckException {
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event instant /from 2026-10-15 1400 /to 2026-10-15 1400"));
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event overnight /from 2026-10-15 2300 /to 2026-10-16 0100"));
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event leap day /from 2024-02-29 2300 /to 2024-03-01 0000"));
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event earliest /from 0001-01-01 0000 /to 0001-01-01 0001"));
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event latest /from 9999-12-31 2358 /to 9999-12-31 2359"));
+    }
+
+    @Test
     public void parse_invalidStructuredEventTimes_throwsDateTimeFormatError() {
         String expectedMessage = "Please enter valid event times in yyyy-MM-dd HHmm format."
                 + EVENT_RANGE_EXAMPLE;
@@ -190,6 +204,14 @@ public class ParserTest {
                 this.parser.parse("event meeting /from Monday 2pm /to 4pm"));
         assertInstanceOf(AddCommand.class,
                 this.parser.parse("event workshop /from afternoon /to evening"));
+    }
+
+    @Test
+    public void parse_mixedStructuredAndFreeFormEventTimes_remainSupported() throws DuckException {
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event planning /from 2026-10-15 1400 /to after lunch"));
+        assertInstanceOf(AddCommand.class, this.parser.parse(
+                "event review /from Monday morning /to 2026-10-15 1500"));
     }
 
     /** Verifies that parsing fails with the exact user-facing error message. */
