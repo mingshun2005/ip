@@ -24,8 +24,8 @@
             </children>
         </VBox>
         <ImageView fx:id="displayPicture"
-                   fitHeight="55.0"
-                   fitWidth="55.0"
+                   fitHeight="42.0"
+                   fitWidth="42.0"
                    preserveRatio="true"
                    styleClass="avatar" />
     </children>
