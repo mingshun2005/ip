@@ -38,6 +38,12 @@ public abstract class TaskStatusCommand extends Command {
 
         int taskIndex = this.taskNumber - 1;
         Task task = tasks.get(taskIndex);
+        if (task.isDone() == this.shouldMarkAsDone) {
+            String existingStatus = this.shouldMarkAsDone ? "complete" : "active";
+            throw new DuckException(
+                    "Task " + this.taskNumber + " is already " + existingStatus + ".");
+        }
+
         boolean wasDone = task.isDone();
         setTaskStatus(tasks, taskIndex, this.shouldMarkAsDone);
         assert task.isDone() == this.shouldMarkAsDone

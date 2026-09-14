@@ -77,6 +77,31 @@ public class TaskStatusCommandTest {
     }
 
     @Test
+    public void markExecute_alreadyCompletedTask_throwsWithoutSaving() {
+        Task task = new Todo("task");
+        task.markAsDone();
+        TaskList tasks = new TaskList(List.of(task));
+
+        DuckException exception = assertThrows(DuckException.class, () ->
+                new MarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
+
+        assertEquals("Task 1 is already complete.", exception.getMessage());
+        assertTrue(task.isDone());
+    }
+
+    @Test
+    public void unmarkExecute_alreadyIncompleteTask_throwsWithoutSaving() {
+        Task task = new Todo("task");
+        TaskList tasks = new TaskList(List.of(task));
+
+        DuckException exception = assertThrows(DuckException.class, () ->
+                new UnmarkCommand(1).execute(tasks, new Ui(), new FailingStorage()));
+
+        assertEquals("Task 1 is already active.", exception.getMessage());
+        assertFalse(task.isDone());
+    }
+
+    @Test
     public void markExecute_saveFails_restoresIncompleteStatus() {
         Task task = new Todo("task");
         TaskList tasks = new TaskList(List.of(task));
