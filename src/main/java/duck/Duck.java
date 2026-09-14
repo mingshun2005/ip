@@ -95,10 +95,11 @@ public class Duck {
      * @return startup message to display in Duck's first dialog box
      */
     public String getWelcomeMessage() {
+        String graphicalGreeting = Ui.getGreeting().replace('\n', ' ');
         if (this.loadingErrorMessage == null) {
-            return Ui.getGreeting();
+            return graphicalGreeting;
         }
-        return Ui.getGreeting() + "\nOOPS!!! " + this.loadingErrorMessage;
+        return graphicalGreeting + "\nOOPS!!! " + this.loadingErrorMessage;
     }
 
     /**
