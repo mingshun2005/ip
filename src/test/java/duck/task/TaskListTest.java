@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -247,6 +248,47 @@ public class TaskListTest {
         List<Task> matches = tasks.find("book");
 
         assertThrows(UnsupportedOperationException.class, () -> matches.add(new Todo("another book")));
+    }
+
+    @Test
+    public void indexOfTaskWithSameDetails_exactTodo_returnsMatchingIndex() {
+        Task completedTask = new Todo("read book");
+        completedTask.markAsDone();
+        TaskList tasks = new TaskList(List.of(new Todo("exercise"), completedTask));
+
+        assertEquals(1, tasks.indexOfTaskWithSameDetails(new Todo("read book")));
+    }
+
+    @Test
+    public void indexOfTaskWithSameDetails_differentTaskDetails_returnsNegativeOne() {
+        TaskList tasks = new TaskList(List.of(
+                new Todo("submit report"),
+                new Deadline("submit report", LocalDate.of(2026, 10, 15)),
+                new Event("meeting", "Monday 2pm", "Monday 4pm")));
+
+        assertEquals(-1, tasks.indexOfTaskWithSameDetails(
+                new Deadline("submit report", LocalDate.of(2026, 10, 16))));
+        assertEquals(-1, tasks.indexOfTaskWithSameDetails(
+                new Event("meeting", "Monday 2pm", "Monday 5pm")));
+    }
+
+    @Test
+    public void indexOfTaskWithSameDetails_matchingDeadlineAndEvent_returnsFirstMatch() {
+        Task deadline = new Deadline("submit report", LocalDate.of(2026, 10, 15));
+        Task event = new Event("meeting", " Monday 2pm ", " Monday 4pm ");
+        TaskList tasks = new TaskList(List.of(deadline, event));
+
+        assertEquals(0, tasks.indexOfTaskWithSameDetails(
+                new Deadline("submit report", LocalDate.of(2026, 10, 15))));
+        assertEquals(1, tasks.indexOfTaskWithSameDetails(
+                new Event("meeting", "Monday 2pm", "Monday 4pm")));
+    }
+
+    @Test
+    public void indexOfTaskWithSameDetails_nullTask_throwsNullPointerException() {
+        TaskList tasks = new TaskList();
+
+        assertThrows(NullPointerException.class, () -> tasks.indexOfTaskWithSameDetails(null));
     }
 
     @Test

@@ -55,8 +55,10 @@ public class DeleteCommandTest {
         DuckException pastEndException = assertThrows(DuckException.class, () ->
                 new DeleteCommand(2).execute(tasks, new Ui(), storage));
 
-        assertEquals("That task number does not exist.", zeroException.getMessage());
-        assertEquals("That task number does not exist.", pastEndException.getMessage());
+        String expectedMessage = "That task number does not exist. "
+                + "Use list to check the available task numbers.";
+        assertEquals(expectedMessage, zeroException.getMessage());
+        assertEquals(expectedMessage, pastEndException.getMessage());
         assertEquals(List.of(originalTask), tasks.asList());
         assertFalse(Files.exists(this.temporaryDirectory.resolve("duck.txt")));
     }

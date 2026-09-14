@@ -28,7 +28,8 @@ public class DeleteCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException {
         if (this.taskNumber < 1 || this.taskNumber > tasks.size()) {
-            throw new DuckException("That task number does not exist.");
+            throw new DuckException("That task number does not exist. "
+                    + "Use list to check the available task numbers.");
         }
 
         int taskIndex = this.taskNumber - 1;

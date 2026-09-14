@@ -1,7 +1,11 @@
 package duck.parser;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
+import java.util.regex.Pattern;
 
 import duck.DuckException;
 import duck.command.AddCommand;
@@ -27,6 +31,35 @@ public class Parser {
     private static final String INVALID_COMMAND_DATE_MESSAGE =
             "Please enter a valid deadline date in yyyy-MM-dd format or as "
                     + "Mon, Tue, Wed, Thu, Fri, Sat, or Sun.";
+
+    /** Example that demonstrates the required todo command syntax. */
+    private static final String TODO_COMMAND_EXAMPLE = " Try: todo read a book.";
+
+    /** Example that demonstrates the required deadline command syntax. */
+    private static final String DEADLINE_COMMAND_EXAMPLE =
+            " Try: deadline submit report /by 2026-10-15.";
+
+    /** Example that demonstrates the comparable event date-time format. */
+    private static final String EVENT_RANGE_EXAMPLE =
+            " Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.";
+
+    /** Error shown when structured event endpoints contain an invalid date-time. */
+    private static final String INVALID_EVENT_DATE_TIME_MESSAGE =
+            "Please enter valid event times in yyyy-MM-dd HHmm format."
+                    + EVENT_RANGE_EXAMPLE;
+
+    /** Strict formatter for event endpoints that can be ordered reliably. */
+    private static final DateTimeFormatter EVENT_DATE_TIME_FORMAT =
+            DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+    /** Shape required before free-form event endpoints are parsed as date-times. */
+    private static final Pattern STRUCTURED_EVENT_TIME_PATTERN =
+            Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{4}");
+
+    /** Recovery guidance for commands that require a task number. */
+    private static final String TASK_NUMBER_GUIDANCE =
+            " Use list to check the available task numbers.";
 
     /**
      * Creates a command parser.
@@ -101,13 +134,11 @@ public class Parser {
      */
     private int parseTaskNumber(String input, CommandType commandType) throws DuckException {
         String taskNumberText = extractArguments(input, commandType);
-        if (commandType == CommandType.DELETE && taskNumberText.isEmpty()) {
-            throw new DuckException("Please enter task number to delete task!");
-        }
         try {
             return Integer.parseInt(taskNumberText);
         } catch (NumberFormatException e) {
-            throw new DuckException("Please enter a valid task number.");
+            throw new DuckException("Please enter a valid task number."
+                    + TASK_NUMBER_GUIDANCE);
         }
     }
 
@@ -121,7 +152,8 @@ public class Parser {
     private Task parseTodo(String input) throws DuckException {
         String description = extractArguments(input, CommandType.TODO);
         if (description.isEmpty()) {
-            throw new DuckException("The description of a todo cannot be empty.");
+            throw new DuckException("The description of a todo cannot be empty."
+                    + TODO_COMMAND_EXAMPLE);
         }
         return new Todo(description);
     }
@@ -151,7 +183,10 @@ public class Parser {
         if (times[0].trim().isEmpty() || times[1].trim().isEmpty()) {
             throw new DuckException("The event command needs a non-empty /from and /to time.");
         }
-        return new Event(descriptionAndTimes[0].trim(), times[0].trim(), times[1].trim());
+        String startTime = times[0].trim();
+        String endTime = times[1].trim();
+        validateEventRange(startTime, endTime);
+        return new Event(descriptionAndTimes[0].trim(), startTime, endTime);
     }
 
     /**
@@ -164,12 +199,14 @@ public class Parser {
     private Task parseDeadline(String input) throws DuckException {
         String deadlineDetails = extractArguments(input, CommandType.DEADLINE);
         if (deadlineDetails.isEmpty() || deadlineDetails.startsWith("/by ")) {
-            throw new DuckException("The description of a deadline cannot be empty.");
+            throw new DuckException("The description of a deadline cannot be empty."
+                    + DEADLINE_COMMAND_EXAMPLE);
         }
 
         String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
         if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
-            throw new DuckException("The deadline command needs a non-empty /by date.");
+            throw new DuckException("The deadline command needs a non-empty /by date."
+                    + DEADLINE_COMMAND_EXAMPLE);
         }
         LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadline[1].trim());
         return new Deadline(descriptionAndDeadline[0].trim(), deadlineDate);
@@ -190,6 +227,37 @@ public class Parser {
             return DeadlineDateParser.parseCommandDate(dateText, LocalDate.now());
         } catch (DateTimeParseException e) {
             throw new DuckException(INVALID_COMMAND_DATE_MESSAGE);
+        }
+    }
+
+    /**
+     * Rejects invalid or reversed event endpoints when both use the structured format.
+     * Other endpoint text remains free-form and is not compared.
+     */
+    private void validateEventRange(String startText, String endText) throws DuckException {
+        if (!STRUCTURED_EVENT_TIME_PATTERN.matcher(startText).matches()
+                || !STRUCTURED_EVENT_TIME_PATTERN.matcher(endText).matches()) {
+            return;
+        }
+
+        LocalDateTime startDateTime = parseEventDateTime(startText);
+        LocalDateTime endDateTime = parseEventDateTime(endText);
+        if (endDateTime.isBefore(startDateTime)) {
+            throw new DuckException("The event end cannot be earlier than its start."
+                    + EVENT_RANGE_EXAMPLE);
+        }
+    }
+
+    /** Parses one structured event endpoint into a date-time. */
+    private LocalDateTime parseEventDateTime(String dateTimeText) throws DuckException {
+        try {
+            LocalDateTime dateTime = LocalDateTime.parse(dateTimeText, EVENT_DATE_TIME_FORMAT);
+            if (dateTime.getYear() < 1) {
+                throw new DuckException(INVALID_EVENT_DATE_TIME_MESSAGE);
+            }
+            return dateTime;
+        } catch (DateTimeParseException e) {
+            throw new DuckException(INVALID_EVENT_DATE_TIME_MESSAGE);
         }
     }
 }

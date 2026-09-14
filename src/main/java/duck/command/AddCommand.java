@@ -29,6 +29,12 @@ public class AddCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException {
+        int duplicateTaskIndex = tasks.indexOfTaskWithSameDetails(this.task);
+        if (duplicateTaskIndex >= 0) {
+            throw new DuckException("That task already exists as task "
+                    + (duplicateTaskIndex + 1) + ".");
+        }
+
         int originalTaskCount = tasks.size();
         tasks.add(this.task);
         assert tasks.size() == originalTaskCount + 1

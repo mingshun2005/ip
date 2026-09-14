@@ -108,7 +108,7 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
 Quack? I didn't understand that command. Try help to see what I can do.
@@ -129,6 +129,7 @@ todo
 todo second
 mark 9
 mark x
+mark 2
 mark 2
 list
 bye
@@ -152,10 +153,10 @@ ____________________________________________________________
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a todo cannot be empty.
+Quack? The description of a todo cannot be empty. Try: todo read a book.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Got it—this task is now under my wing:
@@ -163,14 +164,17 @@ ____________________________________________________________
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? That task number does not exist.
+Quack? That task number does not exist. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
-Quack? Please enter a valid task number.
+Quack? Please enter a valid task number. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Nicely done! I've marked this task as complete:
   [T][X] second
+____________________________________________________________
+____________________________________________________________
+Quack? Task 2 is already complete.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your pond:
@@ -217,10 +221,10 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The description of a deadline cannot be empty.
+Quack? The description of a deadline cannot be empty. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
 ✓ Got it—this task is now under my wing:
@@ -305,10 +309,10 @@ ____________________________________________________________
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Quack? That task number does not exist.
+Quack? That task number does not exist. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
-Quack? Please enter a valid task number.
+Quack? Please enter a valid task number. Use list to check the available task numbers.
 ____________________________________________________________
 ____________________________________________________________
 Here are the tasks in your pond:
@@ -333,6 +337,7 @@ Aim: Verify that unmark changes a completed task back to incomplete in the save 
 ```text
 todo first
 mark 1
+unmark 1
 unmark 1
 bye
 ```
@@ -361,6 +366,9 @@ ____________________________________________________________
 ____________________________________________________________
 ✓ No problem—this task is active again:
   [T][ ] first
+____________________________________________________________
+____________________________________________________________
+Quack? Task 1 is already active.
 ____________________________________________________________
 ____________________________________________________________
 Goodbye! Keep your ducks in a row!
@@ -592,10 +600,10 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Quack? The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
-Quack? The deadline command needs a non-empty /by date.
+Quack? The deadline command needs a non-empty /by date. Try: deadline submit report /by 2026-10-15.
 ____________________________________________________________
 ____________________________________________________________
 Quack? The event command needs a /from and /to time.
@@ -995,4 +1003,130 @@ ____________________________________________________________
 ____________________________________________________________
 Goodbye! Keep your ducks in a row!
 ____________________________________________________________
+```
+
+## Test Case 20: Exact duplicate tasks are rejected
+Aim: Verify that repeated task details report the existing task number without adding or saving another copy.
+
+### Input
+```text
+todo read book
+todo read book
+deadline submit report /by 2026-10-15
+deadline submit report /by 2026-10-15
+event meeting /from Mon 2pm /to 4pm
+event meeting /from Mon 2pm /to 4pm
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Quack! I'm Duck.
+What shall we get done today?
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[T][ ] read book
+You now have 1 task in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 1.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[D][ ] submit report (by: Oct 15 2026)
+You now have 2 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 2.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] meeting (from: Mon 2pm to: 4pm)
+You now have 3 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 3.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your pond:
+1.[T][ ] read book
+2.[D][ ] submit report (by: Oct 15 2026)
+3.[E][ ] meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | read book
+D | 0 | submit report | 2026-10-15
+E | 0 | meeting | Mon 2pm | 4pm
+```
+
+## Test Case 21: Structured event ranges are validated
+Aim: Verify that structured event times reject invalid or reversed ranges while free-form times remain supported.
+
+### Input
+```text
+event reversed /from 2026-10-15 1500 /to 2026-10-15 1400
+event impossible /from 2026-02-30 1400 /to 2026-03-01 1500
+event structured /from 2026-10-15 1400 /to 2026-10-15 1500
+event free form /from Mon 2pm /to 4pm
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Quack! I'm Duck.
+What shall we get done today?
+____________________________________________________________
+____________________________________________________________
+Quack? The event end cannot be earlier than its start. Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.
+____________________________________________________________
+____________________________________________________________
+Quack? Please enter valid event times in yyyy-MM-dd HHmm format. Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] structured (from: 2026-10-15 1400 to: 2026-10-15 1500)
+You now have 1 task in your pond.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] free form (from: Mon 2pm to: 4pm)
+You now have 2 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your pond:
+1.[E][ ] structured (from: 2026-10-15 1400 to: 2026-10-15 1500)
+2.[E][ ] free form (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+E | 0 | structured | 2026-10-15 1400 | 2026-10-15 1500
+E | 0 | free form | Mon 2pm | 4pm
 ```

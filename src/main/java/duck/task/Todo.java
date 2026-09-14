@@ -14,6 +14,17 @@ public class Todo extends Task {
     }
 
     /**
+     * Returns whether another task is a todo with the same description.
+     *
+     * @param other Task to compare with this todo.
+     * @return true if both todos have the same description
+     */
+    @Override
+    public boolean hasSameDetails(Task other) {
+        return other instanceof Todo && this.description.equals(other.description);
+    }
+
+    /**
      * Returns this todo in the user-visible task format.
      *
      * @return formatted todo with its type and completion status

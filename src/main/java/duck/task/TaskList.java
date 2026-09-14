@@ -112,6 +112,22 @@ public class TaskList {
     }
 
     /**
+     * Finds the first task with the same type and user-supplied details.
+     *
+     * @param task Task whose details should be matched.
+     * @return zero-based matching index, or -1 if no task matches
+     */
+    public int indexOfTaskWithSameDetails(Task task) {
+        Objects.requireNonNull(task, "Task to match cannot be null.");
+        for (int i = 0; i < this.tasks.size(); i++) {
+            if (this.tasks.get(i).hasSameDetails(task)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    /**
      * Returns an immutable snapshot for display or persistence.
      *
      * @return tasks in their current order

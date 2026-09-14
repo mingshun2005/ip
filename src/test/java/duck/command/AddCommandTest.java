@@ -49,6 +49,20 @@ public class AddCommandTest {
     }
 
     @Test
+    public void execute_duplicateTask_throwsDuckExceptionWithoutChangingTaskList() {
+        Task existingTask = new Todo("read book");
+        existingTask.markAsDone();
+        TaskList tasks = new TaskList(List.of(existingTask));
+        AddCommand command = new AddCommand(new Todo("read book"));
+
+        DuckException exception = assertThrows(DuckException.class, () ->
+                command.execute(tasks, new Ui(), new FailingStorage()));
+
+        assertEquals("That task already exists as task 1.", exception.getMessage());
+        assertEquals(List.of(existingTask), tasks.asList());
+    }
+
+    @Test
     public void execute_saveFails_rollsBackAddedTask() {
         Task existingTask = new Todo("existing");
         TaskList tasks = new TaskList(List.of(existingTask));

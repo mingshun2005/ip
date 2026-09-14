@@ -20,6 +20,18 @@ import duck.command.UnmarkCommand;
  * Tests command recognition and argument validation performed by {@link Parser}.
  */
 public class ParserTest {
+    private static final String TASK_NUMBER_ERROR =
+            "Please enter a valid task number. Use list to check the available task numbers.";
+
+    private static final String TODO_DESCRIPTION_ERROR =
+            "The description of a todo cannot be empty. Try: todo read a book.";
+
+    private static final String DEADLINE_COMMAND_EXAMPLE =
+            " Try: deadline submit report /by 2026-10-15.";
+
+    private static final String EVENT_RANGE_EXAMPLE =
+            " Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.";
+
     private final Parser parser = new Parser();
 
     @Test
@@ -47,6 +59,8 @@ public class ParserTest {
                 this.parser.parse("deadline buy groceries /by fRi"));
         assertInstanceOf(AddCommand.class,
                 this.parser.parse("event meeting /from Monday 2pm /to 4pm"));
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event meeting /from 2026-10-15 1400 /to 2026-10-15 1500"));
     }
 
     @Test
@@ -76,27 +90,30 @@ public class ParserTest {
 
     @Test
     public void parse_missingOrInvalidTaskNumbers_throwsTaskNumberError() {
-        assertParseError("mark", "Please enter a valid task number.");
-        assertParseError("unmark abc", "Please enter a valid task number.");
-        assertParseError("delete", "Please enter task number to delete task!");
-        assertParseError("delete 1 2", "Please enter a valid task number.");
-        assertParseError("delete 2147483648", "Please enter a valid task number.");
+        assertParseError("mark", TASK_NUMBER_ERROR);
+        assertParseError("unmark abc", TASK_NUMBER_ERROR);
+        assertParseError("delete", TASK_NUMBER_ERROR);
+        assertParseError("delete 1 2", TASK_NUMBER_ERROR);
+        assertParseError("delete 2147483648", TASK_NUMBER_ERROR);
     }
 
     @Test
     public void parse_emptyTodoDescription_throwsDescriptionError() {
-        assertParseError("todo", "The description of a todo cannot be empty.");
+        assertParseError("todo", TODO_DESCRIPTION_ERROR);
     }
 
     @Test
     public void parse_invalidDeadlineSyntax_throwsRelevantError() {
-        assertParseError("deadline", "The description of a deadline cannot be empty.");
+        String descriptionError = "The description of a deadline cannot be empty."
+                + DEADLINE_COMMAND_EXAMPLE;
+        String dateError = "The deadline command needs a non-empty /by date."
+                + DEADLINE_COMMAND_EXAMPLE;
+
+        assertParseError("deadline", descriptionError);
         assertParseError("deadline /by 2026-08-30",
-                "The description of a deadline cannot be empty.");
-        assertParseError("deadline return book",
-                "The deadline command needs a non-empty /by date.");
-        assertParseError("deadline return book /by",
-                "The deadline command needs a non-empty /by date.");
+                descriptionError);
+        assertParseError("deadline return book", dateError);
+        assertParseError("deadline return book /by", dateError);
     }
 
     @Test
@@ -136,6 +153,43 @@ public class ParserTest {
                 "The event command needs a non-empty /from and /to time.");
         assertParseError("event meeting /from Monday /to",
                 "The event command needs a /from and /to time.");
+    }
+
+    @Test
+    public void parse_structuredEventEndBeforeStart_throwsRangeError() {
+        String expectedMessage = "The event end cannot be earlier than its start."
+                + EVENT_RANGE_EXAMPLE;
+
+        assertParseError(
+                "event meeting /from 2026-10-15 1500 /to 2026-10-15 1400",
+                expectedMessage);
+        assertParseError(
+                "event trip /from 2026-10-16 0900 /to 2026-10-15 1700",
+                expectedMessage);
+    }
+
+    @Test
+    public void parse_invalidStructuredEventTimes_throwsDateTimeFormatError() {
+        String expectedMessage = "Please enter valid event times in yyyy-MM-dd HHmm format."
+                + EVENT_RANGE_EXAMPLE;
+
+        assertParseError(
+                "event meeting /from 2026-02-30 1400 /to 2026-02-30 1500",
+                expectedMessage);
+        assertParseError(
+                "event meeting /from 2026-10-15 2460 /to 2026-10-15 2500",
+                expectedMessage);
+        assertParseError(
+                "event meeting /from 0000-10-15 1400 /to 0000-10-15 1500",
+                expectedMessage);
+    }
+
+    @Test
+    public void parse_freeFormEventTimes_remainSupported() throws DuckException {
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event meeting /from Monday 2pm /to 4pm"));
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event workshop /from afternoon /to evening"));
     }
 
     /** Verifies that parsing fails with the exact user-facing error message. */
