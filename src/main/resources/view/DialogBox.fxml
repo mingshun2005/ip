@@ -17,8 +17,8 @@
             <children>
                 <Label fx:id="speaker" styleClass="speaker-label" />
                 <Label fx:id="text"
-                       maxWidth="250.0"
                        minHeight="-Infinity"
+                       minWidth="0.0"
                        styleClass="message-bubble"
                        wrapText="true" />
             </children>

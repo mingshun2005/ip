@@ -3,6 +3,7 @@ package duck.ui;
 import java.io.IOException;
 import java.util.Objects;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -16,6 +17,12 @@ import javafx.scene.layout.VBox;
  * Displays one wrapped message and an optional avatar aligned according to its speaker.
  */
 public class DialogBox extends HBox {
+    /** Largest width allowed for a message bubble, in pixels. */
+    private static final double MAX_MESSAGE_WIDTH = 560.0;
+
+    /** Fraction of the available dialog width that a message may occupy. */
+    private static final double MESSAGE_WIDTH_RATIO = 0.72;
+
     /** Label identifying the speaker for this message. */
     @FXML
     private Label speaker;
@@ -46,6 +53,8 @@ public class DialogBox extends HBox {
         }
 
         this.text.setText(message);
+        this.text.maxWidthProperty().bind(Bindings.min(
+                this.widthProperty().multiply(MESSAGE_WIDTH_RATIO), MAX_MESSAGE_WIDTH));
         this.displayPicture.setImage(image);
     }
 
