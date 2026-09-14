@@ -4,7 +4,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -27,6 +31,38 @@ public class DuckTest {
     }
 
     @Test
+    public void getWelcomeMessage_invalidDataFile_includesLoadingError() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Files.writeString(dataFile, "D | 0 | impossible | 2026-02-30\n",
+                StandardCharsets.UTF_8);
+
+        Duck duck = new Duck(dataFile.toString());
+
+        assertEquals("Quack! I'm Duck. What shall we get done today? "
+                + "Try: todo read a book, list, or find book. "
+                + "Type help for every command.\n"
+                + "Quack? Unable to load tasks from line 1: "
+                + "the deadline date must be a valid yyyy-MM-dd date.",
+                duck.getWelcomeMessage());
+    }
+
+    @Test
+    public void getResponse_existingSavedTasks_loadsAndListsTasks() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Files.writeString(dataFile,
+                "T | 1 | read book\nD | 0 | submit report | 2026-10-15\n",
+                StandardCharsets.UTF_8);
+        Duck duck = new Duck(dataFile.toString());
+
+        String response = duck.getResponse("list");
+
+        assertEquals("Here are the tasks in your pond:\n"
+                + "1.[T][X] read book\n"
+                + "2.[D][ ] submit report (by: Oct 15 2026)", response);
+        assertFalse(duck.isLastResponseError());
+    }
+
+    @Test
     public void getResponse_validCommands_preservesTaskStateBetweenCommands() {
         Duck duck = createDuck();
 
@@ -41,6 +77,41 @@ public class DuckTest {
         assertEquals("Here are the tasks in your pond:\n"
                 + "1.[T][ ] read book", listResponse);
         assertFalse(duck.isLastResponseError());
+    }
+
+    @Test
+    public void getResponse_duplicateTask_reportsErrorWithoutChangingList() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Duck duck = new Duck(dataFile.toString());
+        duck.getResponse("todo read book");
+
+        String duplicateResponse = duck.getResponse("todo read book");
+        boolean isDuplicateResponseError = duck.isLastResponseError();
+        String listResponse = duck.getResponse("list");
+
+        assertEquals("Quack? That task already exists as task 1.", duplicateResponse);
+        assertTrue(isDuplicateResponseError);
+        assertEquals("Here are the tasks in your pond:\n"
+                + "1.[T][ ] read book", listResponse);
+        assertEquals(List.of("T | 0 | read book"),
+                Files.readAllLines(dataFile, StandardCharsets.UTF_8));
+    }
+
+    @Test
+    public void getResponse_addMarkDeleteSequence_persistsChanges() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Duck duck = new Duck(dataFile.toString());
+
+        duck.getResponse("todo read book");
+        duck.getResponse("deadline submit report /by 2026-10-15");
+        duck.getResponse("mark 1");
+        duck.getResponse("delete 2");
+        Duck reloadedDuck = new Duck(dataFile.toString());
+
+        assertEquals("Here are the tasks in your pond:\n"
+                + "1.[T][X] read book", reloadedDuck.getResponse("list"));
+        assertEquals(List.of("T | 1 | read book"),
+                Files.readAllLines(dataFile, StandardCharsets.UTF_8));
     }
 
     @Test
@@ -72,6 +143,19 @@ public class DuckTest {
         Duck duck = createDuck();
 
         assertEquals("Goodbye! Keep your ducks in a row!", duck.getResponse("bye"));
+        assertTrue(duck.isExitRequested());
+    }
+
+    @Test
+    public void getResponse_errorFollowedByExit_resetsResponseFlags() {
+        Duck duck = createDuck();
+
+        duck.getResponse("unknown");
+        assertTrue(duck.isLastResponseError());
+        assertFalse(duck.isExitRequested());
+
+        assertEquals("Goodbye! Keep your ducks in a row!", duck.getResponse("bye"));
+        assertFalse(duck.isLastResponseError());
         assertTrue(duck.isExitRequested());
     }
 
