@@ -64,18 +64,21 @@ public class MainWindow {
     }
 
     /**
-     * Displays the submitted command and Duck's response, then clears the input field.
+     * Ignores blank input or displays the submitted command and Duck's response.
      * A valid bye command disables further input and closes the window after a short delay.
      */
     @FXML
     private void handleUserInput() {
         String userText = this.userInput.getText();
-        String duckText = this.duck.getResponse(userText);
-
-        if (!userText.isBlank()) {
-            this.dialogContainer.getChildren().add(
-                    DialogBox.getUserDialog(userText, this.userImage));
+        if (userText.isBlank()) {
+            this.userInput.clear();
+            this.userInput.requestFocus();
+            return;
         }
+
+        String duckText = this.duck.getResponse(userText);
+        this.dialogContainer.getChildren().add(
+                DialogBox.getUserDialog(userText, this.userImage));
         DialogBox responseDialog = this.duck.isLastResponseError()
                 ? DialogBox.getErrorDialog(duckText, this.duckImage)
                 : DialogBox.getDuckDialog(duckText, this.duckImage);
