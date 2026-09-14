@@ -29,7 +29,7 @@
                 <VBox fx:id="dialogContainer"
                       prefHeight="-1.0"
                       prefWidth="388.0"
-                      spacing="10.0"
+                      spacing="6.0"
                       styleClass="dialog-container" />
             </content>
         </ScrollPane>
@@ -37,6 +37,7 @@
                    onAction="#handleUserInput"
                    prefHeight="41.0"
                    prefWidth="325.0"
+                   promptText="Enter a command..."
                    styleClass="user-input"
                    AnchorPane.bottomAnchor="1.0"
                    AnchorPane.leftAnchor="0.0"

@@ -1,17 +1,38 @@
 .dialog-box {
-    -fx-padding: 5 8;
-    -fx-spacing: 8;
+    -fx-padding: 4 10;
+    -fx-spacing: 10;
 }
 
 .message-bubble {
-    -fx-font-size: 13px;
-    -fx-padding: 10 14;
+    -fx-padding: 9 12;
+}
+
+.speaker-label {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
 }
 
 .duck-bubble {
-    -fx-background-color: #e3f2fd;
+    -fx-background-color: #e7ebf0;
     -fx-background-radius: 12 12 12 3;
     -fx-text-fill: #202124;
+}
+
+.duck-speaker {
+    -fx-text-fill: #667085;
+}
+
+.error-bubble {
+    -fx-background-color: #fff1f0;
+    -fx-background-radius: 12 12 12 3;
+    -fx-border-color: #d92d20;
+    -fx-border-radius: 12 12 12 3;
+    -fx-border-width: 1;
+    -fx-text-fill: #7a271a;
+}
+
+.error-speaker {
+    -fx-text-fill: #b42318;
 }
 
 .user-bubble {
@@ -20,6 +41,10 @@
     -fx-text-fill: #ffffff;
 }
 
+.user-speaker {
+    -fx-text-fill: #287bde;
+}
+
 .avatar {
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.18), 6, 0.25, 1, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.14), 4, 0.20, 0, 1);
 }

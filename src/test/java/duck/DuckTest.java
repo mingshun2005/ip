@@ -20,7 +20,8 @@ public class DuckTest {
     public void getWelcomeMessage_missingDataFile_returnsExistingGreeting() {
         Duck duck = createDuck();
 
-        assertEquals("Hello! I'm Duck. Quack~\nWhat can I do for you?",
+        assertEquals("Hello! I'm Duck. Quack~ What can I do for you? "
+                + "Try: todo read a book, list, or find book.",
                 duck.getWelcomeMessage());
     }
 
@@ -29,13 +30,16 @@ public class DuckTest {
         Duck duck = createDuck();
 
         String addResponse = duck.getResponse("todo read book");
+        boolean isAddResponseError = duck.isLastResponseError();
         String listResponse = duck.getResponse("list");
 
         assertEquals("Got it. I've added this task:\n"
                 + "[T][ ] read book\n"
                 + "Now you have 1 tasks in the list.", addResponse);
+        assertFalse(isAddResponseError);
         assertEquals("Here are the tasks in your list:\n"
                 + "1.[T][ ] read book", listResponse);
+        assertFalse(duck.isLastResponseError());
     }
 
     @Test
@@ -44,8 +48,21 @@ public class DuckTest {
         String expectedMessage = "OOPS!!! I'm sorry, but I don't know what that means :-(";
 
         assertEquals(expectedMessage, duck.getResponse("unknown"));
+        assertTrue(duck.isLastResponseError());
         assertEquals(expectedMessage, duck.getResponse(""));
+        assertTrue(duck.isLastResponseError());
         assertFalse(duck.isExitRequested());
+    }
+
+    @Test
+    public void isLastResponseError_errorFollowedByValidCommand_tracksLatestCommand() {
+        Duck duck = createDuck();
+
+        duck.getResponse("unknown");
+        assertTrue(duck.isLastResponseError());
+
+        duck.getResponse("list");
+        assertFalse(duck.isLastResponseError());
     }
 
     @Test
