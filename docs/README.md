@@ -93,3 +93,13 @@ For example:
 ```text
 event project meeting /from Mon 2pm /to 4pm
 ```
+
+Event times can remain free-form text. To let Duck validate their order, enter
+both endpoints in `yyyy-MM-dd HHmm` format:
+
+```text
+event project meeting /from 2026-10-15 1400 /to 2026-10-15 1600
+```
+
+When both endpoints use this format, they must be valid date-times and the end
+cannot be earlier than the start.

@@ -1073,3 +1073,60 @@ T | 0 | read book
 D | 0 | submit report | 2026-10-15
 E | 0 | meeting | Mon 2pm | 4pm
 ```
+
+## Test Case 21: Structured event ranges are validated
+Aim: Verify that structured event times reject invalid or reversed ranges while free-form times remain supported.
+
+### Input
+```text
+event reversed /from 2026-10-15 1500 /to 2026-10-15 1400
+event impossible /from 2026-02-30 1400 /to 2026-03-01 1500
+event structured /from 2026-10-15 1400 /to 2026-10-15 1500
+event free form /from Mon 2pm /to 4pm
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Quack! I'm Duck.
+What shall we get done today?
+____________________________________________________________
+____________________________________________________________
+Quack? The event end cannot be earlier than its start. Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.
+____________________________________________________________
+____________________________________________________________
+Quack? Please enter valid event times in yyyy-MM-dd HHmm format. Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] structured (from: 2026-10-15 1400 to: 2026-10-15 1500)
+You now have 1 task in your pond.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] free form (from: Mon 2pm to: 4pm)
+You now have 2 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your pond:
+1.[E][ ] structured (from: 2026-10-15 1400 to: 2026-10-15 1500)
+2.[E][ ] free form (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+E | 0 | structured | 2026-10-15 1400 | 2026-10-15 1500
+E | 0 | free form | Mon 2pm | 4pm
+```
