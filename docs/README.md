@@ -1,10 +1,50 @@
 # Duck User Guide
 
-// Update the title above to match the actual product name
+Duck is a cheerful, organized task manager that helps you keep your ducks in a
+row. Its responses use light pond and wing references while keeping commands
+and task information concise.
 
-// Product screenshot goes here
+Type `help` at any time to display every supported command.
 
-// Product intro goes here
+## Understanding Duck's visual cues
+
+- Blue bubbles show commands that you entered.
+- Neutral bubbles with a yellow edge show Duck's responses.
+- A `✓` identifies a successful change to your task list.
+- `[T]`, `[D]`, and `[E]` identify todos, deadlines, and events respectively.
+- A pale-red bubble and warning symbol identify an error.
+
+Duck uses an original yellow-and-blue mascot designed to remain recognizable at
+the small avatar size used by the chat window.
+
+## Command summary
+
+| Action | Command |
+| --- | --- |
+| Show command guidance | `help` |
+| Add a todo | `todo DESCRIPTION` |
+| Add a deadline | `deadline DESCRIPTION /by DATE` |
+| Add an event | `event DESCRIPTION /from START /to END` |
+| Show all tasks | `list` |
+| Find matching tasks | `find KEYWORD` |
+| Mark a task complete | `mark NUMBER` |
+| Mark a task incomplete | `unmark NUMBER` |
+| Delete a task | `delete NUMBER` |
+| Exit Duck | `bye` |
+
+## Adding todos
+
+Use a todo for a task without a specific date or time.
+
+```text
+todo DESCRIPTION
+```
+
+For example:
+
+```text
+todo read a book
+```
 
 ## Adding deadlines
 
@@ -40,11 +80,16 @@ The saved deadline uses the resolved ISO date, `2026-09-14`. Full weekday names,
 informal abbreviations such as `Tues`, relative phrases such as `next Mon`, and
 dates containing times are not supported.
 
-## Feature ABC
+## Adding events
 
-// Feature details
+Use an event for a task with a start and end time.
 
+```text
+event DESCRIPTION /from START /to END
+```
 
-## Feature XYZ
+For example:
 
-// Feature details
+```text
+event project meeting /from Mon 2pm /to 4pm
+```
