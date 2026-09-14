@@ -13,7 +13,7 @@
          xmlns="http://javafx.com/javafx/17"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <VBox fx:id="messageContainer" spacing="3.0">
+        <VBox fx:id="messageContainer" spacing="4.0">
             <children>
                 <Label fx:id="speaker" styleClass="speaker-label" />
                 <Label fx:id="text"

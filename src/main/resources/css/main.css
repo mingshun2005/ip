@@ -2,6 +2,8 @@
     app-background: #f4f6f8;
     app-accent: #287bde;
     app-accent-dark: #1f68bf;
+    -fx-font-family: "System";
+    -fx-font-size: 13px;
 }
 
 .main-layout {
@@ -19,7 +21,7 @@
 
 .dialog-container {
     -fx-background-color: app-background;
-    -fx-padding: 10;
+    -fx-padding: 12;
 }
 
 .scroll-bar {
@@ -43,7 +45,7 @@
     -fx-background-radius: 8;
     -fx-border-color: #c8d0d9;
     -fx-border-radius: 8;
-    -fx-padding: 9;
+    -fx-padding: 10 12;
 }
 
 .user-input:focused {
@@ -54,7 +56,6 @@
     -fx-background-color: app-accent;
     -fx-background-radius: 8;
     -fx-text-fill: #ffffff;
-    -fx-font-weight: bold;
 }
 
 .send-button:hover {

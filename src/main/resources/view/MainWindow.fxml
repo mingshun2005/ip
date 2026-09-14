@@ -29,7 +29,7 @@
                 <VBox fx:id="dialogContainer"
                       prefHeight="-1.0"
                       prefWidth="388.0"
-                      spacing="10.0"
+                      spacing="6.0"
                       styleClass="dialog-container" />
             </content>
         </ScrollPane>

@@ -1,11 +1,10 @@
 .dialog-box {
-    -fx-padding: 5 8;
-    -fx-spacing: 8;
+    -fx-padding: 4 10;
+    -fx-spacing: 10;
 }
 
 .message-bubble {
-    -fx-font-size: 13px;
-    -fx-padding: 10 14;
+    -fx-padding: 9 12;
 }
 
 .speaker-label {
