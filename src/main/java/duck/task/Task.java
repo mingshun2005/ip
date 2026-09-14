@@ -57,6 +57,15 @@ public abstract class Task {
     }
 
     /**
+     * Returns whether another task has the same type and user-supplied details.
+     * Completion status is excluded because it does not change a task's identity.
+     *
+     * @param other Task to compare with this task.
+     * @return true if both tasks describe the same task
+     */
+    public abstract boolean hasSameDetails(Task other);
+
+    /**
      * Returns the status value used in the save file.
      *
      * @return "1" if this task is done, or "0" otherwise

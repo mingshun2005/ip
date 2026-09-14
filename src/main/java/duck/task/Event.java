@@ -24,6 +24,24 @@ public class Event extends Task {
     }
 
     /**
+     * Returns whether another task is an event with the same description and time range.
+     * Surrounding whitespace in time fields is ignored because storage trims it.
+     *
+     * @param other Task to compare with this event.
+     * @return true if both events have the same details
+     */
+    @Override
+    public boolean hasSameDetails(Task other) {
+        if (!(other instanceof Event)) {
+            return false;
+        }
+        Event otherEvent = (Event) other;
+        return this.description.equals(otherEvent.description)
+                && this.startTime.trim().equals(otherEvent.startTime.trim())
+                && this.endTime.trim().equals(otherEvent.endTime.trim());
+    }
+
+    /**
      * Returns this event with its start and end times in the user-visible format.
      *
      * @return formatted event with its type, status, description, and time range

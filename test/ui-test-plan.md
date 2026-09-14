@@ -1004,3 +1004,72 @@ ____________________________________________________________
 Goodbye! Keep your ducks in a row!
 ____________________________________________________________
 ```
+
+## Test Case 20: Exact duplicate tasks are rejected
+Aim: Verify that repeated task details report the existing task number without adding or saving another copy.
+
+### Input
+```text
+todo read book
+todo read book
+deadline submit report /by 2026-10-15
+deadline submit report /by 2026-10-15
+event meeting /from Mon 2pm /to 4pm
+event meeting /from Mon 2pm /to 4pm
+list
+bye
+```
+
+### Expected Output
+```text
+____________________________________________________________
+ ____             _
+|  _ \ _   _  ___| | __
+| | | | | | |/ __| |/ /
+| |_| | |_| | (__|   <
+|____/ \__,_|\___|_|\_\
+
+Quack! I'm Duck.
+What shall we get done today?
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[T][ ] read book
+You now have 1 task in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 1.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[D][ ] submit report (by: Oct 15 2026)
+You now have 2 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 2.
+____________________________________________________________
+____________________________________________________________
+✓ Got it—this task is now under my wing:
+[E][ ] meeting (from: Mon 2pm to: 4pm)
+You now have 3 tasks in your pond.
+____________________________________________________________
+____________________________________________________________
+Quack? That task already exists as task 3.
+____________________________________________________________
+____________________________________________________________
+Here are the tasks in your pond:
+1.[T][ ] read book
+2.[D][ ] submit report (by: Oct 15 2026)
+3.[E][ ] meeting (from: Mon 2pm to: 4pm)
+____________________________________________________________
+____________________________________________________________
+Goodbye! Keep your ducks in a row!
+____________________________________________________________
+```
+
+### Expected File data/duck.txt
+```text
+T | 0 | read book
+D | 0 | submit report | 2026-10-15
+E | 0 | meeting | Mon 2pm | 4pm
+```
