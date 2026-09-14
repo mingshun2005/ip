@@ -20,7 +20,8 @@ public class DuckTest {
     public void getWelcomeMessage_missingDataFile_returnsExistingGreeting() {
         Duck duck = createDuck();
 
-        assertEquals("Hello! I'm Duck. Quack~ What can I do for you?",
+        assertEquals("Hello! I'm Duck. Quack~ What can I do for you? "
+                + "Try: todo read a book, list, or find book.",
                 duck.getWelcomeMessage());
     }
 

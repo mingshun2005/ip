@@ -16,6 +16,10 @@ import duck.ui.Ui;
  * Coordinates Duck's user interface, task list, command parser, and storage.
  */
 public class Duck {
+    /** Short command examples displayed in the graphical welcome message. */
+    private static final String GUI_COMMAND_EXAMPLES =
+            "Try: todo read a book, list, or find book.";
+
     /** User interface used for console input and output. */
     private final Ui ui;
 
@@ -95,7 +99,8 @@ public class Duck {
      * @return startup message to display in Duck's first dialog box
      */
     public String getWelcomeMessage() {
-        String graphicalGreeting = Ui.getGreeting().replace('\n', ' ');
+        String graphicalGreeting = Ui.getGreeting().replace('\n', ' ')
+                + " " + GUI_COMMAND_EXAMPLES;
         if (this.loadingErrorMessage == null) {
             return graphicalGreeting;
         }
