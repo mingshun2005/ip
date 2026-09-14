@@ -20,6 +20,10 @@ public class MainWindow {
     /** Delay between showing the farewell response and closing the window, in seconds. */
     private static final int EXIT_DELAY_SECONDS = 3;
 
+    /** Safe response shown when an unexpected GUI command failure occurs. */
+    private static final String UNEXPECTED_ERROR_MESSAGE =
+            "Something unexpected happened. Your saved tasks are safe.";
+
     /** Original Duck mascot displayed beside chatbot responses. */
     private final Image duckImage = loadImage("/images/DuckMascot.png");
 
@@ -76,14 +80,30 @@ public class MainWindow {
             return;
         }
 
-        String duckText = this.duck.getResponse(userText);
+        try {
+            displayCommandAndResponse(userText);
+        } catch (RuntimeException e) {
+            System.err.println("Unexpected error while handling GUI input.");
+            e.printStackTrace(System.err);
+            this.dialogContainer.getChildren().add(
+                    DialogBox.getErrorDialog(UNEXPECTED_ERROR_MESSAGE, this.duckImage));
+        } finally {
+            this.userInput.clear();
+            if (!this.userInput.isDisabled()) {
+                this.userInput.requestFocus();
+            }
+        }
+    }
+
+    /** Displays a non-blank command and the response produced by Duck. */
+    private void displayCommandAndResponse(String userText) {
         this.dialogContainer.getChildren().add(
                 DialogBox.getUserDialog(userText, this.userImage));
+        String duckText = this.duck.getResponse(userText);
         DialogBox responseDialog = this.duck.isLastResponseError()
                 ? DialogBox.getErrorDialog(duckText, this.duckImage)
                 : DialogBox.getDuckDialog(duckText, this.duckImage);
         this.dialogContainer.getChildren().add(responseDialog);
-        this.userInput.clear();
 
         if (this.duck.isExitRequested()) {
             scheduleExit();
