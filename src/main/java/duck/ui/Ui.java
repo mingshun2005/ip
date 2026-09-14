@@ -146,7 +146,7 @@ public class Ui {
      */
     public void showTaskMarked(Task task) {
         showLines(
-                "Nicely done! I've marked this task as complete:",
+                "✓ Nicely done! I've marked this task as complete:",
                 "  " + task);
     }
 
@@ -157,7 +157,7 @@ public class Ui {
      */
     public void showTaskUnmarked(Task task) {
         showLines(
-                "No problem—this task is active again:",
+                "✓ No problem—this task is active again:",
                 "  " + task);
     }
 
@@ -169,7 +169,7 @@ public class Ui {
      */
     public void showTaskAdded(Task task, int taskCount) {
         showLines(
-                "Got it—this task is now under my wing:",
+                "✓ Got it—this task is now under my wing:",
                 String.valueOf(task),
                 getTaskCountMessage(taskCount));
     }
@@ -182,7 +182,7 @@ public class Ui {
      */
     public void showTaskDeleted(Task task, int taskCount) {
         showLines(
-                "Removed! That task has left the pond:",
+                "✓ Removed! That task has left the pond:",
                 "  " + task,
                 getTaskCountMessage(taskCount));
     }

@@ -49,7 +49,7 @@ public class UiTest {
 
         this.ui.showTaskAdded(task, 1);
 
-        assertEquals("Got it—this task is now under my wing:\n"
+        assertEquals("✓ Got it—this task is now under my wing:\n"
                 + "[T][ ] read book\n"
                 + "You now have 1 task in your pond.", getOutput());
     }
@@ -60,7 +60,7 @@ public class UiTest {
 
         this.ui.showTaskDeleted(task, 2);
 
-        assertEquals("Removed! That task has left the pond:\n"
+        assertEquals("✓ Removed! That task has left the pond:\n"
                 + "  [T][ ] read book\n"
                 + "You now have 2 tasks in your pond.", getOutput());
     }

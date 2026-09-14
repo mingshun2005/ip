@@ -53,17 +53,17 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] borrow book
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] return book (by: Aug 30 2026)
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
 You now have 3 tasks in your pond.
 ____________________________________________________________
@@ -147,7 +147,7 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] first
 You now have 1 task in your pond.
 ____________________________________________________________
@@ -158,7 +158,7 @@ ____________________________________________________________
 Quack? The description of a todo cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] second
 You now have 2 tasks in your pond.
 ____________________________________________________________
@@ -169,7 +169,7 @@ ____________________________________________________________
 Quack? Please enter a valid task number.
 ____________________________________________________________
 ____________________________________________________________
-Nicely done! I've marked this task as complete:
+✓ Nicely done! I've marked this task as complete:
   [T][X] second
 ____________________________________________________________
 ____________________________________________________________
@@ -223,7 +223,7 @@ ____________________________________________________________
 Quack? The description of a deadline cannot be empty.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] return book (by: Aug 30 2026)
 You now have 1 task in your pond.
 ____________________________________________________________
@@ -237,7 +237,7 @@ ____________________________________________________________
 Quack? The event command needs a /from and /to time.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [E][ ] meeting (from: Mon 2pm to: 4pm)
 You now have 2 tasks in your pond.
 ____________________________________________________________
@@ -285,22 +285,22 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] first
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] second
 You now have 2 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] third
 You now have 3 tasks in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Removed! That task has left the pond:
+✓ Removed! That task has left the pond:
   [T][ ] second
 You now have 2 tasks in your pond.
 ____________________________________________________________
@@ -350,16 +350,16 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] first
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Nicely done! I've marked this task as complete:
+✓ Nicely done! I've marked this task as complete:
   [T][X] first
 ____________________________________________________________
 ____________________________________________________________
-No problem—this task is active again:
+✓ No problem—this task is active again:
   [T][ ] first
 ____________________________________________________________
 ____________________________________________________________
@@ -408,7 +408,7 @@ Here are the tasks in your pond:
 3.[E][ ] project meeting (from: Mon 2pm to: 4pm)
 ____________________________________________________________
 ____________________________________________________________
-Nicely done! I've marked this task as complete:
+✓ Nicely done! I've marked this task as complete:
   [D][X] return book (by: Aug 30 2026)
 ____________________________________________________________
 ____________________________________________________________
@@ -505,7 +505,7 @@ Here are the tasks in your pond:
 3.[E][ ] sync | plan (from: Room C:\1 to: Room C:\2)
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] keep A | B \ C
 You now have 4 tasks in your pond.
 ____________________________________________________________
@@ -678,12 +678,12 @@ ____________________________________________________________
 Quack? Please enter a valid deadline date in yyyy-MM-dd format or as Mon, Tue, Wed, Thu, Fri, Sat, or Sun.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] leap day (by: Feb 29 2024)
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] submit report (by: Oct 15 2026)
 You now have 2 tasks in your pond.
 ____________________________________________________________
@@ -770,12 +770,12 @@ Quack! I'm Duck.
 What shall we get done today?
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] earliest supported (by: Jan 01 0001)
 You now have 1 task in your pond.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [D][ ] latest supported (by: Dec 31 9999)
 You now have 2 tasks in your pond.
 ____________________________________________________________
@@ -877,7 +877,7 @@ ____________________________________________________________
 Quack? I didn't understand that command. Try help to see what I can do.
 ____________________________________________________________
 ____________________________________________________________
-Got it—this task is now under my wing:
+✓ Got it—this task is now under my wing:
 [T][ ] valid
 You now have 1 task in your pond.
 ____________________________________________________________

@@ -34,7 +34,7 @@ public class DuckTest {
         boolean isAddResponseError = duck.isLastResponseError();
         String listResponse = duck.getResponse("list");
 
-        assertEquals("Got it—this task is now under my wing:\n"
+        assertEquals("✓ Got it—this task is now under my wing:\n"
                 + "[T][ ] read book\n"
                 + "You now have 1 task in your pond.", addResponse);
         assertFalse(isAddResponseError);
