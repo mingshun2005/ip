@@ -116,7 +116,7 @@ public class Parser {
         for (CommandType commandType : CommandType.values()) {
             String commandWord = commandType.getCommandWord();
             if (input.equals(commandWord)
-                    || (commandType.acceptsArguments() && input.startsWith(commandWord + " "))) {
+                    || (commandType.canAcceptArguments() && input.startsWith(commandWord + " "))) {
                 return commandType;
             }
         }
