@@ -44,7 +44,7 @@ public class Parser {
     private static final String COMMAND_EXAMPLE_TODO = " Try: todo read a book.";
 
     /** Error shown when structured event endpoints contain an invalid date-time. */
-    private static final String INVALID_EVENT_DATE_TIME_MESSAGE =
+    private static final String EVENT_DATE_TIME_ERROR_MESSAGE =
             "Please enter valid event times in yyyy-MM-dd HHmm format."
                     + COMMAND_EXAMPLE_EVENT;
 
@@ -54,7 +54,7 @@ public class Parser {
                     .withResolverStyle(ResolverStyle.STRICT);
 
     /** Shape required before free-form event endpoints are parsed as date-times. */
-    private static final Pattern STRUCTURED_EVENT_TIME_PATTERN =
+    private static final Pattern EVENT_DATE_TIME_PATTERN =
             Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{4}");
 
     /** Recovery guidance for commands that require a task number. */
@@ -235,8 +235,8 @@ public class Parser {
      * Other endpoint text remains free-form and is not compared.
      */
     private void validateEventRange(String startText, String endText) throws DuckException {
-        if (!STRUCTURED_EVENT_TIME_PATTERN.matcher(startText).matches()
-                || !STRUCTURED_EVENT_TIME_PATTERN.matcher(endText).matches()) {
+        if (!EVENT_DATE_TIME_PATTERN.matcher(startText).matches()
+                || !EVENT_DATE_TIME_PATTERN.matcher(endText).matches()) {
             return;
         }
 
@@ -253,11 +253,11 @@ public class Parser {
         try {
             LocalDateTime dateTime = LocalDateTime.parse(dateTimeText, EVENT_DATE_TIME_FORMAT);
             if (dateTime.getYear() < 1) {
-                throw new DuckException(INVALID_EVENT_DATE_TIME_MESSAGE);
+                throw new DuckException(EVENT_DATE_TIME_ERROR_MESSAGE);
             }
             return dateTime;
         } catch (DateTimeParseException e) {
-            throw new DuckException(INVALID_EVENT_DATE_TIME_MESSAGE);
+            throw new DuckException(EVENT_DATE_TIME_ERROR_MESSAGE);
         }
     }
 }
