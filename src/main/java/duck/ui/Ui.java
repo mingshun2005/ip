@@ -29,6 +29,7 @@ public class Ui {
 
     /** Command summary shown when the user asks Duck for help. */
     private static final String COMMAND_GUIDE = "Here are the commands I can help with:\n"
+            + "  help\n"
             + "  todo DESCRIPTION\n"
             + "  deadline DESCRIPTION /by DATE\n"
             + "  event DESCRIPTION /from START /to END\n"

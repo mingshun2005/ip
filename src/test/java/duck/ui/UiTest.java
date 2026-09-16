@@ -153,6 +153,7 @@ public class UiTest {
         this.ui.showHelp();
 
         assertEquals("Here are the commands I can help with:\n"
+                + "  help\n"
                 + "  todo DESCRIPTION\n"
                 + "  deadline DESCRIPTION /by DATE\n"
                 + "  event DESCRIPTION /from START /to END\n"
