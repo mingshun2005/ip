@@ -23,19 +23,14 @@ change for your next session.
 
 Duck requires Java 25.
 
-From the project root, select the project's Java 25 distribution if you use
-SDKMAN:
+Download `Duck.jar` from the
+[latest GitHub release](https://github.com/mingshun2005/ip/releases/latest) and
+place it in the folder where you want to keep Duck.
+
+Open a terminal in that folder and launch Duck with:
 
 ```bash
-sdk use java 25.0.3.fx-zulu
-```
-
-If Java 25 is already active, you can omit that command.
-
-Launch Duck's graphical interface with:
-
-```bash
-./gradlew run
+java -jar Duck.jar
 ```
 
 A window titled **Duck** will open. Type a command in the field at the bottom,

@@ -13,14 +13,15 @@ Prerequisites: JDK 25, update Intellij to the most recent version.
    1. If there are any further prompts, accept the defaults.
 1. Configure the project to use **JDK 25** (not other versions) as explained in [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk).<br>
    In the same dialog, set the **Project language level** field to the `SDK default` option.
-1. After that, locate the `src/main/java/duck/Duck.java` file, right-click it, and choose `Run Duck.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is correct, you should see something like the below as the output:
-   ```
-    ____             _    
-   |  _ \ _   _  ___| | __
-   | | | | | | |/ __| |/ /
-   | |_| | |_| | (__|   < 
-   |____/ \__,_|\___|_|\_\
-   ```
+1. After that, locate the `src/main/java/duck/Launcher.java` file, right-click it, and choose
+   `Run Launcher.main()` (if the code editor is showing compile errors, try restarting the IDE). If the setup is
+   correct, a window titled **Duck** will open.
+
+Alternatively, launch the graphical interface from the project root:
+
+```shell
+./gradlew run
+```
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
 
