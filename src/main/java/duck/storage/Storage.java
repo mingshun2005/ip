@@ -34,6 +34,9 @@ public class Storage {
     /** Path of the task data file. */
     private final Path dataFilePath;
 
+    /** Whether saving is blocked to protect a data file that failed to load. */
+    private boolean isSaveBlocked;
+
     /**
      * Creates storage backed by the given file.
      *
@@ -42,6 +45,7 @@ public class Storage {
     public Storage(String filePath) {
         this.filePathText = Objects.requireNonNull(filePath, "Storage file path cannot be null.");
         this.dataFilePath = Path.of(filePath);
+        this.isSaveBlocked = false;
     }
 
     /**
@@ -49,9 +53,15 @@ public class Storage {
      * where the file system supports it.
      *
      * @param tasks Tasks to save.
-     * @throws DuckException if the task list cannot be saved
+     * @throws DuckException if a previous load failed or the task list cannot be saved
      */
     public void save(List<Task> tasks) throws DuckException {
+        if (this.isSaveBlocked) {
+            throw new DuckException("Tasks cannot be changed because Duck could not load "
+                    + "the saved task file. Repair or move " + this.filePathText
+                    + ", then restart Duck.");
+        }
+
         List<String> taskLines = tasks.stream()
                 .map(Task::toFileString)
                 .toList();
@@ -85,7 +95,8 @@ public class Storage {
     }
 
     /**
-     * Reads saved tasks from disk. A missing file represents an empty task list.
+     * Reads saved tasks from disk. A missing file represents an empty task list. A failed
+     * load blocks future saves for this storage instance.
      *
      * @return tasks reconstructed from the data file
      * @throws DuckException if the data file cannot be read or contains an invalid task
@@ -111,7 +122,11 @@ public class Storage {
                 }
             }
             return loadedTasks;
+        } catch (DuckException e) {
+            this.isSaveBlocked = true;
+            throw e;
         } catch (IOException | SecurityException e) {
+            this.isSaveBlocked = true;
             throw new DuckException("Unable to read tasks from " + this.filePathText + ".");
         }
     }

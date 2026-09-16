@@ -114,6 +114,23 @@ public class StorageTest {
     }
 
     @Test
+    public void save_afterLoadFailure_preservesExistingFile() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        String originalContents = "T | 0 | valid task\ninvalid record\n";
+        Files.writeString(dataFile, originalContents, StandardCharsets.UTF_8);
+        Storage storage = new Storage(dataFile.toString());
+        assertThrows(DuckException.class, storage::load);
+
+        DuckException exception = assertThrows(DuckException.class, () ->
+                storage.save(List.of(new Todo("replacement task"))));
+
+        assertEquals("Tasks cannot be changed because Duck could not load "
+                + "the saved task file. Repair or move " + dataFile
+                + ", then restart Duck.", exception.getMessage());
+        assertEquals(originalContents, Files.readString(dataFile, StandardCharsets.UTF_8));
+    }
+
+    @Test
     public void load_malformedRecords_throwsRelevantError() throws IOException {
         assertLoadError("T | 0", "the record has too few fields.");
         assertLoadError("X | 0 | unknown", "the task type is not recognized.");

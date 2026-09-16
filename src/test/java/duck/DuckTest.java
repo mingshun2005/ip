@@ -47,6 +47,25 @@ public class DuckTest {
     }
 
     @Test
+    public void getResponse_addAfterLoadFailure_preservesDataFile() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        String originalContents = "T | 0 | valid task\ninvalid record\n";
+        Files.writeString(dataFile, originalContents, StandardCharsets.UTF_8);
+        Duck duck = new Duck(dataFile.toString());
+
+        String response = duck.getResponse("todo replacement task");
+        boolean isResponseError = duck.isLastResponseError();
+        String listResponse = duck.getResponse("list");
+
+        assertEquals("Quack? Tasks cannot be changed because Duck could not load "
+                + "the saved task file. Repair or move " + dataFile
+                + ", then restart Duck.", response);
+        assertTrue(isResponseError);
+        assertEquals("The pond is clear—there are no tasks yet.", listResponse);
+        assertEquals(originalContents, Files.readString(dataFile, StandardCharsets.UTF_8));
+    }
+
+    @Test
     public void getResponse_existingSavedTasks_loadsAndListsTasks() throws IOException {
         Path dataFile = this.temporaryDirectory.resolve("duck.txt");
         Files.writeString(dataFile,
