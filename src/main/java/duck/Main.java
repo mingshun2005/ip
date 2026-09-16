@@ -17,6 +17,10 @@ public class Main extends Application {
     /** Chatbot that handles commands entered in the graphical interface. */
     private final Duck duck = new Duck("data/duck.txt");
 
+    /** Creates the JavaFX application. */
+    public Main() {
+    }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(

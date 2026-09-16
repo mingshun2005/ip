@@ -49,6 +49,10 @@ public class MainWindow {
     /** Chatbot that handles commands entered in this window. */
     private Duck duck;
 
+    /** Creates the controller before its controls are injected from FXML. */
+    public MainWindow() {
+    }
+
     /** Connects behavior that depends on controls injected from FXML. */
     @FXML
     private void initialize() {

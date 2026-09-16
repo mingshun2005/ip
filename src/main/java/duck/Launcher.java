@@ -7,6 +7,10 @@ import javafx.application.Application;
  */
 public class Launcher {
 
+    /** Prevents instantiation of this application entry-point class. */
+    private Launcher() {
+    }
+
     /**
      * Launches Duck's JavaFX application.
      *

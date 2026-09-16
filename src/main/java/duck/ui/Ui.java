@@ -122,7 +122,11 @@ public class Ui {
         showNumberedTasks(tasks);
     }
 
-    /** Shows tasks whose descriptions match a find keyword. */
+    /**
+     * Shows tasks whose descriptions match a find keyword.
+     *
+     * @param tasks Matching tasks to display.
+     */
     public void showMatchingTasks(List<Task> tasks) {
         if (tasks.isEmpty()) {
             this.output.println("No matching tasks surfaced in the pond.");
