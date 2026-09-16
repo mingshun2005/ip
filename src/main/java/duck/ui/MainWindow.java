@@ -135,8 +135,13 @@ public class MainWindow {
 
     /** Loads a required image resource with a clear failure message. */
     private static Image loadImage(String resourcePath) {
-        return new Image(Objects.requireNonNull(
+        Image image = new Image(Objects.requireNonNull(
                 MainWindow.class.getResourceAsStream(resourcePath),
                 "Image resource is missing: " + resourcePath));
+        if (image.isError()) {
+            throw new IllegalStateException(
+                    "Unable to load image resource: " + resourcePath, image.getException());
+        }
+        return image;
     }
 }
