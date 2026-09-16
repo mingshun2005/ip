@@ -29,7 +29,7 @@ public class TaskStatusCommandTest {
     private Path temporaryDirectory;
 
     @Test
-    public void markExecute_validTaskNumber_marksAndPersistsTask()
+    public void execute_validMarkTaskNumber_marksAndPersistsTask()
             throws DuckException, IOException {
         Task task = new Todo("task");
         TaskList tasks = new TaskList(List.of(task));
@@ -43,7 +43,7 @@ public class TaskStatusCommandTest {
     }
 
     @Test
-    public void unmarkExecute_validTaskNumber_unmarksAndPersistsTask()
+    public void execute_validUnmarkTaskNumber_unmarksAndPersistsTask()
             throws DuckException, IOException {
         Task task = new Todo("task");
         task.markAsDone();
@@ -79,7 +79,7 @@ public class TaskStatusCommandTest {
     }
 
     @Test
-    public void markExecute_alreadyCompletedTask_throwsWithoutSaving() {
+    public void execute_markAlreadyCompletedTask_throwsWithoutSaving() {
         Task task = new Todo("task");
         task.markAsDone();
         TaskList tasks = new TaskList(List.of(task));
@@ -92,7 +92,7 @@ public class TaskStatusCommandTest {
     }
 
     @Test
-    public void unmarkExecute_alreadyIncompleteTask_throwsWithoutSaving() {
+    public void execute_unmarkAlreadyIncompleteTask_throwsWithoutSaving() {
         Task task = new Todo("task");
         TaskList tasks = new TaskList(List.of(task));
 
@@ -104,7 +104,7 @@ public class TaskStatusCommandTest {
     }
 
     @Test
-    public void markExecute_saveFails_restoresIncompleteStatus() {
+    public void execute_markSaveFails_restoresIncompleteStatus() {
         Task task = new Todo("task");
         TaskList tasks = new TaskList(List.of(task));
 
@@ -116,7 +116,7 @@ public class TaskStatusCommandTest {
     }
 
     @Test
-    public void unmarkExecute_saveFails_restoresCompletedStatus() {
+    public void execute_unmarkSaveFails_restoresCompletedStatus() {
         Task task = new Todo("task");
         task.markAsDone();
         TaskList tasks = new TaskList(List.of(task));
