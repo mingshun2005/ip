@@ -51,18 +51,23 @@ public class UiTest {
 
     @Test
     public void showMatchingTasks_emptyList_describesNoMatches() {
-        this.ui.showMatchingTasks(List.of());
+        this.ui.showMatchingTasks(List.of(new Todo("non-match")), List.of());
 
         assertEquals("No matching tasks surfaced in the pond.", getOutput());
     }
 
     @Test
-    public void showMatchingTasks_nonEmptyList_numbersOnlySuppliedTasks() {
-        this.ui.showMatchingTasks(List.of(new Todo("first match"), new Todo("second match")));
+    public void showMatchingTasks_nonEmptyList_preservesFullListNumbers() {
+        Task firstMatch = new Todo("first match");
+        Task nonMatch = new Todo("non-match");
+        Task secondMatch = new Todo("second match");
+        this.ui.showMatchingTasks(
+                List.of(firstMatch, nonMatch, secondMatch),
+                List.of(firstMatch, secondMatch));
 
         assertEquals("Here are the matching tasks in your pond:\n"
                 + "1.[T][ ] first match\n"
-                + "2.[T][ ] second match", getOutput());
+                + "3.[T][ ] second match", getOutput());
     }
 
     @Test

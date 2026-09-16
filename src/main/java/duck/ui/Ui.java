@@ -124,17 +124,24 @@ public class Ui {
     }
 
     /**
-     * Shows tasks whose descriptions match a find keyword.
+     * Shows tasks whose descriptions match a find keyword, preserving their full-list numbers.
      *
-     * @param tasks Matching tasks to display.
+     * @param allTasks All tasks in their full-list order.
+     * @param matchingTasks Matching tasks to display.
      */
-    public void showMatchingTasks(List<Task> tasks) {
-        if (tasks.isEmpty()) {
+    public void showMatchingTasks(List<Task> allTasks, List<Task> matchingTasks) {
+        if (matchingTasks.isEmpty()) {
             this.output.println("No matching tasks surfaced in the pond.");
             return;
         }
         this.output.println("Here are the matching tasks in your pond:");
-        showNumberedTasks(tasks);
+        for (Task matchingTask : matchingTasks) {
+            int taskIndex = allTasks.indexOf(matchingTask);
+            if (taskIndex < 0) {
+                throw new IllegalArgumentException("Matching tasks must belong to the full task list.");
+            }
+            this.output.println((taskIndex + 1) + "." + matchingTask);
+        }
     }
 
     /** Shows tasks with one-based numbers relative to the supplied list. */

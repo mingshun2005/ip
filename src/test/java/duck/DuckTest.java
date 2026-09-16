@@ -82,6 +82,22 @@ public class DuckTest {
     }
 
     @Test
+    public void getResponse_findMatches_preservesFullListNumbers() throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Files.writeString(dataFile,
+                "T | 0 | read book\nT | 0 | submit report\nT | 0 | return book\n",
+                StandardCharsets.UTF_8);
+        Duck duck = new Duck(dataFile.toString());
+
+        String response = duck.getResponse("find book");
+
+        assertEquals("Here are the matching tasks in your pond:\n"
+                + "1.[T][ ] read book\n"
+                + "3.[T][ ] return book", response);
+        assertFalse(duck.isLastResponseError());
+    }
+
+    @Test
     public void getResponse_validCommands_preservesTaskStateBetweenCommands() {
         Duck duck = createDuck();
 

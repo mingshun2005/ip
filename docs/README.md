@@ -251,9 +251,8 @@ The number at the start of each line is the task number used by `mark`,
 Task numbers can change when a task is deleted. Run `list` before using a
 numbered command if you are unsure of the current number.
 
-Search results from `find` are numbered within the search results only. Those
-numbers are not guaranteed to match the task's number in the full list. Use
-`list` to confirm the number before changing or deleting a task.
+Search results from `find` keep each task's number from the full list. You can
+use a number shown by `find` with `mark`, `unmark`, or `delete`.
 
 ### Finding tasks: `find`
 

@@ -28,6 +28,6 @@ public class FindCommand extends Command {
     /** Shows all tasks with descriptions that contain the keyword. */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showMatchingTasks(tasks.find(this.keyword));
+        ui.showMatchingTasks(tasks.asList(), tasks.find(this.keyword));
     }
 }
