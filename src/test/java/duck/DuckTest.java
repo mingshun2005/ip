@@ -115,6 +115,23 @@ public class DuckTest {
     }
 
     @Test
+    public void getResponse_eventDateMissingYearSeparator_normalizesDisplayedAndSavedRange()
+            throws IOException {
+        Path dataFile = this.temporaryDirectory.resolve("duck.txt");
+        Duck duck = new Duck(dataFile.toString());
+
+        String response = duck.getResponse(
+                "event todo /from 10-05-2026 /to 12-062026");
+
+        assertEquals("✓ Got it—this task is now under my wing:\n"
+                + "[E][ ] todo (from: 10-05-2026 to: 12-06-2026)\n"
+                + "You now have 1 task in your pond.", response);
+        assertFalse(duck.isLastResponseError());
+        assertEquals(List.of("E | 0 | todo | 10-05-2026 | 12-06-2026"),
+                Files.readAllLines(dataFile, StandardCharsets.UTF_8));
+    }
+
+    @Test
     public void getResponse_duplicateTask_reportsErrorWithoutChangingList() throws IOException {
         Path dataFile = this.temporaryDirectory.resolve("duck.txt");
         Duck duck = new Duck(dataFile.toString());

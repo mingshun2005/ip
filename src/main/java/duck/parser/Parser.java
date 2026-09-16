@@ -73,6 +73,10 @@ public class Parser {
     private static final Pattern EVENT_DATE_TIME_PATTERN =
             Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{4}");
 
+    /** Shape of an event date missing the separator before its four-digit year. */
+    private static final Pattern EVENT_DATE_MISSING_YEAR_SEPARATOR_PATTERN =
+            Pattern.compile("([0-9]{2}-[0-9]{2})([0-9]{4})");
+
     /** Supported weekday and clock-time shape for the start of a shorthand event. */
     private static final Pattern EVENT_WEEKDAY_TIME_PATTERN = Pattern.compile(
             "(?i)(Mon|Tue|Wed|Thu|Fri|Sat|Sun) ([0-9]{1,2}(?::[0-9]{2})?[ap]m)");
@@ -207,10 +211,19 @@ public class Parser {
         if (times[0].trim().isEmpty() || times[1].trim().isEmpty()) {
             throw new DuckException("The event command needs a non-empty /from and /to time.");
         }
-        String startTime = times[0].trim();
-        String endTime = times[1].trim();
+        String startTime = normalizeEventDateSeparator(times[0].trim());
+        String endTime = normalizeEventDateSeparator(times[1].trim());
         validateEventRange(startTime, endTime);
         return new Event(descriptionAndTimes[0].trim(), startTime, endTime);
+    }
+
+    /** Inserts the missing separator in an event date such as {@code 12-062026}. */
+    private String normalizeEventDateSeparator(String eventTime) {
+        Matcher matcher = EVENT_DATE_MISSING_YEAR_SEPARATOR_PATTERN.matcher(eventTime);
+        if (!matcher.matches()) {
+            return eventTime;
+        }
+        return matcher.group(1) + "-" + matcher.group(2);
     }
 
     /**
