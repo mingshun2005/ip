@@ -33,12 +33,12 @@ public final class DeadlineDateParser {
      */
     public static LocalDate parse(String dateText) {
         if (!DEADLINE_DATE_PATTERN.matcher(dateText).matches()) {
-            throw invalidDate(dateText);
+            throw createInvalidDateException(dateText);
         }
 
         LocalDate date = LocalDate.parse(dateText, DEADLINE_DATE_FORMAT);
         if (date.getYear() == 0) {
-            throw invalidDate(dateText);
+            throw createInvalidDateException(dateText);
         }
         return date;
     }
@@ -74,12 +74,12 @@ public final class DeadlineDateParser {
             case "fri" -> DayOfWeek.FRIDAY;
             case "sat" -> DayOfWeek.SATURDAY;
             case "sun" -> DayOfWeek.SUNDAY;
-            default -> throw invalidDate(dateText);
+            default -> throw createInvalidDateException(dateText);
         };
     }
 
     /** Creates a consistent exception for deadline-specific validation failures. */
-    private static DateTimeParseException invalidDate(String dateText) {
+    private static DateTimeParseException createInvalidDateException(String dateText) {
         return new DateTimeParseException("Invalid deadline date.", dateText, 0);
     }
 }

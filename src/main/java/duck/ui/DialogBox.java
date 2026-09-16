@@ -18,7 +18,7 @@ import javafx.scene.layout.VBox;
  */
 public class DialogBox extends HBox {
     /** Largest width allowed for a message bubble, in pixels. */
-    private static final double MAX_MESSAGE_WIDTH = 560.0;
+    private static final double MESSAGE_WIDTH_MAXIMUM = 560.0;
 
     /** Fraction of the available dialog width that a message may occupy. */
     private static final double MESSAGE_WIDTH_RATIO = 0.72;
@@ -54,7 +54,7 @@ public class DialogBox extends HBox {
 
         this.text.setText(message);
         this.text.maxWidthProperty().bind(Bindings.min(
-                this.widthProperty().multiply(MESSAGE_WIDTH_RATIO), MAX_MESSAGE_WIDTH));
+                this.widthProperty().multiply(MESSAGE_WIDTH_RATIO), MESSAGE_WIDTH_MAXIMUM));
         this.displayPicture.setImage(image);
     }
 

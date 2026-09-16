@@ -63,7 +63,7 @@ public class Storage {
         }
 
         List<String> taskLines = tasks.stream()
-                .map(Task::toFileString)
+                .map(Task::formatForStorage)
                 .toList();
 
         Path temporaryFile = null;

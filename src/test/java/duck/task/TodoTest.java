@@ -27,11 +27,11 @@ public class TodoTest {
     }
 
     @Test
-    public void toFileString_specialCharacters_escapesStorageDelimiters() {
+    public void formatForStorage_specialCharacters_escapesStorageDelimiters() {
         Todo todo = new Todo("read A | B \\ C");
         todo.markAsDone();
 
-        assertEquals("T | 1 | read A \\| B \\\\ C", todo.toFileString());
+        assertEquals("T | 1 | read A \\| B \\\\ C", todo.formatForStorage());
     }
 
     @Test

@@ -26,10 +26,10 @@ public class ParserTest {
     private static final String TODO_DESCRIPTION_ERROR =
             "The description of a todo cannot be empty. Try: todo read a book.";
 
-    private static final String DEADLINE_COMMAND_EXAMPLE =
+    private static final String COMMAND_EXAMPLE_DEADLINE =
             " Try: deadline submit report /by 2026-10-15.";
 
-    private static final String EVENT_RANGE_EXAMPLE =
+    private static final String COMMAND_EXAMPLE_EVENT =
             " Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.";
 
     private final Parser parser = new Parser();
@@ -105,9 +105,9 @@ public class ParserTest {
     @Test
     public void parse_invalidDeadlineSyntax_throwsRelevantError() {
         String descriptionError = "The description of a deadline cannot be empty."
-                + DEADLINE_COMMAND_EXAMPLE;
+                + COMMAND_EXAMPLE_DEADLINE;
         String dateError = "The deadline command needs a non-empty /by date."
-                + DEADLINE_COMMAND_EXAMPLE;
+                + COMMAND_EXAMPLE_DEADLINE;
 
         assertParseError("deadline", descriptionError);
         assertParseError("deadline /by 2026-08-30",
@@ -158,7 +158,7 @@ public class ParserTest {
     @Test
     public void parse_structuredEventEndBeforeStart_throwsRangeError() {
         String expectedMessage = "The event end cannot be earlier than its start."
-                + EVENT_RANGE_EXAMPLE;
+                + COMMAND_EXAMPLE_EVENT;
 
         assertParseError(
                 "event meeting /from 2026-10-15 1500 /to 2026-10-15 1400",
@@ -185,7 +185,7 @@ public class ParserTest {
     @Test
     public void parse_invalidStructuredEventTimes_throwsDateTimeFormatError() {
         String expectedMessage = "Please enter valid event times in yyyy-MM-dd HHmm format."
-                + EVENT_RANGE_EXAMPLE;
+                + COMMAND_EXAMPLE_EVENT;
 
         assertParseError(
                 "event meeting /from 2026-02-30 1400 /to 2026-02-30 1500",

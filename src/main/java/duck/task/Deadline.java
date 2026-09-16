@@ -62,12 +62,12 @@ public class Deadline extends Task {
     }
 
     /**
-     * Returns this deadline with an escaped description and canonical ISO date.
+     * Formats this deadline with an escaped description and canonical ISO date.
      *
      * @return storage record containing the type, status, description, and date
      */
     @Override
-    public String toFileString() {
+    public String formatForStorage() {
         return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | "
                 + this.escapeFileField(this.description) + " | "
                 + this.deadlineDate.format(DATE_FORMAT_STORAGE);

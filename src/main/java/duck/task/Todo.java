@@ -35,12 +35,12 @@ public class Todo extends Task {
     }
 
     /**
-     * Returns this todo in the escaped format used by task storage.
+     * Formats this todo in escaped form for storage.
      *
      * @return storage record containing the type, status, and description
      */
     @Override
-    public String toFileString() {
+    public String formatForStorage() {
         return TaskType.TODO.getFileCode() + " | " + this.getFileStatus() + " | "
                 + this.escapeFileField(this.description);
     }

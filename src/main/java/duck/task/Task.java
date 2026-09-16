@@ -109,9 +109,9 @@ public abstract class Task {
     }
 
     /**
-     * Returns this task in the plain-text format used for storage.
+     * Formats this task as plain text for storage.
      *
      * @return save file representation of this task
      */
-    public abstract String toFileString();
+    public abstract String formatForStorage();
 }

@@ -32,21 +32,21 @@ public class Parser {
             "Please enter a valid deadline date in yyyy-MM-dd format or as "
                     + "Mon, Tue, Wed, Thu, Fri, Sat, or Sun.";
 
-    /** Example that demonstrates the required todo command syntax. */
-    private static final String TODO_COMMAND_EXAMPLE = " Try: todo read a book.";
-
     /** Example that demonstrates the required deadline command syntax. */
-    private static final String DEADLINE_COMMAND_EXAMPLE =
+    private static final String COMMAND_EXAMPLE_DEADLINE =
             " Try: deadline submit report /by 2026-10-15.";
 
     /** Example that demonstrates the comparable event date-time format. */
-    private static final String EVENT_RANGE_EXAMPLE =
+    private static final String COMMAND_EXAMPLE_EVENT =
             " Try: event meeting /from 2026-10-15 1400 /to 2026-10-15 1500.";
+
+    /** Example that demonstrates the required todo command syntax. */
+    private static final String COMMAND_EXAMPLE_TODO = " Try: todo read a book.";
 
     /** Error shown when structured event endpoints contain an invalid date-time. */
     private static final String INVALID_EVENT_DATE_TIME_MESSAGE =
             "Please enter valid event times in yyyy-MM-dd HHmm format."
-                    + EVENT_RANGE_EXAMPLE;
+                    + COMMAND_EXAMPLE_EVENT;
 
     /** Strict formatter for event endpoints that can be ordered reliably. */
     private static final DateTimeFormatter EVENT_DATE_TIME_FORMAT =
@@ -153,7 +153,7 @@ public class Parser {
         String description = extractArguments(input, CommandType.TODO);
         if (description.isEmpty()) {
             throw new DuckException("The description of a todo cannot be empty."
-                    + TODO_COMMAND_EXAMPLE);
+                    + COMMAND_EXAMPLE_TODO);
         }
         return new Todo(description);
     }
@@ -200,13 +200,13 @@ public class Parser {
         String deadlineDetails = extractArguments(input, CommandType.DEADLINE);
         if (deadlineDetails.isEmpty() || deadlineDetails.startsWith("/by ")) {
             throw new DuckException("The description of a deadline cannot be empty."
-                    + DEADLINE_COMMAND_EXAMPLE);
+                    + COMMAND_EXAMPLE_DEADLINE);
         }
 
         String[] descriptionAndDeadlineParts = deadlineDetails.split(" /by ", 2);
         if (descriptionAndDeadlineParts.length < 2 || descriptionAndDeadlineParts[1].trim().isEmpty()) {
             throw new DuckException("The deadline command needs a non-empty /by date."
-                    + DEADLINE_COMMAND_EXAMPLE);
+                    + COMMAND_EXAMPLE_DEADLINE);
         }
         LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadlineParts[1].trim());
         return new Deadline(descriptionAndDeadlineParts[0].trim(), deadlineDate);
@@ -244,7 +244,7 @@ public class Parser {
         LocalDateTime endDateTime = parseEventDateTime(endText);
         if (endDateTime.isBefore(startDateTime)) {
             throw new DuckException("The event end cannot be earlier than its start."
-                    + EVENT_RANGE_EXAMPLE);
+                    + COMMAND_EXAMPLE_EVENT);
         }
     }
 

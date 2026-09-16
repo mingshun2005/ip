@@ -81,7 +81,7 @@ public class StorageTest {
         storage.save(originalTasks);
         List<Task> loadedTasks = storage.load();
 
-        assertEquals(toFileStrings(originalTasks), toFileStrings(loadedTasks));
+        assertEquals(formatTasksForStorage(originalTasks), formatTasksForStorage(loadedTasks));
         assertTrue(loadedTasks.get(0).isDone());
         assertFalse(loadedTasks.get(1).isDone());
         assertFalse(loadedTasks.get(2).isDone());
@@ -96,7 +96,7 @@ public class StorageTest {
 
         List<Task> tasks = storage.load();
 
-        assertEquals(List.of("T | 0 | first", "T | 1 | second"), toFileStrings(tasks));
+        assertEquals(List.of("T | 0 | first", "T | 1 | second"), formatTasksForStorage(tasks));
     }
 
     @Test
@@ -156,10 +156,10 @@ public class StorageTest {
         assertEquals("Unable to save tasks to " + dataFile + ".", exception.getMessage());
     }
 
-    /** Converts tasks to their stable persisted representations for comparison. */
-    private List<String> toFileStrings(List<Task> tasks) {
+    /** Formats tasks as their stable persisted representations for comparison. */
+    private List<String> formatTasksForStorage(List<Task> tasks) {
         return tasks.stream()
-                .map(Task::toFileString)
+                .map(Task::formatForStorage)
                 .toList();
     }
 

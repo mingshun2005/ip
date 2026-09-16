@@ -25,12 +25,12 @@ public class DeadlineTest {
     }
 
     @Test
-    public void toFileString_specialCharacters_escapesDescriptionAndUsesIsoDate() {
+    public void formatForStorage_specialCharacters_escapesDescriptionAndUsesIsoDate() {
         Deadline deadline = new Deadline("submit A | B \\ C", DEADLINE_DATE);
         deadline.markAsDone();
 
         assertEquals("D | 1 | submit A \\| B \\\\ C | 2026-10-15",
-                deadline.toFileString());
+                deadline.formatForStorage());
     }
 
     @Test

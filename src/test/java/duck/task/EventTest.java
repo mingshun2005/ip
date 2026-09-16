@@ -22,13 +22,13 @@ public class EventTest {
     }
 
     @Test
-    public void toFileString_specialCharacters_escapesAndTrimsFields() {
+    public void formatForStorage_specialCharacters_escapesAndTrimsFields() {
         Event event = new Event(
                 "meet A | B \\ C", " Room | A\\1 ", " Room | B\\2 ");
         event.markAsDone();
 
         assertEquals("E | 1 | meet A \\| B \\\\ C | "
-                + "Room \\| A\\\\1 | Room \\| B\\\\2", event.toFileString());
+                + "Room \\| A\\\\1 | Room \\| B\\\\2", event.formatForStorage());
     }
 
     @Test

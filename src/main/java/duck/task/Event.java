@@ -53,12 +53,12 @@ public class Event extends Task {
     }
 
     /**
-     * Returns this event with its description and time fields escaped for storage.
+     * Formats this event with its description and time fields escaped for storage.
      *
      * @return storage record containing the type, status, description, and time range
      */
     @Override
-    public String toFileString() {
+    public String formatForStorage() {
         return TaskType.EVENT.getFileCode() + " | " + this.getFileStatus() + " | "
                 + this.escapeFileField(this.description) + " | "
                 + this.escapeFileField(this.startTime.trim()) + " | "
