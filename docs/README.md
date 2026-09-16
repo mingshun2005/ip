@@ -180,22 +180,28 @@ event DESCRIPTION /from START /to END
 
 The description and both time fields are required.
 
-#### Using free-form times
+#### Using shorthand times
 
-Event times may be entered as meaningful text:
+For an event that starts and ends on the same day, enter a three-letter weekday
+followed by 12-hour times:
 
 ```text
 event project meeting /from Mon 2pm /to 4pm
 ```
 
-Duck keeps free-form event times as entered:
+Duck keeps shorthand event times as entered:
 
 ```text
 [E][ ] project meeting (from: Mon 2pm to: 4pm)
 ```
 
-Free-form times are not converted into dates, and Duck does not compare their
-order.
+Duck accepts `am` and `pm` in any letter case and supports optional minutes,
+such as `9:30am`. The end may repeat the same weekday or omit it. Duck rejects
+an end time that is earlier than the start time.
+
+Other meaningful text, such as `afternoon` and `evening`, remains supported as
+free-form event times. Duck stores that text without interpreting or comparing
+it.
 
 #### Using validated date-times
 
@@ -219,8 +225,8 @@ When both values use this format:
 - The start and end may be equal.
 - An event may continue into a later day.
 
-Automatic date-time validation applies only when both endpoints use the exact
-structured format.
+Automatic range validation applies to both the structured format and the
+supported same-day shorthand format.
 
 ### Viewing tasks: `list`
 

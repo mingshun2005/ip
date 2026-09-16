@@ -169,6 +169,15 @@ public class ParserTest {
     }
 
     @Test
+    public void parse_shorthandEventEndBeforeStart_throwsRangeError() {
+        String expectedMessage = "The event end cannot be earlier than its start."
+                + COMMAND_EXAMPLE_EVENT;
+
+        assertParseError("event meeting /from Mon 5pm /to 4pm", expectedMessage);
+        assertParseError("event meeting /from Fri 10:30PM /to Fri 9:45pm", expectedMessage);
+    }
+
+    @Test
     public void parse_structuredEventBoundaryTimes_returnsAddCommands() throws DuckException {
         assertInstanceOf(AddCommand.class, this.parser.parse(
                 "event instant /from 2026-10-15 1400 /to 2026-10-15 1400"));
@@ -204,6 +213,25 @@ public class ParserTest {
                 this.parser.parse("event meeting /from Monday 2pm /to 4pm"));
         assertInstanceOf(AddCommand.class,
                 this.parser.parse("event workshop /from afternoon /to evening"));
+    }
+
+    @Test
+    public void parse_validShorthandEventTimes_returnsAddCommands() throws DuckException {
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event meeting /from Mon 2pm /to 4pm"));
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event meeting /from Fri 9:45AM /to Fri 10:30am"));
+        assertInstanceOf(AddCommand.class,
+                this.parser.parse("event instant /from Sun 12pm /to 12pm"));
+    }
+
+    @Test
+    public void parse_invalidShorthandEventTimes_throwsTimeFormatError() {
+        String expectedMessage = "Please enter valid event times such as Mon 2pm and 4pm."
+                + COMMAND_EXAMPLE_EVENT;
+
+        assertParseError("event meeting /from Mon 13pm /to 4pm", expectedMessage);
+        assertParseError("event meeting /from Tue 9:60am /to 10am", expectedMessage);
     }
 
     @Test

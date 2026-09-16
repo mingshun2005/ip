@@ -2,9 +2,13 @@ package duck.parser;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.Locale;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import duck.DuckException;
@@ -53,9 +57,29 @@ public class Parser {
             DateTimeFormatter.ofPattern("uuuu-MM-dd HHmm")
                     .withResolverStyle(ResolverStyle.STRICT);
 
+    /** Formatter for supported 12-hour event times, such as 2pm and 2:30PM. */
+    private static final DateTimeFormatter EVENT_CLOCK_TIME_FORMAT =
+            new DateTimeFormatterBuilder()
+                    .parseCaseInsensitive()
+                    .appendPattern("h")
+                    .optionalStart()
+                    .appendPattern(":mm")
+                    .optionalEnd()
+                    .appendPattern("a")
+                    .toFormatter(Locale.ENGLISH)
+                    .withResolverStyle(ResolverStyle.STRICT);
+
     /** Shape required before free-form event endpoints are parsed as date-times. */
     private static final Pattern EVENT_DATE_TIME_PATTERN =
             Pattern.compile("[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{4}");
+
+    /** Supported weekday and clock-time shape for the start of a shorthand event. */
+    private static final Pattern EVENT_WEEKDAY_TIME_PATTERN = Pattern.compile(
+            "(?i)(Mon|Tue|Wed|Thu|Fri|Sat|Sun) ([0-9]{1,2}(?::[0-9]{2})?[ap]m)");
+
+    /** Supported clock-time shape with an optional weekday for a shorthand event end. */
+    private static final Pattern EVENT_OPTIONAL_WEEKDAY_TIME_PATTERN = Pattern.compile(
+            "(?i)(?:(Mon|Tue|Wed|Thu|Fri|Sat|Sun) )?([0-9]{1,2}(?::[0-9]{2})?[ap]m)");
 
     /** Recovery guidance for commands that require a task number. */
     private static final String TASK_NUMBER_GUIDANCE =
@@ -230,21 +254,48 @@ public class Parser {
         }
     }
 
-    /**
-     * Rejects invalid or reversed event endpoints when both use the structured format.
-     * Other endpoint text remains free-form and is not compared.
-     */
+    /** Rejects reversed event endpoints when they use a supported comparable format. */
     private void validateEventRange(String startText, String endText) throws DuckException {
-        if (!EVENT_DATE_TIME_PATTERN.matcher(startText).matches()
-                || !EVENT_DATE_TIME_PATTERN.matcher(endText).matches()) {
+        if (EVENT_DATE_TIME_PATTERN.matcher(startText).matches()
+                && EVENT_DATE_TIME_PATTERN.matcher(endText).matches()) {
+            validateStructuredEventRange(startText, endText);
             return;
         }
 
+        validateShorthandEventRange(startText, endText);
+    }
+
+    /** Rejects a reversed event range whose endpoints contain full dates and times. */
+    private void validateStructuredEventRange(String startText, String endText) throws DuckException {
         LocalDateTime startDateTime = parseEventDateTime(startText);
         LocalDateTime endDateTime = parseEventDateTime(endText);
         if (endDateTime.isBefore(startDateTime)) {
-            throw new DuckException("The event end cannot be earlier than its start."
-                    + COMMAND_EXAMPLE_EVENT);
+            throwEventRangeException();
+        }
+    }
+
+    /**
+     * Rejects a reversed same-day range written as a weekday followed by 12-hour times.
+     * An end without a weekday refers to the start weekday. Different explicit weekdays
+     * remain free-form because their intended dates are unknown.
+     */
+    private void validateShorthandEventRange(String startText, String endText) throws DuckException {
+        Matcher startMatcher = EVENT_WEEKDAY_TIME_PATTERN.matcher(startText);
+        Matcher endMatcher = EVENT_OPTIONAL_WEEKDAY_TIME_PATTERN.matcher(endText);
+        if (!startMatcher.matches() || !endMatcher.matches()) {
+            return;
+        }
+
+        String startWeekday = startMatcher.group(1);
+        String endWeekday = endMatcher.group(1);
+        if (endWeekday != null && !endWeekday.equalsIgnoreCase(startWeekday)) {
+            return;
+        }
+
+        LocalTime startTime = parseEventClockTime(startMatcher.group(2));
+        LocalTime endTime = parseEventClockTime(endMatcher.group(2));
+        if (endTime.isBefore(startTime)) {
+            throwEventRangeException();
         }
     }
 
@@ -259,5 +310,21 @@ public class Parser {
         } catch (DateTimeParseException e) {
             throw new DuckException(EVENT_DATE_TIME_ERROR_MESSAGE);
         }
+    }
+
+    /** Parses one supported 12-hour event time into a comparable clock time. */
+    private LocalTime parseEventClockTime(String timeText) throws DuckException {
+        try {
+            return LocalTime.parse(timeText, EVENT_CLOCK_TIME_FORMAT);
+        } catch (DateTimeParseException e) {
+            throw new DuckException("Please enter valid event times such as Mon 2pm and 4pm."
+                    + COMMAND_EXAMPLE_EVENT);
+        }
+    }
+
+    /** Throws the common validation error for a reversed event range. */
+    private void throwEventRangeException() throws DuckException {
+        throw new DuckException("The event end cannot be earlier than its start."
+                + COMMAND_EXAMPLE_EVENT);
     }
 }
