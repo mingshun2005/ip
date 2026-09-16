@@ -32,7 +32,7 @@ public abstract class TaskStatusCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException {
-        if (this.taskNumber < 1 || this.taskNumber > tasks.size()) {
+        if (this.taskNumber < 1 || this.taskNumber > tasks.getTaskCount()) {
             throw new DuckException("That task number does not exist. "
                     + "Use list to check the available task numbers.");
         }
@@ -51,7 +51,7 @@ public abstract class TaskStatusCommand extends Command {
                 : "Task status was not updated correctly.";
 
         try {
-            storage.save(tasks.asList());
+            storage.save(tasks.getTasksSnapshot());
         } catch (DuckException e) {
             setTaskStatus(tasks, taskIndex, wasDone);
             throw e;
@@ -71,8 +71,8 @@ public abstract class TaskStatusCommand extends Command {
     /**
      * Displays the confirmation specific to the concrete status command.
      *
-     * @param ui user interface used to display the confirmation
-     * @param task task whose status changed
+     * @param ui User interface used to display the confirmation.
+     * @param task Task whose status changed.
      */
     protected abstract void showConfirmation(Ui ui, Task task);
 }

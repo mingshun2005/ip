@@ -27,7 +27,7 @@ public class DeleteCommand extends Command {
      */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws DuckException {
-        if (this.taskNumber < 1 || this.taskNumber > tasks.size()) {
+        if (this.taskNumber < 1 || this.taskNumber > tasks.getTaskCount()) {
             throw new DuckException("That task number does not exist. "
                     + "Use list to check the available task numbers.");
         }
@@ -35,11 +35,11 @@ public class DeleteCommand extends Command {
         int taskIndex = this.taskNumber - 1;
         Task removedTask = tasks.delete(taskIndex);
         try {
-            storage.save(tasks.asList());
+            storage.save(tasks.getTasksSnapshot());
         } catch (DuckException e) {
             tasks.add(taskIndex, removedTask);
             throw e;
         }
-        ui.showTaskDeleted(removedTask, tasks.size());
+        ui.showTaskDeleted(removedTask, tasks.getTaskCount());
     }
 }

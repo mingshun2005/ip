@@ -154,7 +154,7 @@ public class Ui {
     /**
      * Shows confirmation that a task was marked as done.
      *
-     * @param task task that was marked
+     * @param task Task that was marked.
      */
     public void showTaskMarked(Task task) {
         showLines(
@@ -165,7 +165,7 @@ public class Ui {
     /**
      * Shows confirmation that a task was marked as not done.
      *
-     * @param task task that was unmarked
+     * @param task Task that was unmarked.
      */
     public void showTaskUnmarked(Task task) {
         showLines(
@@ -176,8 +176,8 @@ public class Ui {
     /**
      * Shows confirmation and the new task count after adding a task.
      *
-     * @param task task that was added
-     * @param taskCount number of tasks after the addition
+     * @param task Task that was added.
+     * @param taskCount Number of tasks after the addition.
      */
     public void showTaskAdded(Task task, int taskCount) {
         showLines(
@@ -189,8 +189,8 @@ public class Ui {
     /**
      * Shows confirmation and the new task count after deleting a task.
      *
-     * @param task task that was deleted
-     * @param taskCount number of tasks after the deletion
+     * @param task Task that was deleted.
+     * @param taskCount Number of tasks after the deletion.
      */
     public void showTaskDeleted(Task task, int taskCount) {
         showLines(
@@ -202,7 +202,7 @@ public class Ui {
     /**
      * Shows an error without exposing exception-handling details to this class.
      *
-     * @param message user-facing explanation of the error
+     * @param message User-facing explanation of the error.
      */
     public void showError(String message) {
         this.output.println("Quack? " + message);

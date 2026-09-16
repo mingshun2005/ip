@@ -33,7 +33,7 @@ public class TaskList {
      *
      * @return task count
      */
-    public int size() {
+    public int getTaskCount() {
         return this.tasks.size();
     }
 
@@ -50,7 +50,7 @@ public class TaskList {
     /**
      * Adds a task to the end of the list.
      *
-     * @param task task to add
+     * @param task Task to add.
      */
     public void add(Task task) {
         this.tasks.add(Objects.requireNonNull(task, "Task cannot be null."));
@@ -132,7 +132,7 @@ public class TaskList {
      *
      * @return tasks in their current order
      */
-    public List<Task> asList() {
+    public List<Task> getTasksSnapshot() {
         return List.copyOf(this.tasks);
     }
 }

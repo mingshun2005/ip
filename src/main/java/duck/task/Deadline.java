@@ -10,11 +10,11 @@ import java.util.Objects;
  */
 public class Deadline extends Task {
     /** Format used when showing deadline dates to users. */
-    private static final DateTimeFormatter DISPLAY_DATE_FORMAT =
+    private static final DateTimeFormatter DATE_FORMAT_DISPLAY =
             DateTimeFormatter.ofPattern("MMM dd yyyy", Locale.ENGLISH);
 
     /** Canonical format used for dates stored on disk. */
-    private static final DateTimeFormatter STORAGE_DATE_FORMAT =
+    private static final DateTimeFormatter DATE_FORMAT_STORAGE =
             DateTimeFormatter.ISO_LOCAL_DATE;
 
     /** Date by which this task must be completed. */
@@ -58,7 +58,7 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return TaskType.DEADLINE.getTag() + super.toString() + " (by: "
-                + this.deadlineDate.format(DISPLAY_DATE_FORMAT) + ")";
+                + this.deadlineDate.format(DATE_FORMAT_DISPLAY) + ")";
     }
 
     /**
@@ -70,6 +70,6 @@ public class Deadline extends Task {
     public String toFileString() {
         return TaskType.DEADLINE.getFileCode() + " | " + this.getFileStatus() + " | "
                 + this.escapeFileField(this.description) + " | "
-                + this.deadlineDate.format(STORAGE_DATE_FORMAT);
+                + this.deadlineDate.format(DATE_FORMAT_STORAGE);
     }
 }

@@ -41,7 +41,7 @@ public class AddCommandTest {
 
         new AddCommand(addedTask).execute(tasks, new Ui(), new Storage(dataFile.toString()));
 
-        assertEquals(2, tasks.size());
+        assertEquals(2, tasks.getTaskCount());
         assertSame(existingTask, tasks.get(0));
         assertSame(addedTask, tasks.get(1));
         assertEquals(List.of("T | 0 | existing", "T | 0 | added"),
@@ -59,7 +59,7 @@ public class AddCommandTest {
                 command.execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("That task already exists as task 1.", exception.getMessage());
-        assertEquals(List.of(existingTask), tasks.asList());
+        assertEquals(List.of(existingTask), tasks.getTasksSnapshot());
     }
 
     @Test
@@ -72,6 +72,6 @@ public class AddCommandTest {
                 command.execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
-        assertEquals(List.of(existingTask), tasks.asList());
+        assertEquals(List.of(existingTask), tasks.getTasksSnapshot());
     }
 }

@@ -39,7 +39,7 @@ public class DeleteCommandTest {
 
         new DeleteCommand(2).execute(tasks, new Ui(), new Storage(dataFile.toString()));
 
-        assertEquals(List.of(firstTask, thirdTask), tasks.asList());
+        assertEquals(List.of(firstTask, thirdTask), tasks.getTasksSnapshot());
         assertEquals(List.of("T | 0 | first", "T | 0 | third"),
                 Files.readAllLines(dataFile, StandardCharsets.UTF_8));
     }
@@ -59,7 +59,7 @@ public class DeleteCommandTest {
                 + "Use list to check the available task numbers.";
         assertEquals(expectedMessage, zeroException.getMessage());
         assertEquals(expectedMessage, pastEndException.getMessage());
-        assertEquals(List.of(originalTask), tasks.asList());
+        assertEquals(List.of(originalTask), tasks.getTasksSnapshot());
         assertFalse(Files.exists(this.temporaryDirectory.resolve("duck.txt")));
     }
 
@@ -74,7 +74,7 @@ public class DeleteCommandTest {
                 new DeleteCommand(2).execute(tasks, new Ui(), new FailingStorage()));
 
         assertEquals("Simulated save failure.", exception.getMessage());
-        assertEquals(3, tasks.size());
+        assertEquals(3, tasks.getTaskCount());
         assertSame(firstTask, tasks.get(0));
         assertSame(secondTask, tasks.get(1));
         assertSame(thirdTask, tasks.get(2));

@@ -35,18 +35,18 @@ public class AddCommand extends Command {
                     + (duplicateTaskIndex + 1) + ".");
         }
 
-        int originalTaskCount = tasks.size();
+        int originalTaskCount = tasks.getTaskCount();
         tasks.add(this.task);
-        assert tasks.size() == originalTaskCount + 1
+        assert tasks.getTaskCount() == originalTaskCount + 1
                 && tasks.get(originalTaskCount) == this.task
                 : "Added task must be appended to the task list.";
 
         try {
-            storage.save(tasks.asList());
+            storage.save(tasks.getTasksSnapshot());
         } catch (DuckException e) {
-            tasks.delete(tasks.size() - 1);
+            tasks.delete(tasks.getTaskCount() - 1);
             throw e;
         }
-        ui.showTaskAdded(this.task, tasks.size());
+        ui.showTaskAdded(this.task, tasks.getTaskCount());
     }
 }

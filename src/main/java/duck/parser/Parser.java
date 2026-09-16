@@ -203,13 +203,13 @@ public class Parser {
                     + DEADLINE_COMMAND_EXAMPLE);
         }
 
-        String[] descriptionAndDeadline = deadlineDetails.split(" /by ", 2);
-        if (descriptionAndDeadline.length < 2 || descriptionAndDeadline[1].trim().isEmpty()) {
+        String[] descriptionAndDeadlineParts = deadlineDetails.split(" /by ", 2);
+        if (descriptionAndDeadlineParts.length < 2 || descriptionAndDeadlineParts[1].trim().isEmpty()) {
             throw new DuckException("The deadline command needs a non-empty /by date."
                     + DEADLINE_COMMAND_EXAMPLE);
         }
-        LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadline[1].trim());
-        return new Deadline(descriptionAndDeadline[0].trim(), deadlineDate);
+        LocalDate deadlineDate = parseDeadlineDate(descriptionAndDeadlineParts[1].trim());
+        return new Deadline(descriptionAndDeadlineParts[0].trim(), deadlineDate);
     }
 
     /** Returns the normalized text following a command word. */
